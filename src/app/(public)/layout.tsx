@@ -3,8 +3,7 @@ import {Work_Sans} from 'next/font/google'
 import {SanityLive, sanityFetch} from '@/sanity/lib/live'
 import {navigationQuery} from '@/sanity/queries'
 import {draftMode} from 'next/headers'
-import {VisualEditing} from 'next-sanity'
-import {Header, Footer, Modals, DisableDraftMode} from '@/ui'
+import {DisableDraftMode} from '@/ui'
 import '@/theme/index.scss'
 
 const sans = Work_Sans({
@@ -24,19 +23,19 @@ export default async function RootLayout({
 }>) {
   const drafts = await draftMode()
 
-  const {data: header} = await sanityFetch({
-    query: navigationQuery,
-    params: {slug: 'header'},
-  })
-
-  const {data: footer} = await sanityFetch({
-    query: navigationQuery,
-    params: {slug: 'footer'},
-  })
-
-  if (!header || !footer) {
-    throw new Error('unable to retrieve navigation data')
-  }
+  // const {data: header} = await sanityFetch({
+  //   query: navigationQuery,
+  //   params: {slug: 'header'},
+  // })
+  //
+  // const {data: footer} = await sanityFetch({
+  //   query: navigationQuery,
+  //   params: {slug: 'footer'},
+  // })
+  //
+  // if (!header || !footer) {
+  //   throw new Error('unable to retrieve navigation data')
+  // }
 
   return (
     <html lang="en">
@@ -59,14 +58,12 @@ export default async function RootLayout({
         />
       </head>
       <body className={sans.variable}>
-        <Header navigation={header} />
+        {/* <Header navigation={header} /> */}
         {children}
-        <Footer navigation={footer} />
-        <Modals />
+        {/* <Footer navigation={footer} /> */}
         <SanityLive />
         {drafts.isEnabled && (
           <>
-            <VisualEditing />
             <DisableDraftMode />
           </>
         )}

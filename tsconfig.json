@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "@/ui": ["./src/ui"],
       "@/lib": ["./src/lib"],
       "@/theme/*": ["./src/theme/*"],
