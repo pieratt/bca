@@ -1,0 +1,21 @@
+{
+  "name": "todo",
+  "short_name": "todo",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "color(display-p3 1 0.97 0.94)",
+  "theme_color": "color(display-p3 0.06 0.18 0.29)",
+  "description": "",
+  "icons": [
+    {
+      "src": "/favicon-16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

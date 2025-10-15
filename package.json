@@ -1,0 +1,66 @@
+{
+  "name": "BookCoverArchive",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "npm run typegen",
+    "dev": "next dev",
+    "prebuild": "npm run typegen",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typegen": "sanity schema extract --enforce-required-fields --path=src/sanity/extract.json && sanity typegen generate",
+    "update-sanity": "pnpm update @sanity/client @sanity/vision @sanity/image-url @portabletext/block-tools @portabletext/react sanity sanity-plugin-link-field next-sanity --latest"
+  },
+  "dependencies": {
+    "@linaria/core": "^6.3.0",
+    "@linaria/react": "^6.3.0",
+    "@portabletext/block-tools": "^3.5.10",
+    "@portabletext/react": "^4.0.3",
+    "@sanity/client": "^7.12.0",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/schema": "^4.10.3",
+    "@sanity/ui": "^2.16.21",
+    "@sanity/uuid": "^3.0.2",
+    "@sanity/vision": "^4.10.3",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "jsdom": "^27.0.0",
+    "next": "15.3.3",
+    "next-sanity": "^11.4.2",
+    "next-with-linaria": "^1.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.65.0",
+    "react-icons": "^5.5.0",
+    "sanity": "^4.10.3",
+    "sanity-advanced-validators": "^0.5.3",
+    "sanity-plugin-link-field": "^1.4.2",
+    "sass": "^1.93.2",
+    "slugify": "^1.6.6",
+    "styled-components": "^6.1.15",
+    "usehooks-ts": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.10",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@9.0.4",
+  "pnpm": {
+    "pnpm": {
+      "peerDependencyRules": {
+        "allowAny": [
+          "react",
+          "react-dom"
+        ]
+      }
+    }
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  }
+}

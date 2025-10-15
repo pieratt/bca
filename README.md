@@ -1,2 +1,1 @@
-# Resident Company Club
 # bookcoverarchive

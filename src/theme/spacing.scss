@@ -1,0 +1,30 @@
+:root {
+  --headerHeight: 130px;
+
+  --xGap: 20px;
+  --yGap: 20px;
+
+  --gapXS: 16px;
+  --gapS: 2.4rem;
+  --gapM: 2.4rem;
+  --gapL: 4rem;
+  --gapXL: 4.8rem;
+
+  --windowMaxWidth: calc(100vw - var(--xGap) * 2);
+
+  @media only screen and (min-width: 744px) {
+    --headerHeight: 147px;
+    --xGap: 40px;
+    --yGap: 20px;
+
+    --gapXS: min(16px, calc((16 / 1728) * 100vw));
+    --gapS: min(30px, calc((30 / 1728) * 100vw));
+    --gapM: min(40px, calc((40 / 1728) * 100vw));
+    --gapL: min(64px, calc((64 / 1728) * 100vw));
+    --gapXL: min(80px, calc((80 / 1728) * 100vw));
+  }
+
+  @media only screen and (min-width: 1728px) {
+    --windowMaxWidth: calc(1728px - var(--gapM) * 2);
+  }
+}
