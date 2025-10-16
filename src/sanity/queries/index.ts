@@ -1,2 +1,2 @@
-export * from './books'
-export * from './persons'
+export {bookQuery, bookIndexQuery} from './books'
+export {personQuery, personIndexQuery} from './persons'
