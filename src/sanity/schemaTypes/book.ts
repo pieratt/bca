@@ -7,6 +7,26 @@ export default defineType({
 
   groups: [{name: 'overview', default: true}, {name: 'contributors'}, {name: 'notes'}],
 
+  fieldsets: [
+    {
+      name: 'data',
+      options: {columns: 3}, // Set to 2 columns
+    },
+  ],
+
+  orderings: [
+    {
+      title: 'Published (recent)',
+      name: 'bookPublishedAsc',
+      by: [{field: 'datePublished', direction: 'asc'}],
+    },
+    {
+      title: 'Published (old)',
+      name: 'bookPublishedDesc',
+      by: [{field: 'datePublished', direction: 'desc'}],
+    },
+  ],
+
   fields: [
     defineField({
       name: 'title',
@@ -44,6 +64,14 @@ export default defineType({
       name: 'isbn',
       type: 'string',
       group: 'overview',
+      fieldset: 'data',
+    }),
+
+    defineField({
+      name: 'publisher',
+      type: 'string',
+      group: 'overview',
+      fieldset: 'data',
     }),
 
     defineField({
@@ -67,6 +95,7 @@ export default defineType({
         layout: 'dropdown',
       },
       group: 'overview',
+      fieldset: 'data',
     }),
 
     defineField({
@@ -98,6 +127,7 @@ export default defineType({
           to: [{type: 'person'}],
         },
       ],
+      group: 'contributors',
     }),
 
     defineField({
@@ -146,6 +176,12 @@ export default defineType({
         },
       ],
       group: 'contributors',
+    }),
+
+    defineField({
+      name: 'datePublished',
+      type: 'datetime',
+      hidden: true,
     }),
   ],
   preview: {

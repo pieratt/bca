@@ -1,1 +1,6 @@
+export * from './bookIndex'
+export * from './bookPage'
+export * from './header'
+export * from './footer'
+export * from './personPage'
 export * from './primitives'

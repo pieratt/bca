@@ -1,10 +1,10 @@
 import type {Metadata} from 'next'
 import {Work_Sans} from 'next/font/google'
 import {SanityLive, sanityFetch} from '@/sanity/lib/live'
-import {navigationQuery} from '@/sanity/queries'
+// import {navigationQuery} from '@/sanity/queries'
 import {draftMode} from 'next/headers'
-import {DisableDraftMode} from '@/ui'
-import '@/theme/index.scss'
+import {DisableDraftMode, Header, Footer} from '@/ui'
+import '@/theme/legacy.scss'
 
 const sans = Work_Sans({
   variable: '--sans',
@@ -12,7 +12,7 @@ const sans = Work_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Resident Company Club',
+  title: 'Book Cover Archive',
   description: '', // todo
 }
 
@@ -58,9 +58,12 @@ export default async function RootLayout({
         />
       </head>
       <body className={sans.variable}>
-        {/* <Header navigation={header} /> */}
-        {children}
-        {/* <Footer navigation={footer} /> */}
+        <Header />
+        <div className="wrapper">
+          {children}
+          <Footer />
+        </div>
+        <div id="ur_footer"></div>
         <SanityLive />
         {drafts.isEnabled && (
           <>

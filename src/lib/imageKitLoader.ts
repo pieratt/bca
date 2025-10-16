@@ -13,9 +13,9 @@ export const cdnUrl = (src: string, withTransforms: boolean = false): URL => {
     : `https://cdn.sanity.io/files/${projectId}/${dataset}`
   const newUrl =
     isImage && withTransforms
-      ? `https://ik.imagekit.io/${imagekit}/images/__TRANSFORMS__`
+      ? `https://ik.imagekit.io/${imagekit}/__TRANSFORMS__`
       : isImage
-      ? `https://ik.imagekit.io/${imagekit}/images`
+      ? `https://ik.imagekit.io/${imagekit}`
       : `https://ik.imagekit.io/${imagekit}/files`
   return new URL(src.replace(sourceURL, newUrl))
 }

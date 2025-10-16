@@ -41,6 +41,7 @@ export type Book = {
   }>
   legacyId?: string
   isbn?: string
+  publisher?: string
   genre?:
     | 'art and design'
     | 'biographies and memoires'
@@ -109,6 +110,7 @@ export type Book = {
     _key: string
     [internalGroqTypeReferenceTo]?: 'person'
   }>
+  datePublished?: string
 }
 
 export type Person = {
@@ -278,37 +280,323 @@ export type AllSanitySchemaTypes =
   | Slug
   | SanityAssetSourceData
 export declare const internalGroqTypeReferenceTo: unique symbol
-// Source: ./src/sanity/queries/Metadata.ts
-// Variable: metadataQuery
-// Query: *[(_type == 'page') && metadata.slug.current == $slug][0]{    metadata {      ...,      image {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
-export type MetadataQueryResult = null
+// Source: ./src/sanity/queries/books.ts
+// Variable: bookQuery
+// Query: *[_type == 'book' && slug.current == $slug][0]{    ...,    notes[],    designers[] -> {      name    },    authors[] -> {      name    },    illustrators[] -> {      name    },    artDirectors[] -> {      name    },    photographers[] -> {      name    },    images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}  }
+export type BookQueryResult = {
+  _id: string
+  _type: 'book'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  notes: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }> | null
+  legacyId?: string
+  isbn?: string
+  publisher?: string
+  genre?:
+    | 'art and design'
+    | 'biographies and memoires'
+    | 'comics'
+    | 'fiction'
+    | 'humor'
+    | 'mystery'
+    | 'nonfiction'
+    | 'poetry'
+    | 'reference'
+    | 'science fiction'
+    | 'uncategorized'
+    | 'youth fiction'
+  typefaces?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'typeface'
+  }>
+  images: Array<{
+    asset: {
+      metadata: {
+        lqip: string | null
+        blurHash: string | null
+        dimensions: SanityImageDimensions | null
+      } | null
+      originalFilename: string | null
+      url: string | null
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+    _key: string
+  }>
+  designers: Array<{
+    name: string
+  }> | null
+  authors: Array<{
+    name: string
+  }> | null
+  illustrators: Array<{
+    name: string
+  }> | null
+  artDirectors: Array<{
+    name: string
+  }> | null
+  photographers: Array<{
+    name: string
+  }> | null
+  datePublished?: string
+} | null
+// Variable: bookIndexQuery
+// Query: *[_type == 'book'] | order(datePublished desc) [$offset...$limit] {    ...,    notes[],    designers[] -> {      name    },    authors[] -> {      name    },    images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}  }
+export type BookIndexQueryResult = Array<{
+  _id: string
+  _type: 'book'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  notes: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }> | null
+  legacyId?: string
+  isbn?: string
+  publisher?: string
+  genre?:
+    | 'art and design'
+    | 'biographies and memoires'
+    | 'comics'
+    | 'fiction'
+    | 'humor'
+    | 'mystery'
+    | 'nonfiction'
+    | 'poetry'
+    | 'reference'
+    | 'science fiction'
+    | 'uncategorized'
+    | 'youth fiction'
+  typefaces?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'typeface'
+  }>
+  images: Array<{
+    asset: {
+      metadata: {
+        lqip: string | null
+        blurHash: string | null
+        dimensions: SanityImageDimensions | null
+      } | null
+      originalFilename: string | null
+      url: string | null
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+    _key: string
+  }>
+  designers: Array<{
+    name: string
+  }> | null
+  authors: Array<{
+    name: string
+  }> | null
+  illustrators?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'person'
+  }>
+  artDirectors?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'person'
+  }>
+  photographers?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'person'
+  }>
+  datePublished?: string
+}>
 
-// Source: ./src/sanity/queries/navigation.ts
-// Variable: navigationQuery
-// Query: *[_type == 'navigation' && slug.current == $slug][0]{    ...,    links[] {      ...,      link {        ...,        internalLink -> {          metadata        }      }    }  }
-export type NavigationQueryResult = null
-
-// Source: ./src/sanity/queries/page.ts
-// Variable: pageQuery
-// Query: *[_type == 'page' && metadata.slug.current == $slug][0]{    metadata {      ...    },    modules[] {      ...,      slides[] {        ...,        cta {          ...,          link {  ...,  internalLink -> {    _type,    _id,    publishDate,    metadata {      title,      slug {        current      }    }  }}        },        image {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}      },      logos[] {        ...,        logo {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}      },      image {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }},      images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }},      cards[] {        ...,        image {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}      },      columns[] {        ...,        image {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }},        cta {          ...,          link {  ...,  internalLink -> {    _type,    _id,    publishDate,    metadata {      title,      slug {        current      }    }  }},        }      },      cta {        ...,        link {  ...,  internalLink -> {    _type,    _id,    publishDate,    metadata {      title,      slug {        current      }    }  }}      }    }  }
-export type PageQueryResult = null
-// Variable: pageIndexQuery
-// Query: *[_type == 'page']{    _updatedAt,    metadata {      ...    }  }
-export type PageIndexQueryResult = Array<never>
-
-// Source: ./src/sanity/queries/siteSettings.ts
-// Variable: siteSettingsQuery
-// Query: *[_type == 'siteSettings'][0]{    title,    description,    shareImage {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }},    socialLinks[] {      _key,      label,      iconKey,      link {  ...,  internalLink -> {    _type,    _id,    publishDate,    metadata {      title,      slug {        current      }    }  }}    },    navigation[] {      _key,      label,      link {  ...,  internalLink -> {    _type,    _id,    publishDate,    metadata {      title,      slug {        current      }    }  }}    }  }
-export type SiteSettingsQueryResult = null
+// Source: ./src/sanity/queries/persons.ts
+// Variable: personQuery
+// Query: *[_type == 'person' && slug.current == $slug][0]{    ...,    "books": *[ _type == "book" && references(^._id) ] {      ...,      images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
+export type PersonQueryResult = {
+  _id: string
+  _type: 'person'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  slug: Slug
+  name: string
+  homepage?: string
+  books: Array<{
+    _id: string
+    _type: 'book'
+    _createdAt: string
+    _updatedAt: string
+    _rev: string
+    title: string
+    slug: Slug
+    notes?: Array<{
+      children?: Array<{
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+      listItem?: 'bullet' | 'number'
+      markDefs?: Array<{
+        href?: string
+        _type: 'link'
+        _key: string
+      }>
+      level?: number
+      _type: 'block'
+      _key: string
+    }>
+    legacyId?: string
+    isbn?: string
+    publisher?: string
+    genre?:
+      | 'art and design'
+      | 'biographies and memoires'
+      | 'comics'
+      | 'fiction'
+      | 'humor'
+      | 'mystery'
+      | 'nonfiction'
+      | 'poetry'
+      | 'reference'
+      | 'science fiction'
+      | 'uncategorized'
+      | 'youth fiction'
+    typefaces?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'typeface'
+    }>
+    images: Array<{
+      asset: {
+        metadata: {
+          lqip: string | null
+          blurHash: string | null
+          dimensions: SanityImageDimensions | null
+        } | null
+        originalFilename: string | null
+        url: string | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+      _key: string
+    }>
+    designers?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'person'
+    }>
+    authors?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'person'
+    }>
+    illustrators?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'person'
+    }>
+    artDirectors?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'person'
+    }>
+    photographers?: Array<{
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      _key: string
+      [internalGroqTypeReferenceTo]?: 'person'
+    }>
+    datePublished?: string
+  }>
+} | null
+// Variable: personIndexQuery
+// Query: *[_type == 'person'] | order(name desc) {    ...  }
+export type PersonIndexQueryResult = Array<{
+  _id: string
+  _type: 'person'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  slug: Slug
+  name: string
+  homepage?: string
+}>
 
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
-    "\n  *[(_type == 'page') && metadata.slug.current == $slug][0]{\n    metadata {\n      ...,\n      image \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n": MetadataQueryResult
-    "\n  *[_type == 'navigation' && slug.current == $slug][0]{\n    ...,\n    links[] {\n      ...,\n      link {\n        ...,\n        internalLink -> {\n          metadata\n        }\n      }\n    }\n  }\n": NavigationQueryResult
-    "\n  *[_type == 'page' && metadata.slug.current == $slug][0]{\n    metadata {\n      ...\n    },\n    modules[] {\n      ...,\n      slides[] {\n        ...,\n        cta {\n          ...,\n          link \n{\n  ...,\n  internalLink -> {\n    _type,\n    _id,\n    publishDate,\n    metadata {\n      title,\n      slug {\n        current\n      }\n    }\n  }\n}\n\n        },\n        image \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n      },\n      logos[] {\n        ...,\n        logo \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n      },\n      image \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n,\n      images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n,\n      cards[] {\n        ...,\n        image \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n      },\n      columns[] {\n        ...,\n        image \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n,\n        cta {\n          ...,\n          link \n{\n  ...,\n  internalLink -> {\n    _type,\n    _id,\n    publishDate,\n    metadata {\n      title,\n      slug {\n        current\n      }\n    }\n  }\n}\n,\n        }\n      },\n      cta {\n        ...,\n        link \n{\n  ...,\n  internalLink -> {\n    _type,\n    _id,\n    publishDate,\n    metadata {\n      title,\n      slug {\n        current\n      }\n    }\n  }\n}\n\n      }\n    }\n  }\n": PageQueryResult
-    "\n  *[_type == 'page']{\n    _updatedAt,\n    metadata {\n      ...\n    }\n  }\n": PageIndexQueryResult
-    "\n  *[_type == 'siteSettings'][0]{\n    title,\n    description,\n    shareImage \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n,\n    socialLinks[] {\n      _key,\n      label,\n      iconKey,\n      link \n{\n  ...,\n  internalLink -> {\n    _type,\n    _id,\n    publishDate,\n    metadata {\n      title,\n      slug {\n        current\n      }\n    }\n  }\n}\n\n    },\n    navigation[] {\n      _key,\n      label,\n      link \n{\n  ...,\n  internalLink -> {\n    _type,\n    _id,\n    publishDate,\n    metadata {\n      title,\n      slug {\n        current\n      }\n    }\n  }\n}\n\n    }\n  }\n": SiteSettingsQueryResult
+    "\n  *[_type == 'book' && slug.current == $slug][0]{\n    ...,\n    notes[],\n    designers[] -> {\n      name\n    },\n    authors[] -> {\n      name\n    },\n    illustrators[] -> {\n      name\n    },\n    artDirectors[] -> {\n      name\n    },\n    photographers[] -> {\n      name\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookQueryResult
+    "\n  *[_type == 'book'] | order(datePublished desc) [$offset...$limit] {\n    ...,\n    notes[],\n    designers[] -> {\n      name\n    },\n    authors[] -> {\n      name\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookIndexQueryResult
+    '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[ _type == "book" && references(^._id) ] {\n      ...,\n      images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
+    "\n  *[_type == 'person'] | order(name desc) {\n    ...\n  }\n": PersonIndexQueryResult
   }
 }

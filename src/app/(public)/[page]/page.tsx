@@ -2,19 +2,34 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {bookIndexQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
-import {BookIndex} from '@/ui'
+import NextLink from 'next/link'
 
-export default async function Home() {
+type PageContextBundle = {
+  params: Promise<{
+    page?: string
+  }>
+}
+
+export default async function Page(props: PageContextBundle) {
+  const {page} = await props.params
   const {data: books} = await sanityFetch({
     query: bookIndexQuery,
-    params: {offset: 0, limit: BOOK_INDEX_LIMIT},
+    params: {offset: Number(page), limit: Number(page) + BOOK_INDEX_LIMIT},
   })
   if (!books) {
     console.error('unable to retrieve books')
     notFound()
   }
 
-  return <BookIndex books={books} />
+  return (
+    <ul>
+      {books?.map((book) => (
+        <li key={book._id}>
+          <NextLink href={`/book/${book.slug.current}`}>{book.title}</NextLink>
+        </li>
+      ))}
+    </ul>
+  )
 }
 
 // export async function generateMetadata() {

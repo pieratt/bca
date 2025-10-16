@@ -242,6 +242,13 @@
         },
         "optional": true
       },
+      "publisher": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
       "genre": {
         "type": "objectAttribute",
         "value": {
@@ -643,6 +650,13 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "datePublished": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
         },
         "optional": true
       }
