@@ -464,7 +464,7 @@ export type BookIndexQueryResult = Array<{
 
 // Source: ./src/sanity/queries/persons.ts
 // Variable: personQuery
-// Query: *[_type == 'person' && slug.current == $slug][0]{    ...,    "books": *[ _type == "book" && references(^._id) ] {      ...,      images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
+// Query: *[_type == 'person' && slug.current == $slug][0]{    ...,    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {      ...,      images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
 export type PersonQueryResult = {
   _id: string
   _type: 'person'
@@ -596,7 +596,7 @@ declare module '@sanity/client' {
   interface SanityQueries {
     "\n  *[_type == 'book' && slug.current == $slug][0]{\n    ...,\n    notes[],\n    designers[] -> {\n      name\n    },\n    authors[] -> {\n      name\n    },\n    illustrators[] -> {\n      name\n    },\n    artDirectors[] -> {\n      name\n    },\n    photographers[] -> {\n      name\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookQueryResult
     "\n  *[_type == 'book'] | order(datePublished desc) [$offset...$limit] {\n    ...,\n    notes[],\n    designers[] -> {\n      name\n    },\n    authors[] -> {\n      name\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookIndexQueryResult
-    '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[ _type == "book" && references(^._id) ] {\n      ...,\n      images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
+    '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {\n      ...,\n      images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
     "\n  *[_type == 'person'] | order(name desc) {\n    ...\n  }\n": PersonIndexQueryResult
   }
 }

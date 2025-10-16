@@ -28,15 +28,15 @@ export const BookIndex = ({books}: {books: Sanity.BookIndexQueryResult}) => (
 
 const Books = styled.section`
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(auto, 1fr);
   gap: 35px 25px;
 `
 
 const Book = styled.article`
   &:first-child {
-    grid-column-end: span 2;
-    grid-row-end: span 2;
+    grid-column-end: span 3;
+    grid-row-end: span 3;
   }
   img {
     width: 100%;

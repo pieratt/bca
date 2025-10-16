@@ -17,11 +17,6 @@ export const imagekit = assertValue(
   'Missing environment variable: NEXT_PUBLIC_IMAGEKIT_ID'
 )
 
-export const contact_recipient = assertValue(
-  process.env.NEXT_PUBLIC_CONTACT_RECIPIENT,
-  'Missing environment variable: NEXT_PUBLIC_CONTACT_RECIPIENT'
-)
-
 export const BASE_URL = assertValue(
   process.env.NEXT_PUBLIC_SITE_URL,
   'Missing environment variable: NEXT_PUBLIC_SITE_URL'
