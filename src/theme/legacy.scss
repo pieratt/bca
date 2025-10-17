@@ -597,27 +597,9 @@ a.header h1 {
 
 .wrapper {
   position: relative;
-  width: 275px;
+  width: calc(100vw - 40px);
   margin: auto;
   padding-top: 20px;
-}
-
-@media only screen and (min-width: 470px) {
-  .wrapper {
-    width: 425px;
-  }
-}
-
-@media only screen and (min-width: 600px) {
-  .wrapper {
-    width: 575px;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .wrapper {
-    width: 725px;
-  }
 }
 
 @media only screen and (min-width: 900px) {

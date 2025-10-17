@@ -33,8 +33,14 @@ const Wrapper = styled.article`
   position: relative;
   align-self: end;
   &:first-child {
-    grid-column-end: span 3;
-    grid-row-end: span 3;
+    grid-column-end: span 2;
+    grid-row-end: span 2;
+  }
+  @media only screen and (min-width: 744px) {
+    &:first-child {
+      grid-column-end: span 3;
+      grid-row-end: span 3;
+    }
   }
   img {
     position: relative;
