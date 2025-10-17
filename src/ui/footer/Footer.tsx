@@ -13,18 +13,13 @@ export const Footer = () => (
       <div>
         <h3>Who runs this thing?</h3>
         <p>
-          The Book Cover Archive is edited and maintained by{' '}
-          <a href="http://generalprojects.com">Ben Pieratt</a> and{' '}
-          <a href="http://whiskyvangoghgo.com">Eric Jacobsen</a>.
-        </p>
-        <p>
-          BCA biz © 2025 <a href="http://internetland.com">Internetland</a> &amp;{' '}
+          © 2025 <a href="http://pieratt.com">Ben Pieratt</a> &amp;{' '}
           <a href="http://whiskyvangoghgo.com">Eric Jacobsen</a>. All covers are the copyright of
           their respective owners. We work hard to credit well.
         </p>
         <p>
           Send suggestions, comments or bugs to{' '}
-          <a href="mailto:info@bookcoverarchive.com">info@bookcoverarchive.com</a>.
+          <a href="mailto:info@pieratt.com">info@pieratt.com</a>.
         </p>
       </div>
 
@@ -262,14 +257,15 @@ export const Footer = () => (
       </div>
 
       <div>
-        <h3>Twitter &amp; RSS</h3>
+        <h3>Socials</h3>
         <p>
-          Twitter: <a href="http://twitter.com/CoverArchive">CoverArchive</a> <br />
-          <a href="http://twitter.com/pieratt">Pieratt</a> and{' '}
-          <a href="http://twitter.com/eric_wvgg">Eric</a> have their own accounts, too.
+          <a href="https://bookcoverarchive.com/feed/">RSS</a>
         </p>
         <p>
-          RSS: <a href="https://bookcoverarchive.com/feed/">Click here</a>
+          <a href="https://bsky.app/profile/bookcoverarchive.com">Bluesky</a>
+        </p>
+        <p>
+          <a href="http://twitter.com/CoverArchive">X the everything app</a>
         </p>
       </div>
     </div>

@@ -721,6 +721,11 @@ form.search button {
   padding: 20px 0px;
 }
 
+p {
+  line-height: 1.4em;
+  text-box: trim-both cap alphabetic;
+}
+
 .book_info .subheader {
   color: rgb(153, 153, 153);
   line-height: 1.8em;
