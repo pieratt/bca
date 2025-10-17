@@ -263,7 +263,7 @@ export const Footer = () => (
             <a href="https://bookcoverarchive.com/feed/">RSS</a>
           </li>
           <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590">
-            <a href="http://twitter.com/CoverArchive">X the everything app</a>
+            <a href="http://twitter.com/CoverArchive">𝕏 the Everything App™</a>
           </li>
           <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590">
             <a href="https://bsky.app/profile/bookcoverarchive.com">Bluesky</a>
