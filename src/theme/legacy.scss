@@ -713,9 +713,14 @@ form.search button {
   padding: 20px 0px;
 }
 
-p {
+p,
+blockquote {
   line-height: 1.4em;
   text-box: trim-both cap alphabetic;
+}
+blockquote {
+  margin-top: 2em;
+  margin-bottom: 2em;
 }
 
 .book_info .subheader {

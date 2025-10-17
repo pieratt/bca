@@ -93,6 +93,11 @@ const Main = styled.main`
       font-size: 6em;
     }
   }
+
+  .cell.copy p,
+  .cell.copy blockquote {
+    max-width: 540px;
+  }
 `
 
 const Image = styled(NextImage)`
