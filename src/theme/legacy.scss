@@ -697,6 +697,15 @@ form.search button {
   text-indent: -2000px;
 }
 
+.book_large {
+  position: relative;
+}
+
+.book_large img {
+  position: relative;
+  z-index: 1;
+}
+
 @media only screen and (min-width: 768px) {
   .book_large {
     margin-right: 25px;

@@ -4,14 +4,19 @@ import {styled} from '@linaria/react'
 import {People} from './People'
 import NextImage from 'next/image'
 import {PortableText} from 'next-sanity'
+import {Blur} from '@/ui'
+import {useState} from 'react'
 
 export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
-  console.log('book', book)
+  const [loaded, setLoaded] = useState(false)
   return !book ? null : (
     <Main role="main">
       <section>
-        <article id="post-5270" className="book type-book ">
+        <article className="book type-book ">
           <a href={`/book/${book.slug.current}`} className="book_large">
+            {book.images[0]?.asset?.metadata?.blurHash && (
+              <Blur hash={book.images[0].asset.metadata.blurHash} />
+            )}
             {book.images[0].asset?.url && (
               <Image
                 src={book.images[0].asset.url}
@@ -19,6 +24,8 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
                 width={book.images?.[0]?.asset?.metadata?.dimensions?.width}
                 height={book.images?.[0]?.asset?.metadata?.dimensions?.height}
                 sizes="(min-width:744) 50vw, 100vw"
+                className={loaded ? 'loaded' : ''}
+                onLoad={() => setLoaded(true)}
               />
             )}
           </a>
@@ -90,6 +97,11 @@ const Main = styled.main`
 
 const Image = styled(NextImage)`
   height: auto;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  &.loaded {
+    opacity: 1;
+  }
 `
 
 const Genre = styled.h2`
