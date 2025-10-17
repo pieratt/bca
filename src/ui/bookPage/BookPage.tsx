@@ -3,6 +3,7 @@
 import {styled} from '@linaria/react'
 import {People} from './People'
 import NextImage from 'next/image'
+import {PortableText} from 'next-sanity'
 
 export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
   console.log('book', book)
@@ -32,7 +33,7 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
 
               {book.isbn && <h2>ISBN: {book.isbn}</h2>}
 
-              <h2>Genre: {book.genre}</h2>
+              {!!book.genre && <Genre>Genre: {book.genre}</Genre>}
 
               {book.publisher && <h2>Publisher: {book.publisher}</h2>}
             </div>
@@ -48,6 +49,12 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
 
               <People label="Photographers" people={book.photographers} />
             </div>
+
+            {book.notes && (
+              <div className="cell copy">
+                <PortableText value={book.notes} />
+              </div>
+            )}
           </div>
         </article>
       </section>
@@ -83,4 +90,8 @@ const Main = styled.main`
 
 const Image = styled(NextImage)`
   height: auto;
+`
+
+const Genre = styled.h2`
+  text-transform: capitalize;
 `

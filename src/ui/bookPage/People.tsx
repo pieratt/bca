@@ -4,8 +4,11 @@ export const People = ({label, people}: {label: string; people?: {name: string}[
   !people ? null : (
     <h2>
       {pluralize(label, people?.length)}:{' '}
-      {people.map((person) => (
-        <a href={`/search/${person.name}`}>{person.name}</a>
+      {people.map((person, i) => (
+        <>
+          {person.name}
+          {i !== people.length - 1 ? ', ' : ''}
+        </>
       ))}
     </h2>
   )
