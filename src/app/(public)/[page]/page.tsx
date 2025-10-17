@@ -2,7 +2,8 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {bookIndexQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
-import NextLink from 'next/link'
+import {BookIndex, Pagination} from '@/ui'
+import {console} from 'inspector/promises'
 
 type PageContextBundle = {
   params: Promise<{
@@ -12,23 +13,20 @@ type PageContextBundle = {
 
 export default async function Page(props: PageContextBundle) {
   const {page} = await props.params
-  const {data: books} = await sanityFetch({
+  const {data} = await sanityFetch({
     query: bookIndexQuery,
-    params: {offset: Number(page), limit: Number(page) + BOOK_INDEX_LIMIT},
+    params: {start: (Number(page) - 1) * BOOK_INDEX_LIMIT, end: Number(page) * BOOK_INDEX_LIMIT},
   })
-  if (!books) {
+  if (!data) {
     console.error('unable to retrieve books')
     notFound()
   }
 
   return (
-    <ul>
-      {books?.map((book) => (
-        <li key={book._id}>
-          <NextLink href={`/book/${book.slug.current}`}>{book.title}</NextLink>
-        </li>
-      ))}
-    </ul>
+    <>
+      <BookIndex books={data.books} />
+      <Pagination page={Number(page)} total={data.total} />
+    </>
   )
 }
 

@@ -2,19 +2,24 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {bookIndexQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
-import {BookIndex} from '@/ui'
+import {BookIndex, Pagination} from '@/ui'
 
 export default async function Home() {
-  const {data: books} = await sanityFetch({
+  const {data} = await sanityFetch({
     query: bookIndexQuery,
-    params: {offset: 0, limit: BOOK_INDEX_LIMIT},
+    params: {start: 0, end: BOOK_INDEX_LIMIT},
   })
-  if (!books) {
+  if (!data) {
     console.error('unable to retrieve books')
     notFound()
   }
 
-  return <BookIndex books={books} />
+  return (
+    <>
+      <BookIndex books={data.books} />
+      <Pagination page={1} total={data.total} />
+    </>
+  )
 }
 
 // export async function generateMetadata() {
