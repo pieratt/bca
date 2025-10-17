@@ -46,17 +46,10 @@ export default defineType({
     }),
 
     defineField({
-      name: 'notes',
-      type: 'array',
-      of: [{type: 'block'}],
-      group: 'notes',
-    }),
-
-    defineField({
-      name: 'legacyId',
-      type: 'string',
+      name: 'datePublished',
+      type: 'datetime',
       group: 'overview',
-      hidden: true,
+      initialValue: () => new Date().toISOString(),
     }),
 
     // group some of these
@@ -179,8 +172,17 @@ export default defineType({
     }),
 
     defineField({
-      name: 'datePublished',
-      type: 'datetime',
+      name: 'notes',
+      description: 'Any comments or links you’d like to add.',
+      type: 'array',
+      of: [{type: 'block'}],
+      group: 'notes',
+    }),
+
+    defineField({
+      name: 'legacyId',
+      type: 'string',
+      group: 'overview',
       hidden: true,
     }),
   ],
