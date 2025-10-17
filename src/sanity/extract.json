@@ -697,18 +697,18 @@
           "type": "string"
         }
       },
+      "name": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": false
+      },
       "slug": {
         "type": "objectAttribute",
         "value": {
           "type": "inline",
           "name": "slug"
-        },
-        "optional": false
-      },
-      "name": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
         },
         "optional": false
       },

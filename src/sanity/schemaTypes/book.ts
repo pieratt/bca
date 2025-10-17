@@ -9,6 +9,10 @@ export default defineType({
 
   fieldsets: [
     {
+      name: 'website',
+      options: {columns: 2}, // Set to 2 columns
+    },
+    {
       name: 'data',
       options: {columns: 3}, // Set to 2 columns
     },
@@ -16,12 +20,12 @@ export default defineType({
 
   orderings: [
     {
-      title: 'Published (recent)',
+      title: 'Published on site (recent)',
       name: 'bookPublishedAsc',
       by: [{field: 'datePublished', direction: 'asc'}],
     },
     {
-      title: 'Published (old)',
+      title: 'Published on site (old)',
       name: 'bookPublishedDesc',
       by: [{field: 'datePublished', direction: 'desc'}],
     },
@@ -42,13 +46,16 @@ export default defineType({
         source: (doc: any) => doc.title,
       },
       group: 'overview',
+      fieldset: 'website',
       validation: (Rule) => Rule.required(),
     }),
 
     defineField({
       name: 'datePublished',
+      title: '“Live” on site date',
       type: 'datetime',
       group: 'overview',
+      fieldset: 'website',
       initialValue: () => new Date().toISOString(),
     }),
 

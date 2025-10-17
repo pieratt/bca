@@ -119,8 +119,8 @@ export type Person = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  slug: Slug
   name: string
+  slug: Slug
   homepage?: string
 }
 
@@ -474,8 +474,8 @@ export type PersonQueryResult = {
   _createdAt: string
   _updatedAt: string
   _rev: string
-  slug: Slug
   name: string
+  slug: Slug
   homepage?: string
   books: Array<{
     _id: string
@@ -588,8 +588,8 @@ export type PersonIndexQueryResult = Array<{
   _createdAt: string
   _updatedAt: string
   _rev: string
-  slug: Slug
   name: string
+  slug: Slug
   homepage?: string
 }>
 
