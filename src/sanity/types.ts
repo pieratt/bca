@@ -21,25 +21,7 @@ export type Book = {
   _rev: string
   title: string
   slug: Slug
-  notes?: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
-  legacyId?: string
+  datePublished?: string
   isbn?: string
   publisher?: string
   genre?:
@@ -110,7 +92,25 @@ export type Book = {
     _key: string
     [internalGroqTypeReferenceTo]?: 'person'
   }>
-  datePublished?: string
+  notes?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  legacyId?: string
 }
 
 export type Person = {
@@ -291,25 +291,7 @@ export type BookQueryResult = {
   _rev: string
   title: string
   slug: Slug
-  notes: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }> | null
-  legacyId?: string
+  datePublished?: string
   isbn?: string
   publisher?: string
   genre?:
@@ -363,7 +345,25 @@ export type BookQueryResult = {
   photographers: Array<{
     name: string
   }> | null
-  datePublished?: string
+  notes: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }> | null
+  legacyId?: string
 } | null
 // Variable: bookIndexQuery
 // Query: {    "books": *[_type == 'book'] | order(datePublished desc) [$start...$end] {      ...,      notes[],      designers[] -> {        name      },      authors[] -> {        name      },      images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    },    "total": count(*[_type == 'book'])  }
@@ -376,25 +376,7 @@ export type BookIndexQueryResult = {
     _rev: string
     title: string
     slug: Slug
-    notes: Array<{
-      children?: Array<{
-        marks?: Array<string>
-        text?: string
-        _type: 'span'
-        _key: string
-      }>
-      style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-      listItem?: 'bullet' | 'number'
-      markDefs?: Array<{
-        href?: string
-        _type: 'link'
-        _key: string
-      }>
-      level?: number
-      _type: 'block'
-      _key: string
-    }> | null
-    legacyId?: string
+    datePublished?: string
     isbn?: string
     publisher?: string
     genre?:
@@ -460,7 +442,25 @@ export type BookIndexQueryResult = {
       _key: string
       [internalGroqTypeReferenceTo]?: 'person'
     }>
-    datePublished?: string
+    notes: Array<{
+      children?: Array<{
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+      listItem?: 'bullet' | 'number'
+      markDefs?: Array<{
+        href?: string
+        _type: 'link'
+        _key: string
+      }>
+      level?: number
+      _type: 'block'
+      _key: string
+    }> | null
+    legacyId?: string
   }>
   total: number
 }
@@ -485,25 +485,7 @@ export type PersonQueryResult = {
     _rev: string
     title: string
     slug: Slug
-    notes?: Array<{
-      children?: Array<{
-        marks?: Array<string>
-        text?: string
-        _type: 'span'
-        _key: string
-      }>
-      style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
-      listItem?: 'bullet' | 'number'
-      markDefs?: Array<{
-        href?: string
-        _type: 'link'
-        _key: string
-      }>
-      level?: number
-      _type: 'block'
-      _key: string
-    }>
-    legacyId?: string
+    datePublished?: string
     isbn?: string
     publisher?: string
     genre?:
@@ -577,7 +559,25 @@ export type PersonQueryResult = {
       _key: string
       [internalGroqTypeReferenceTo]?: 'person'
     }>
-    datePublished?: string
+    notes?: Array<{
+      children?: Array<{
+        marks?: Array<string>
+        text?: string
+        _type: 'span'
+        _key: string
+      }>
+      style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+      listItem?: 'bullet' | 'number'
+      markDefs?: Array<{
+        href?: string
+        _type: 'link'
+        _key: string
+      }>
+      level?: number
+      _type: 'block'
+      _key: string
+    }>
+    legacyId?: string
   }>
 } | null
 // Variable: personIndexQuery
