@@ -258,15 +258,17 @@ export const Footer = () => (
 
       <div>
         <h3>Socials</h3>
-        <p>
-          <a href="https://bookcoverarchive.com/feed/">RSS</a>
-        </p>
-        <p>
-          <a href="https://bsky.app/profile/bookcoverarchive.com">Bluesky</a>
-        </p>
-        <p>
-          <a href="http://twitter.com/CoverArchive">X the everything app</a>
-        </p>
+        <ul>
+          <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590">
+            <a href="https://bookcoverarchive.com/feed/">RSS</a>
+          </li>
+          <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590">
+            <a href="http://twitter.com/CoverArchive">X the everything app</a>
+          </li>
+          <li className="menu-item menu-item-type-custom menu-item-object-custom menu-item-3590">
+            <a href="https://bsky.app/profile/bookcoverarchive.com">Bluesky</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
