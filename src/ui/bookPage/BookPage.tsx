@@ -13,7 +13,7 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
     <Main role="main">
       <section>
         <article className="book type-book ">
-          <a href={`/book/${book.slug.current}`} className="book_large">
+          <ImageWrapper href={`/book/${book.slug.current}`} className="book_large">
             {book.images[0]?.asset?.metadata?.blurHash && (
               <Blur hash={book.images[0].asset.metadata.blurHash} />
             )}
@@ -28,7 +28,7 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
                 onLoad={() => setLoaded(true)}
               />
             )}
-          </a>
+          </ImageWrapper>
 
           <div className="book_info">
             <div className="cell">
@@ -86,6 +86,7 @@ const Main = styled.main`
     font-family: 'Helvetica-neue', helvetica, arial, sans-serif;
     font-weight: 700;
     color: #2b2b2b;
+    text-wrap: balance;
   }
 
   @media only screen and (min-width: 768px) {
@@ -100,8 +101,22 @@ const Main = styled.main`
   }
 `
 
+const ImageWrapper = styled.a`
+  display: block;
+  position: relative;
+  @media only screen and (min-width: 768px) {
+    margin-right: 25px;
+    flex-shrink: 0;
+  }
+`
+
 const Image = styled(NextImage)`
+  position: relative;
+  z-index: 1;
   height: auto;
+  @media only screen and (min-width: 768px) {
+    max-width: calc(50vw - 37px);
+  }
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   &.loaded {
