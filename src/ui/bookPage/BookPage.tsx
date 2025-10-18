@@ -70,7 +70,7 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
 }
 
 const Main = styled.main`
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 744px) {
     article {
       display: flex;
       margin-bottom: 25px;
@@ -89,7 +89,7 @@ const Main = styled.main`
     text-wrap: balance;
   }
 
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 744px) {
     h1 {
       font-size: 6em;
     }
@@ -104,7 +104,7 @@ const Main = styled.main`
 const ImageWrapper = styled.a`
   display: block;
   position: relative;
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 744px) {
     margin-right: 25px;
     flex-shrink: 0;
   }
@@ -114,7 +114,7 @@ const Image = styled(NextImage)`
   position: relative;
   z-index: 1;
   height: auto;
-  @media only screen and (min-width: 768px) {
+  @media only screen and (min-width: 744px) {
     width: calc(50vw - 37px);
     max-width: 640px;
   }
