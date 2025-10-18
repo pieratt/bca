@@ -1,14 +1,15 @@
 import RSS from 'rss'
-import {sanityFetch} from '@/sanity/lib/live'
+import {client} from '@/sanity/lib/client'
 import {bookIndexQuery} from '@/sanity/queries'
 
 export async function GET() {
-  const {data} = await sanityFetch({
-    query: bookIndexQuery,
-    params: {offset: 0, limit: 50},
+  const {books} = await client.fetch(bookIndexQuery, {
+    start: 0,
+    end: 50,
+    // we don't actually need 50 books, but this will let us use a cached query
   })
 
-  const pubDate = data.books[0]?.datePublished
+  const pubDate = books[0]?.datePublished
 
   const feed = new RSS({
     title: 'Book Cover Archive',
@@ -20,7 +21,7 @@ export async function GET() {
     pubDate: pubDate ?? new Date(),
   })
 
-  data.books?.forEach((book) => {
+  books?.forEach((book) => {
     feed.item({
       title: book.title,
       guid: `https://yourwebsite.com/book/${book.slug.current}`,
