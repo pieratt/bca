@@ -115,7 +115,8 @@ const Image = styled(NextImage)`
   z-index: 1;
   height: auto;
   @media only screen and (min-width: 768px) {
-    max-width: calc(50vw - 37px);
+    width: calc(50vw - 37px);
+    max-width: 640px;
   }
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
