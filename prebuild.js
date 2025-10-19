@@ -38,6 +38,8 @@ export const peopleQuery = groq`
 `
 
 const generateStaticJson = async () => {
+  await mkdirp('./src/generated')
+
   const {books} = await client.fetch(booksQuery)
   if (!books) {
     throw new Error('unable to retrieve book slugs')
@@ -48,13 +50,13 @@ const generateStaticJson = async () => {
     cover: book.image,
   }))
 
-  await fs.writeFile(__dirname + '/src/generated/books.json', JSON.stringify(parsed))
+  await fs.writeFile('./src/generated/books.json', JSON.stringify(parsed))
 
   const people = await client.fetch(peopleQuery)
   if (!people) {
     throw new Error('unable to retrieve people')
   }
-  await fs.writeFile(__dirname + '/src/generated/people.json', JSON.stringify(people))
+  await fs.writeFile('./src/generated/people.json', JSON.stringify(people))
 }
 
 await generateStaticJson()
