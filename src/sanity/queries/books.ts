@@ -49,6 +49,7 @@ export const booksQuery = defineQuery(`
 export const bookIndexQuery = defineQuery(`
   {
     "books": *[_type == 'book'] | order(datePublished desc) [$start...$end] {
+      _updatedAt,
       title,
       slug,
       datePublished,
