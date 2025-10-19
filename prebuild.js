@@ -3,6 +3,7 @@ dotenv.config({path: '.env.local'})
 import {createClient} from '@sanity/client'
 import * as fs from 'node:fs/promises'
 import groq from 'groq'
+import {console} from 'node:inspector'
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -38,7 +39,12 @@ export const peopleQuery = groq`
 `
 
 const generateStaticJson = async () => {
-  await fs.mkdir(`${process.cwd()}/src/generated`)
+  try {
+    await fs.mkdir(`${process.cwd()}/src/generated`)
+    console.log('prebuild: created `/src/generated` folder')
+  } catch {
+    console.log('error prebuilding search json')
+  }
 
   const {books} = await client.fetch(booksQuery)
   if (!books) {
@@ -51,12 +57,14 @@ const generateStaticJson = async () => {
   }))
 
   await fs.writeFile(`${process.cwd()}/src/generated/books.json`, JSON.stringify(parsed))
+  console.log('prebuild: created `books.json`')
 
   const people = await client.fetch(peopleQuery)
   if (!people) {
     throw new Error('unable to retrieve people')
   }
   await fs.writeFile(`${process.cwd()}/src/generated/people.json`, JSON.stringify(people))
+  console.log('prebuild: created `people.json`')
 }
 
 await generateStaticJson()

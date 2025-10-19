@@ -282,7 +282,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol
 // Source: ./src/sanity/queries/books.ts
 // Variable: bookQuery
-// Query: *[_type == 'book' && slug.current == $slug][0]{    ...,    notes[],    designers[] -> {      name    },    authors[] -> {      name    },    illustrators[] -> {      name    },    artDirectors[] -> {      name    },    photographers[] -> {      name    },    images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}  }
+// Query: *[_type == 'book' && slug.current == $slug][0]{    ...,    notes[],    designers[] -> {      name,      slug    },    authors[] -> {      name,      slug    },    illustrators[] -> {      name,      slug    },    artDirectors[] -> {      name,      slug    },    photographers[] -> {      name,      slug    },    images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}  }
 export type BookQueryResult = {
   _id: string
   _type: 'book'
@@ -332,18 +332,23 @@ export type BookQueryResult = {
   }>
   designers: Array<{
     name: string
+    slug: Slug
   }> | null
   authors: Array<{
     name: string
+    slug: Slug
   }> | null
   illustrators: Array<{
     name: string
+    slug: Slug
   }> | null
   artDirectors: Array<{
     name: string
+    slug: Slug
   }> | null
   photographers: Array<{
     name: string
+    slug: Slug
   }> | null
   notes: Array<{
     children?: Array<{
@@ -639,7 +644,7 @@ export type PersonIndexQueryResult = Array<{
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
-    "\n  *[_type == 'book' && slug.current == $slug][0]{\n    ...,\n    notes[],\n    designers[] -> {\n      name\n    },\n    authors[] -> {\n      name\n    },\n    illustrators[] -> {\n      name\n    },\n    artDirectors[] -> {\n      name\n    },\n    photographers[] -> {\n      name\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookQueryResult
+    "\n  *[_type == 'book' && slug.current == $slug][0]{\n    ...,\n    notes[],\n    designers[] -> {\n      name,\n      slug\n    },\n    authors[] -> {\n      name,\n      slug\n    },\n    illustrators[] -> {\n      name,\n      slug\n    },\n    artDirectors[] -> {\n      name,\n      slug\n    },\n    photographers[] -> {\n      name,\n      slug\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookQueryResult
     '\n  {\n    "books": *[_type == \'book\'] | order(datePublished desc) [$start...$end] {\n      ...,\n      notes[],\n      designers[] -> {\n        name\n      },\n      authors[] -> {\n        name\n      },\n      "cover": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    },\n    "total": count(*[_type == \'book\'])\n  }\n': BooksQueryResult
     '\n  {\n    "books": *[_type == \'book\'] | order(datePublished desc) [$start...$end] {\n      title,\n      slug,\n      datePublished,\n      designers[] -> {\n        name\n      },\n      "image": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    },\n    "total": count(*[_type == \'book\'])\n  }\n': BookIndexQueryResult
     '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {\n      ...,\n      images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
