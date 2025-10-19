@@ -14,21 +14,21 @@ type PageContextBundle = {
 
 export default async function Page(props: PageContextBundle) {
   const {page} = await props.params
-  const {data} = await sanityFetch({
-    query: booksQuery,
-    params: {start: (Number(page) - 1) * BOOK_INDEX_LIMIT, end: Number(page) * BOOK_INDEX_LIMIT},
-  })
-  if (!data) {
+  try {
+    const {data} = await sanityFetch({
+      query: booksQuery,
+      params: {start: (Number(page) - 1) * BOOK_INDEX_LIMIT, end: Number(page) * BOOK_INDEX_LIMIT},
+    })
+    return (
+      <>
+        <BookIndex books={data.books} />
+        <Pagination page={Number(page)} total={data.total} />
+      </>
+    )
+  } catch {
     console.error('unable to retrieve books')
     notFound()
   }
-
-  return (
-    <>
-      <BookIndex books={data.books} />
-      <Pagination page={Number(page)} total={data.total} />
-    </>
-  )
 }
 
 // export async function generateMetadata() {

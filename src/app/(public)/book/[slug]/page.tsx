@@ -11,17 +11,20 @@ type BookPageContextBundle = {
 }
 
 export default async function Book(props: BookPageContextBundle) {
-  const {slug} = await props.params
-  const {data: book} = await sanityFetch({
-    query: bookQuery,
-    params: {slug},
-  })
-  if (!book) {
-    console.error('unable to retrieve books')
+  try {
+    const {slug} = await props.params
+    const {data: book} = await sanityFetch({
+      query: bookQuery,
+      params: {slug},
+    })
+    if (!book) {
+      throw new Error('book not found')
+    }
+    return <BookPage book={book} />
+  } catch {
+    console.error('unable to retrieve book')
     notFound()
   }
-
-  return <BookPage book={book} />
 }
 
 // export async function generateMetadata(props: EventContextBundle): Promise<Metadata> {

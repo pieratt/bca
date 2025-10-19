@@ -10,15 +10,18 @@ type BookPageContextBundle = {
 }
 
 export default async function Book(props: BookPageContextBundle) {
-  const {slug} = await props.params
-  const {data: person} = await sanityFetch({
-    query: personQuery,
-    params: {slug},
-  })
-  if (!person) {
+  try {
+    const {slug} = await props.params
+    const {data: person} = await sanityFetch({
+      query: personQuery,
+      params: {slug},
+    })
+    if (!person) {
+      throw new Error('person not found')
+    }
+    return <PersonPage person={person} />
+  } catch {
     console.error('unable to retrieve person')
     notFound()
   }
-
-  return <PersonPage person={person} />
 }
