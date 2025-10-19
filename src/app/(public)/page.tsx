@@ -1,12 +1,12 @@
 import {sanityFetch} from '@/sanity/lib/live'
-import {bookIndexQuery} from '@/sanity/queries'
+import {booksQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
 import {BookIndex, Pagination} from '@/ui'
 
 export default async function Home() {
   const {data} = await sanityFetch({
-    query: bookIndexQuery,
+    query: booksQuery,
     params: {start: 0, end: BOOK_INDEX_LIMIT},
   })
   if (!data) {

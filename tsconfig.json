@@ -21,6 +21,7 @@
     "paths": {
       "react": ["./node_modules/@types/react"],
       "@/ui": ["./src/ui"],
+      "@/generated/*": ["./src/generated/*"],
       "@/lib": ["./src/lib"],
       "@/theme/*": ["./src/theme/*"],
       "@/types": ["./src/types"],

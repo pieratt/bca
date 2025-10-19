@@ -39,3 +39,5 @@ next-env.d.ts
 _misc
 dist
 .env*
+
+generated

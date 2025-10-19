@@ -1,6 +1,6 @@
 import {sanityFetch} from '@/sanity/lib/live'
 import {client} from '@/sanity/lib/client'
-import {bookIndexQuery} from '@/sanity/queries'
+import {booksQuery, bookIndexQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
 import {BookIndex, Pagination} from '@/ui'
@@ -15,7 +15,7 @@ type PageContextBundle = {
 export default async function Page(props: PageContextBundle) {
   const {page} = await props.params
   const {data} = await sanityFetch({
-    query: bookIndexQuery,
+    query: booksQuery,
     params: {start: (Number(page) - 1) * BOOK_INDEX_LIMIT, end: Number(page) * BOOK_INDEX_LIMIT},
   })
   if (!data) {

@@ -9,20 +9,20 @@ import {useState} from 'react'
 
 export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
   const [loaded, setLoaded] = useState(false)
-  return !book ? null : (
+  return !book || !book.images || book.images.length < 1 ? null : (
     <Main role="main">
       <section>
         <article className="book type-book ">
           <ImageWrapper href={`/book/${book.slug.current}`} className="book_large">
-            {book.images[0]?.asset?.metadata?.blurHash && (
+            {book.images[0].asset?.metadata?.blurHash && (
               <Blur hash={book.images[0].asset.metadata.blurHash} />
             )}
             {book.images[0].asset?.url && (
               <Image
                 src={book.images[0].asset.url}
                 alt={`cover of ${book.title}`}
-                width={book.images?.[0]?.asset?.metadata?.dimensions?.width}
-                height={book.images?.[0]?.asset?.metadata?.dimensions?.height}
+                width={book.images[0].asset?.metadata?.dimensions?.width}
+                height={book.images[0].asset?.metadata?.dimensions?.height}
                 sizes="(min-width:744) 50vw, 100vw"
                 className={loaded ? 'loaded' : ''}
                 onLoad={() => setLoaded(true)}

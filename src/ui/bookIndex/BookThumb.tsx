@@ -5,24 +5,27 @@ import {styled} from '@linaria/react'
 import Image from 'next/image'
 import {Blur} from '@/ui'
 import {useState} from 'react'
-import {resolveReference} from '@/lib'
 
-export const BookThumb = ({book}: {book: Sanity.Book}) => {
+export const BookThumb = ({
+  book,
+}: {
+  book: Sanity.Book & {cover?: {asset: Sanity.SanityImageAsset}}
+}) => {
   const [loaded, setLoaded] = useState(false)
   return (
     <Wrapper key={book._id}>
       <NextLink href={`/book/${book.slug.current}`} title={book.title}>
         <NextImage
-          src={resolveReference(book.images?.[0]?.asset)?.url!}
+          src={book.cover?.asset?.url!}
           alt={`cover of ${book.title}`}
-          width={resolveReference(book.images?.[0]?.asset)?.metadata?.dimensions?.width}
-          height={resolveReference(book.images?.[0]?.asset)?.metadata?.dimensions?.height}
+          width={book.cover?.asset?.metadata?.dimensions?.width}
+          height={book.cover?.asset?.metadata?.dimensions?.height}
           sizes="140px"
           onLoad={() => setLoaded(true)}
           className={loaded ? 'loaded' : ''}
         />
-        {resolveReference(book.images?.[0]?.asset)?.metadata?.blurHash && (
-          <Blur hash={resolveReference(book.images?.[0]?.asset)?.metadata!.blurHash!} />
+        {book.cover?.asset?.metadata?.blurHash && (
+          <Blur hash={book.cover?.asset?.metadata!.blurHash!} />
         )}
       </NextLink>
     </Wrapper>

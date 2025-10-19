@@ -6,25 +6,30 @@ export const bookQuery = defineQuery(`
     ...,
     notes[],
     designers[] -> {
-      name
+      name,
+      slug
     },
     authors[] -> {
-      name
+      name,
+      slug
     },
     illustrators[] -> {
-      name
+      name,
+      slug
     },
     artDirectors[] -> {
-      name
+      name,
+      slug
     },
     photographers[] -> {
-      name
+      name,
+      slug
     },
     images[] ${imageFragment}
   }
 `)
 
-export const bookIndexQuery = defineQuery(`
+export const booksQuery = defineQuery(`
   {
     "books": *[_type == 'book'] | order(datePublished desc) [$start...$end] {
       ...,
@@ -35,7 +40,22 @@ export const bookIndexQuery = defineQuery(`
       authors[] -> {
         name
       },
-      images[] ${imageFragment}
+      "cover": images[0] ${imageFragment}
+    },
+    "total": count(*[_type == 'book'])
+  }
+`)
+
+export const bookIndexQuery = defineQuery(`
+  {
+    "books": *[_type == 'book'] | order(datePublished desc) [$start...$end] {
+      title,
+      slug,
+      datePublished,
+      designers[] -> {
+        name
+      },
+      "image": images[0] ${imageFragment}
     },
     "total": count(*[_type == 'book'])
   }

@@ -2,10 +2,13 @@
   "name": "BookCoverArchive",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22.0.0 <23"
+  },
   "scripts": {
-    "predev": "npm run typegen",
+    "predev": "npm run typegen && node ./prebuild.js",
     "dev": "next dev",
-    "prebuild": "npm run typegen",
+    "prebuild": "npm run typegen && node ./prebuild.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -24,6 +27,8 @@
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^4.10.3",
     "babel-plugin-react-compiler": "^1.0.0",
+    "dotenv": "^17.2.3",
+    "groq": "^4.10.3",
     "lodash-es": "^4.17.21",
     "next": "15.5.5",
     "next-sanity": "^11.5.1",
