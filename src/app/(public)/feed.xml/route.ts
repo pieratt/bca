@@ -14,8 +14,8 @@ export async function GET() {
   const feed = new RSS({
     title: 'Book Cover Archive',
     description: 'yeah dem books',
-    site_url: 'https://yourwebsite.com',
-    feed_url: `https://yourwebsite.com/feed.xml`,
+    site_url: 'https://bookcoverarchive.com',
+    feed_url: `https://bookcoverarchive.com/feed.xml`,
     copyright: `${new Date().getFullYear()} InternetLand and Eric Jacobsen`,
     language: 'en',
     pubDate: pubDate ?? new Date(),
@@ -24,10 +24,10 @@ export async function GET() {
   books?.forEach((book) => {
     feed.item({
       title: book.title,
-      guid: `https://yourwebsite.com/book/${book.slug.current}`,
-      url: `https://yourwebsite.com/book/${book.slug.current}`,
+      guid: `https://bookcoverarchive.com/book/${book.slug.current}`,
+      url: `https://bookcoverarchive.com/book/${book.slug.current}`,
       date: book.datePublished!,
-      description: `${designers(book.designers)}<img src="${book.images?.[0]?.asset?.url}" />`,
+      description: `${designers(book.designers)}<img src="${book.image?.asset?.url}" />`,
     })
   })
 
