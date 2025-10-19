@@ -1,8 +1,7 @@
 import {styled} from '@linaria/react'
 import {BookThumb} from './BookThumb'
-import {Pagination} from '@/ui'
 
-export const BookIndex = ({books}: Pick<Sanity.BookIndexQueryResult, 'books'>) => (
+export const BookIndex = ({books}: Pick<Sanity.BooksQueryResult, 'books'>) => (
   <main role="main">
     <Books>
       {books.map((book) => (
