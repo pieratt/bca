@@ -23,7 +23,7 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
                 alt={`cover of ${book.title}`}
                 width={book.images[0].asset?.metadata?.dimensions?.width}
                 height={book.images[0].asset?.metadata?.dimensions?.height}
-                sizes="(min-width:744) 50vw, 100vw"
+                sizes="(min-width:744px) 50vw, 100vw"
                 className={loaded ? 'loaded' : ''}
                 onLoad={() => setLoaded(true)}
               />

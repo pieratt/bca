@@ -15,7 +15,7 @@ export const PersonPage = ({person}: {person: Sanity.PersonQueryResult}) =>
                 alt={`cover of ${book.title}`}
                 width={book.images?.[0]?.asset?.metadata?.dimensions?.width}
                 height={book.images?.[0]?.asset?.metadata?.dimensions?.height}
-                sizes="(min-width:744) 15vw, 50vw"
+                sizes="(min-width:744px) 15vw, 50vw"
               />
             </NextLink>
           </Book>
