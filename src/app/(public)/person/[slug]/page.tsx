@@ -1,6 +1,6 @@
 import {sanityFetch} from '@/sanity/lib/live'
 import {client} from '@/sanity/lib/client'
-import {allPeopleQuery} from '@/sanity/queries'
+import {personQuery, peopleQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {PersonPage} from '@/ui'
 
@@ -13,10 +13,12 @@ type BookPageContextBundle = {
 export default async function Book(props: BookPageContextBundle) {
   try {
     const {slug} = await props.params
-    const {data: people} = await sanityFetch({
-      query: allPeopleQuery,
+    const {data: person} = await sanityFetch({
+      query: personQuery,
+      params: {
+        slug,
+      },
     })
-    const person = people.find((person) => person.slug.current === slug)
     if (!person) {
       throw new Error('person not found')
     }
@@ -28,7 +30,7 @@ export default async function Book(props: BookPageContextBundle) {
 }
 
 export async function generateStaticParams() {
-  const people = await client.fetch(allPeopleQuery)
+  const people = await client.fetch(peopleQuery)
   if (!people) {
     throw new Error('unable to retrieve book slugs')
   }

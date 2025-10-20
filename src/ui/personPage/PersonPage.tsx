@@ -1,7 +1,7 @@
 import {styled} from '@linaria/react'
 import {BookThumb} from '@/ui'
 
-export const PersonPage = ({person}: {person: Member<Sanity.AllPeopleQueryResult>}) =>
+export const PersonPage = ({person}: {person: Sanity.PersonQueryResult}) =>
   !person ? null : (
     <main role="main">
       <Books>
@@ -27,12 +27,5 @@ const Books = styled.section`
     grid-row-end: span 2;
     font-size: 1.4rem;
     line-height: 1.8rem;
-  }
-`
-
-const Book = styled.article`
-  img {
-    width: 100%;
-    height: auto;
   }
 `

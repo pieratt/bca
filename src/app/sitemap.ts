@@ -1,6 +1,6 @@
 import {client} from '@/sanity/lib/client'
 import type {MetadataRoute} from 'next'
-import {booksQuery, allPeopleQuery} from '@/sanity/queries'
+import {booksQuery, peopleQuery} from '@/sanity/queries'
 import {BASE_URL} from '@/lib'
 
 // todo: look into splitting up sitemaps
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const lastModified = booksData[0].datePublished
 
-  const peopleData = await client.fetch(allPeopleQuery)
+  const peopleData = await client.fetch(peopleQuery)
   if (!peopleData) {
     throw new Error('unable to retrieve person slugs')
   }
