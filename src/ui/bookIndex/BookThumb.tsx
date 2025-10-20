@@ -8,19 +8,21 @@ import {useState} from 'react'
 
 export const BookThumb = ({
   book,
+  className,
 }: {
   book: Sanity.Book & {cover?: {asset: Sanity.SanityImageAsset}}
+  className?: string
 }) => {
   const [loaded, setLoaded] = useState(false)
   return (
-    <Wrapper key={book._id}>
+    <Wrapper key={book._id} className={className}>
       <NextLink href={`/book/${book.slug.current}`} title={book.title}>
         <NextImage
           src={book.cover?.asset?.url!}
           alt={`cover of ${book.title}`}
           width={book.cover?.asset?.metadata?.dimensions?.width}
           height={book.cover?.asset?.metadata?.dimensions?.height}
-          sizes="140px"
+          sizes={className === 'large' ? '420px' : '140px'}
           onLoad={() => setLoaded(true)}
           className={loaded ? 'loaded' : ''}
         />

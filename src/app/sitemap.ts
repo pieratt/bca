@@ -1,13 +1,13 @@
 import {client} from '@/sanity/lib/client'
 import type {MetadataRoute} from 'next'
-import {bookIndexQuery, personIndexQuery} from '@/sanity/queries'
+import {booksQuery, allPeopleQuery} from '@/sanity/queries'
 import {BASE_URL} from '@/lib'
 
 // todo: look into splitting up sitemaps
 // https://nextjs.org/docs/app/api-reference/functions/generate-sitemaps
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const {books: booksData} = await client.fetch(bookIndexQuery, {
+  const {books: booksData} = await client.fetch(booksQuery, {
     start: 0,
     end: 99999,
   })
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const lastModified = booksData[0].datePublished
 
-  const peopleData = await client.fetch(personIndexQuery)
+  const peopleData = await client.fetch(allPeopleQuery)
   if (!peopleData) {
     throw new Error('unable to retrieve person slugs')
   }

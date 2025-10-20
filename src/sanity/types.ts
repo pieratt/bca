@@ -482,40 +482,13 @@ export type BooksQueryResult = {
   }>
   total: number
 }
-// Variable: bookIndexQuery
-// Query: {    "books": *[_type == 'book'] | order(datePublished desc) [$start...$end] {      _updatedAt,      title,      slug,      datePublished,      designers[] -> {        name      },      "image": images[0] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    },    "total": count(*[_type == 'book'])  }
-export type BookIndexQueryResult = {
-  books: Array<{
-    _updatedAt: string
-    title: string
-    slug: Slug
-    datePublished: string | null
-    designers: Array<{
-      name: string
-    }> | null
-    image: {
-      asset: {
-        metadata: {
-          lqip: string | null
-          blurHash: string | null
-          dimensions: SanityImageDimensions | null
-        } | null
-        originalFilename: string | null
-        url: string | null
-      } | null
-      media?: unknown
-      hotspot?: SanityImageHotspot
-      crop?: SanityImageCrop
-      _type: 'image'
-      _key: string
-    } | null
-  }>
-  total: number
-}
+// Variable: bookCount
+// Query: count(*[_type == 'book'])
+export type BookCountResult = number
 
 // Source: ./src/sanity/queries/persons.ts
 // Variable: personQuery
-// Query: *[_type == 'person' && slug.current == $slug][0]{    ...,    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {      ...,      images[] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
+// Query: *[_type == 'person' && slug.current == $slug][0]{    ...,    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {      ...,      "cover": images[0] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
 export type PersonQueryResult = {
   _id: string
   _type: 'person'
@@ -557,15 +530,12 @@ export type PersonQueryResult = {
       [internalGroqTypeReferenceTo]?: 'typeface'
     }>
     images: Array<{
-      asset: {
-        metadata: {
-          lqip: string | null
-          blurHash: string | null
-          dimensions: SanityImageDimensions | null
-        } | null
-        originalFilename: string | null
-        url: string | null
-      } | null
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
       media?: unknown
       hotspot?: SanityImageHotspot
       crop?: SanityImageCrop
@@ -626,11 +596,27 @@ export type PersonQueryResult = {
       _key: string
     }>
     legacyId?: string
+    cover: {
+      asset: {
+        metadata: {
+          lqip: string | null
+          blurHash: string | null
+          dimensions: SanityImageDimensions | null
+        } | null
+        originalFilename: string | null
+        url: string | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+      _key: string
+    } | null
   }>
 } | null
-// Variable: personIndexQuery
-// Query: *[_type == 'person'] | order(name desc) {    ...  }
-export type PersonIndexQueryResult = Array<{
+// Variable: allPeopleQuery
+// Query: *[_type == 'person'] {    ...,    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {      _id,      slug,      title,      "cover": images[0] {  ...,  asset-> {    metadata {      lqip,      blurHash,      dimensions    },    originalFilename,    url  }}    }  }
+export type AllPeopleQueryResult = Array<{
   _id: string
   _type: 'person'
   _createdAt: string
@@ -639,6 +625,33 @@ export type PersonIndexQueryResult = Array<{
   name: string
   slug: Slug
   homepage?: string
+  books: Array<{
+    _id: string
+    slug: Slug
+    title: string
+    cover: {
+      asset: {
+        metadata: {
+          lqip: string | null
+          blurHash: string | null
+          dimensions: SanityImageDimensions | null
+        } | null
+        originalFilename: string | null
+        url: string | null
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      _type: 'image'
+      _key: string
+    } | null
+  }>
+}>
+// Variable: personIndexQuery
+// Query: *[_type == 'person'] | order(name desc) {    _updatedAt,    slug  }
+export type PersonIndexQueryResult = Array<{
+  _updatedAt: string
+  slug: Slug
 }>
 
 // Query TypeMap
@@ -647,8 +660,9 @@ declare module '@sanity/client' {
   interface SanityQueries {
     "\n  *[_type == 'book' && slug.current == $slug][0]{\n    ...,\n    notes[],\n    designers[] -> {\n      name,\n      slug\n    },\n    authors[] -> {\n      name,\n      slug\n    },\n    illustrators[] -> {\n      name,\n      slug\n    },\n    artDirectors[] -> {\n      name,\n      slug\n    },\n    photographers[] -> {\n      name,\n      slug\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookQueryResult
     '\n  {\n    "books": *[_type == \'book\'] | order(datePublished desc) [$start...$end] {\n      ...,\n      notes[],\n      designers[] -> {\n        name\n      },\n      authors[] -> {\n        name\n      },\n      "cover": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    },\n    "total": count(*[_type == \'book\'])\n  }\n': BooksQueryResult
-    '\n  {\n    "books": *[_type == \'book\'] | order(datePublished desc) [$start...$end] {\n      _updatedAt,\n      title,\n      slug,\n      datePublished,\n      designers[] -> {\n        name\n      },\n      "image": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    },\n    "total": count(*[_type == \'book\'])\n  }\n': BookIndexQueryResult
-    '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {\n      ...,\n      images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
-    "\n  *[_type == 'person'] | order(name desc) {\n    ...\n  }\n": PersonIndexQueryResult
+    "\n  count(*[_type == 'book'])\n": BookCountResult
+    '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {\n      ...,\n      "cover": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
+    '\n  *[_type == \'person\'] {\n    ...,\n    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {\n      _id,\n      slug,\n      title,\n      "cover": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': AllPeopleQueryResult
+    "\n  *[_type == 'person'] | order(name desc) {\n    _updatedAt,\n    slug\n  }\n": PersonIndexQueryResult
   }
 }

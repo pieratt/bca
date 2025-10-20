@@ -1,24 +1,13 @@
-import NextLink from 'next/link'
 import {styled} from '@linaria/react'
-import Image from 'next/image'
+import {BookThumb} from '@/ui'
 
-export const PersonPage = ({person}: {person: Sanity.PersonQueryResult}) =>
+export const PersonPage = ({person}: {person: Member<Sanity.AllPeopleQueryResult>}) =>
   !person ? null : (
     <main role="main">
       <Books>
         <h1>Books that {person.name} had something or other to do with</h1>
         {person.books.map((book) => (
-          <Book key={book._id}>
-            <NextLink href={`/book/${book.slug.current}`} title={book.title}>
-              <Image
-                src={book.images?.[0]?.asset?.url!}
-                alt={`cover of ${book.title}`}
-                width={book.images?.[0]?.asset?.metadata?.dimensions?.width}
-                height={book.images?.[0]?.asset?.metadata?.dimensions?.height}
-                sizes="(min-width:744px) 15vw, 50vw"
-              />
-            </NextLink>
-          </Book>
+          <BookThumb key={book._id} book={book as any as Sanity.Book} />
         ))}
       </Books>
     </main>
@@ -26,9 +15,13 @@ export const PersonPage = ({person}: {person: Sanity.PersonQueryResult}) =>
 
 const Books = styled.section`
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
-  gap: 35px 25px;
+  grid-template-columns: repeat(auto-fill, calc((100vw - 80px) / 3));
+  gap: 25px 20px;
+  @media only screen and (min-width: 744px) {
+    grid-template-columns: repeat(auto-fill, 140px);
+    gap: 35px 20px;
+  }
+
   h1 {
     grid-column-end: span 2;
     grid-row-end: span 2;

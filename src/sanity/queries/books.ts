@@ -46,18 +46,6 @@ export const booksQuery = defineQuery(`
   }
 `)
 
-export const bookIndexQuery = defineQuery(`
-  {
-    "books": *[_type == 'book'] | order(datePublished desc) [$start...$end] {
-      _updatedAt,
-      title,
-      slug,
-      datePublished,
-      designers[] -> {
-        name
-      },
-      "image": images[0] ${imageFragment}
-    },
-    "total": count(*[_type == 'book'])
-  }
+export const bookCount = defineQuery(`
+  count(*[_type == 'book'])
 `)

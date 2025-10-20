@@ -1,6 +1,6 @@
 import {sanityFetch} from '@/sanity/lib/live'
 import {client} from '@/sanity/lib/client'
-import {booksQuery, bookIndexQuery} from '@/sanity/queries'
+import {booksQuery, bookCount} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
 import {BookIndex, Pagination} from '@/ui'
@@ -52,11 +52,7 @@ export default async function Page(props: PageContextBundle) {
 // }
 
 export async function generateStaticParams() {
-  const {total} = await client.fetch(bookIndexQuery, {
-    start: 0,
-    end: 50,
-    // we don't actually need 50 books, but this will let us use a cached query
-  })
+  const total = await client.fetch(bookCount)
   if (!total) {
     throw new Error('unable to retrieve book count')
   }

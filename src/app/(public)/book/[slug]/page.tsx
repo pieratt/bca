@@ -1,6 +1,6 @@
 import {sanityFetch} from '@/sanity/lib/live'
 import {client} from '@/sanity/lib/client'
-import {bookQuery, bookIndexQuery} from '@/sanity/queries'
+import {bookQuery, booksQuery} from '@/sanity/queries'
 import {notFound} from 'next/navigation'
 import {BookPage} from '@/ui'
 
@@ -47,7 +47,7 @@ export default async function Book(props: BookPageContextBundle) {
 // }
 
 export async function generateStaticParams() {
-  const {books} = await client.fetch(bookIndexQuery, {
+  const {books} = await client.fetch(booksQuery, {
     start: 0,
     end: 99999,
     // we don't actually need 50 books, but this will let us use a cached query

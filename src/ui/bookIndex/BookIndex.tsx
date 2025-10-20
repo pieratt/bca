@@ -4,8 +4,12 @@ import {BookThumb} from './BookThumb'
 export const BookIndex = ({books}: Pick<Sanity.BooksQueryResult, 'books'>) => (
   <main role="main">
     <Books>
-      {books.map((book) => (
-        <BookThumb key={book._id} book={book as any as Sanity.Book} />
+      {books.map((book, i) => (
+        <BookThumb
+          key={book._id}
+          book={book as any as Sanity.Book}
+          className={i === 0 ? 'large' : ''}
+        />
       ))}
     </Books>
   </main>

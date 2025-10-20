@@ -1,9 +1,9 @@
 import RSS from 'rss'
 import {client} from '@/sanity/lib/client'
-import {bookIndexQuery} from '@/sanity/queries'
+import {booksQuery} from '@/sanity/queries'
 
 export async function GET() {
-  const {books} = await client.fetch(bookIndexQuery, {
+  const {books} = await client.fetch(booksQuery, {
     start: 0,
     end: 50,
     // we don't actually need 50 books, but this will let us use a cached query
@@ -27,7 +27,7 @@ export async function GET() {
       guid: `https://bookcoverarchive.com/book/${book.slug.current}`,
       url: `https://bookcoverarchive.com/book/${book.slug.current}`,
       date: book.datePublished!,
-      description: `${designers(book.designers)}<img src="${book.image?.asset?.url}" />`,
+      description: `${designers(book.designers)}<img src="${book.cover?.asset?.url}" />`,
     })
   })
 
