@@ -42,7 +42,7 @@ const generateStaticJson = async () => {
     await fs.mkdir(`${process.cwd()}/src/generated`)
     console.log('prebuild: created `/src/generated` folder')
   } catch {
-    console.log('error prebuilding search json')
+    console.log('prebuild: cannot create folder (probably exists)')
   }
 
   const {books} = await client.fetch(booksQuery)
