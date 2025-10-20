@@ -4,7 +4,7 @@ import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {presentationTool} from 'sanity/presentation'
 import {structureTool} from 'sanity/structure'
-import ToolMenuWithDeployTool from '@/sanity/ui/ToolMenuWithDeployTool'
+import {WrappedDeployTool} from '@/sanity/ui/ToolMenuWithDeployTool'
 import {apiVersion, dataset, projectId} from './src/lib'
 import {schema} from './src/sanity/schemaTypes'
 import structure from './src/sanity/lib/structure'
@@ -28,7 +28,7 @@ export default defineConfig({
   ],
   studio: {
     components: {
-      toolMenu: ToolMenuWithDeployTool,
+      toolMenu: WrappedDeployTool(),
     },
   },
 })

@@ -2,11 +2,22 @@ import {Button, useToast} from '@sanity/ui'
 import {VscRocket} from 'react-icons/vsc'
 import {useEffect, type PropsWithChildren} from 'react'
 
-const SUCCESS_OR_ERROR_DURATION = 600000 // 1m
-const PROGRESS_DURATION = 30000 // 30s
-const PAUSE_BEFORE_INTERVAL = 5000 // 5s
+type DeployToolOptions = {
+  successOrErrorDuration?: number
+  progressDuration?: number
+  estimatedDeploymentDurationMessage?: string
+}
 
-export default (props: any) => {
+export const DeployTool = ({options}: {options?: DeployToolOptions}) => {
+  const {successOrErrorDuration, progressDuration, estimatedDeploymentDurationMessage} = {
+    successOrErrorDuration: 600000, // 1m
+    progressDuration: 30000, // 30s
+    estimatedDeploymentDurationMessage: 'Est. 8 minutes',
+    ...options,
+  }
+
+  const PAUSE_BEFORE_INTERVAL = 5000 // 5s
+
   const toast = useToast()
 
   let interval: number
@@ -16,7 +27,7 @@ export default (props: any) => {
   const deploy = async () => {
     toast.push({
       title: <Label>Deployment: initializing</Label>,
-      duration: PAUSE_BEFORE_INTERVAL,
+      duration: PAUSE_BEFORE_INTERVAL + 500,
     })
 
     const {status} = await fetch('/api/deploy', {method: 'POST'})
@@ -25,15 +36,15 @@ export default (props: any) => {
       toast.push({
         title: <Label>Deployment: failed initialization</Label>,
         status: 'error',
-        duration: SUCCESS_OR_ERROR_DURATION,
+        duration: successOrErrorDuration,
         closable: true,
       })
     }
 
-    // give DO a chance to start, if we check too fast, the check might return previous deployment
+    // give DO a chance to start; if we check too fast, the check might return previous deployment
     timeoutId = window.setTimeout(() => {
       check()
-      interval = window.setInterval(check, PROGRESS_DURATION)
+      interval = window.setInterval(check, progressDuration)
     }, PAUSE_BEFORE_INTERVAL)
   }
 
@@ -55,10 +66,11 @@ export default (props: any) => {
               : data.deployment.phase === 'CANCELED'
               ? 'error'
               : 'info',
-          description: data.deployment.phase === 'BUILDING' ? 'Est. 8 minutes' : undefined,
+          description:
+            data.deployment.phase === 'BUILDING' ? estimatedDeploymentDurationMessage : undefined,
           duration: ['ACTIVE', 'CANCELED'].includes(data.deployment.phase)
-            ? SUCCESS_OR_ERROR_DURATION
-            : PROGRESS_DURATION,
+            ? successOrErrorDuration
+            : progressDuration,
           closable: ['ACTIVE', 'CANCELED'].includes(data.deployment.phase) ? true : undefined,
         })
         if (['ACTIVE', 'CANCELED'].includes(data.deployment.phase)) {
@@ -78,20 +90,25 @@ export default (props: any) => {
   }, [])
 
   return (
-    <div style={{display: 'flex', flexDirection: 'row'}}>
-      {props.renderDefault(props)}
-      <Button
-        fontSize={1}
-        iconRight={VscRocket}
-        text="Deploy"
-        mode="bleed"
-        tone="default"
-        style={{cursor: 'pointer'}}
-        onClick={() => deploy()}
-      />
-    </div>
+    <Button
+      fontSize={1}
+      iconRight={VscRocket}
+      text="Deploy"
+      mode="bleed"
+      tone="default"
+      style={{cursor: 'pointer'}}
+      onClick={() => deploy()}
+    />
   )
 }
+
+export const WrappedDeployTool = (options?: DeployToolOptions) => (props: any) =>
+  (
+    <div style={{display: 'flex', flexDirection: 'row'}}>
+      {props.renderDefault(props)}
+      <DeployTool options={options} />
+    </div>
+  )
 
 const Label = ({children}: PropsWithChildren) => (
   <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
