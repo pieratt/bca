@@ -3,7 +3,7 @@ import {VscRocket} from 'react-icons/vsc'
 import {useEffect, type PropsWithChildren} from 'react'
 
 const SUCCESS_OR_ERROR_DURATION = 600000 // 1m
-const PROGRESS_DURATION = 100000 // 10s
+const PROGRESS_DURATION = 30000 // 30s
 const PAUSE_BEFORE_INTERVAL = 5000 // 5s
 
 export default (props: any) => {
@@ -16,7 +16,7 @@ export default (props: any) => {
   const deploy = async () => {
     toast.push({
       title: <Label>Deployment: initializing</Label>,
-      duration: PROGRESS_DURATION,
+      duration: PAUSE_BEFORE_INTERVAL,
     })
 
     const {status} = await fetch('/api/deploy', {method: 'POST'})
@@ -32,40 +32,42 @@ export default (props: any) => {
 
     // give DO a chance to start, if we check too fast, the check might return previous deployment
     timeoutId = window.setTimeout(() => {
-      interval = window.setInterval(async () => {
-        try {
-          if (!deploymentId) {
-            const response = await fetch('/api/deploy/check', {method: 'GET'})
-            const data = await response.json()
-            deploymentId = data.deployments[0].id
-          }
-          if (deploymentId) {
-            const response = await fetch(`/api/deploy/check?id=${deploymentId}`, {method: 'GET'})
-            const data = await response.json()
-            toast.push({
-              title: (
-                <Label>Deployment: {data.deployment.phase.replace('_', ' ').toLowerCase()}</Label>
-              ),
-              status:
-                data.deployment.phase === 'ACTIVE'
-                  ? 'success'
-                  : data.deployment.phase === 'CANCELED'
-                  ? 'error'
-                  : 'info',
-              duration: ['ACTIVE', 'CANCELED'].includes(data.deployment.phase)
-                ? SUCCESS_OR_ERROR_DURATION
-                : PROGRESS_DURATION,
-              closable: ['ACTIVE', 'CANCELED'].includes(data.deployment.phase) ? true : undefined,
-            })
-            if (['ACTIVE', 'CANCELED'].includes(data.deployment.phase)) {
-              clearInterval(interval)
-            }
-          }
-        } catch (error) {
-          console.error(error)
-        }
-      }, PROGRESS_DURATION)
+      check()
+      interval = window.setInterval(check, PROGRESS_DURATION)
     }, PAUSE_BEFORE_INTERVAL)
+  }
+
+  const check = async () => {
+    try {
+      if (!deploymentId) {
+        const response = await fetch('/api/deploy', {method: 'GET'})
+        const data = await response.json()
+        deploymentId = data.deployments[0].id
+      }
+      if (deploymentId) {
+        const response = await fetch(`/api/deploy?id=${deploymentId}`, {method: 'GET'})
+        const data = await response.json()
+        toast.push({
+          title: <Label>Deployment: {data.deployment.phase.replace('_', ' ').toLowerCase()}</Label>,
+          status:
+            data.deployment.phase === 'ACTIVE'
+              ? 'success'
+              : data.deployment.phase === 'CANCELED'
+              ? 'error'
+              : 'info',
+          description: data.deployment.phase === 'BUILDING' ? 'Est. 8 minutes' : undefined,
+          duration: ['ACTIVE', 'CANCELED'].includes(data.deployment.phase)
+            ? SUCCESS_OR_ERROR_DURATION
+            : PROGRESS_DURATION,
+          closable: ['ACTIVE', 'CANCELED'].includes(data.deployment.phase) ? true : undefined,
+        })
+        if (['ACTIVE', 'CANCELED'].includes(data.deployment.phase)) {
+          clearInterval(interval)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
