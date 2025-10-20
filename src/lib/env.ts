@@ -22,7 +22,8 @@ export const BASE_URL = assertValue(
   'Missing environment variable: NEXT_PUBLIC_SITE_URL'
 )
 
-export const deploymentHook = process.env.NEXT_PUBLIC_SANITY_DEPLOYMENT_HOOK
+export const digitalOceanAppId = process.env.DIGITALOCEAN_APP_ID
+export const digitalOceanToken = process.env.DIGITALOCEAN_TOKEN
 
 export function assertValue<T>(v: T | undefined, errorMessage: string): T {
   if (v === undefined) {
