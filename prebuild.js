@@ -3,7 +3,6 @@ dotenv.config({path: '.env.local'})
 import {createClient} from '@sanity/client'
 import * as fs from 'node:fs/promises'
 import groq from 'groq'
-import {console} from 'node:inspector'
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,

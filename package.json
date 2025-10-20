@@ -26,7 +26,6 @@
     "@sanity/ui": "^3.1.10",
     "@sanity/vision": "^4.10.3",
     "babel-plugin-react-compiler": "^1.0.0",
-    "dotenv": "^17.2.3",
     "lodash-es": "^4.17.21",
     "next": "15.5.5",
     "next-sanity": "^11.5.1",
@@ -51,6 +50,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/rss": "^0.0.32",
+    "dotenv": "^17.2.3",
     "groq": "^4.10.3",
     "typescript": "^5.9.3"
   },
