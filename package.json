@@ -6,9 +6,9 @@
     "node": ">=22.0.0 <23"
   },
   "scripts": {
-    "predev": "npm run typegen && node ./prebuild.js",
+    "predev": "npm run typegen && node ./generate.js",
     "dev": "next dev",
-    "prebuild": "npm run typegen && node ./prebuild.js",
+    "prebuild": "npm run typegen && node ./generate.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
