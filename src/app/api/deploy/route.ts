@@ -1,5 +1,5 @@
 import {digitalOceanToken, digitalOceanAppId} from '@/lib'
-import {initializeDeployment, checkDeployment} from 'sanity-nextjs-do-deploy/routes'
+import {initializeDeployment, checkDeployment} from 'sanity-plugin-nextjs-do-deploy/next'
 
 export const POST = initializeDeployment(digitalOceanToken, digitalOceanAppId)
 
