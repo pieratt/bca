@@ -74,9 +74,6 @@ importers:
       sanity-advanced-validators:
         specifier: ^0.5.3
         version: 0.5.3(@emotion/is-prop-valid@1.4.0)(@portabletext/sanity-bridge@1.2.10(@sanity/schema@4.10.3(@types/react@19.2.2))(@sanity/types@4.20.3(@types/react@19.2.2)(debug@4.4.3)))(@types/node@24.7.2)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(babel-plugin-react-compiler@1.0.0)(immer@11.0.1)(jiti@2.6.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.93.2)(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(yaml@2.8.2)
-      sanity-nextjs-do-deploy:
-        specifier: ^2.0.12
-        version: 2.0.12(@babel/core@7.28.5)(@emotion/is-prop-valid@1.4.0)(babel-plugin-react-compiler@1.0.0)(react-is@19.2.1)(sass@1.93.2)(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
       sanity-plugin-media:
         specifier: ^4.0.0
         version: 4.0.0(@emotion/is-prop-valid@1.4.0)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react-is@19.2.1)(react@19.2.0)(sanity@4.20.3(@emotion/is-prop-valid@1.4.0)(@portabletext/sanity-bridge@1.2.10(@sanity/schema@4.10.3(@types/react@19.2.2))(@sanity/types@4.20.3(@types/react@19.2.2)(debug@4.4.3)))(@types/node@24.7.2)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(babel-plugin-react-compiler@1.0.0)(immer@11.0.1)(jiti@2.6.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.93.2)(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(yaml@2.8.2))(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
@@ -4885,9 +4882,6 @@ packages:
 
   sanity-advanced-validators@0.5.3:
     resolution: {integrity: sha512-f5a1L75R5V34MNDD32yaTb4kskwub/gphu9iUw7fTEUpuVoh6RYc/wqHKPaTdZgoPYRPomJvWpyGY5KvtRH/qQ==}
-
-  sanity-nextjs-do-deploy@2.0.12:
-    resolution: {integrity: sha512-m3C6/UnxdQiMPQ8m6ciODELqMs0jeLwwLxbZ3NuJA4iCf/B2URMuLkIXlaCBNZMhj7Ah0IFbJRejoK3XuUwlNQ==}
 
   sanity-plugin-media@4.0.0:
     resolution: {integrity: sha512-Sps9RbM8HrDqMJosn6+yVqzppfYChXE2vsRtRMXm66YSL0YbV7evaVVECk7iRK2+sWjx0EF/JRgflNSHwHVFrw==}
@@ -10960,24 +10954,6 @@ snapshots:
       - typescript
       - utf-8-validate
       - yaml
-
-  sanity-nextjs-do-deploy@2.0.12(@babel/core@7.28.5)(@emotion/is-prop-valid@1.4.0)(babel-plugin-react-compiler@1.0.0)(react-is@19.2.1)(sass@1.93.2)(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0)):
-    dependencies:
-      '@sanity/ui': 3.1.10(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.0(react@19.2.0))(react-is@19.2.1)(react@19.2.0)(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
-      next: 15.5.7(@babel/core@7.28.5)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.93.2)
-      react: 19.2.0
-      react-dom: 19.2.0(react@19.2.0)
-      react-icons: 5.5.0(react@19.2.0)
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@emotion/is-prop-valid'
-      - '@opentelemetry/api'
-      - '@playwright/test'
-      - babel-plugin-macros
-      - babel-plugin-react-compiler
-      - react-is
-      - sass
-      - styled-components
 
   sanity-plugin-media@4.0.0(@emotion/is-prop-valid@1.4.0)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react-is@19.2.1)(react@19.2.0)(sanity@4.20.3(@emotion/is-prop-valid@1.4.0)(@portabletext/sanity-bridge@1.2.10(@sanity/schema@4.10.3(@types/react@19.2.2))(@sanity/types@4.20.3(@types/react@19.2.2)(debug@4.4.3)))(@types/node@24.7.2)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(babel-plugin-react-compiler@1.0.0)(immer@11.0.1)(jiti@2.6.1)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(sass@1.93.2)(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0))(typescript@5.9.3)(yaml@2.8.2))(styled-components@6.1.19(react-dom@19.2.0(react@19.2.0))(react@19.2.0)):
     dependencies:
