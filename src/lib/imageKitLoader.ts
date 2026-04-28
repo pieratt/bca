@@ -7,6 +7,7 @@ interface IImageKitLoader {
 }
 
 export const cdnUrl = (src: string, withTransforms: boolean = false): URL => {
+  return new URL(src)
   const isImage = src.includes('images')
   const sourceURL = isImage
     ? `https://cdn.sanity.io/images/${projectId}/${dataset}`
