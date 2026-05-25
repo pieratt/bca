@@ -7,17 +7,18 @@ interface IImageKitLoader {
 }
 
 export const cdnUrl = (src: string, withTransforms: boolean = false): URL => {
-  const isImage = src.includes('images')
-  const sourceURL = isImage
-    ? `https://cdn.sanity.io/images/${projectId}/${dataset}`
-    : `https://cdn.sanity.io/files/${projectId}/${dataset}`
-  const newUrl =
-    isImage && withTransforms
-      ? `https://ik.imagekit.io/${imagekit}/__TRANSFORMS__`
-      : isImage
-      ? `https://ik.imagekit.io/${imagekit}`
-      : `https://ik.imagekit.io/${imagekit}/files`
-  return new URL(src.replace(sourceURL, newUrl))
+  return new URL(src)
+  //   const isImage = src.includes('images')
+  //   const sourceURL = isImage
+  //     ? `https://cdn.sanity.io/images/${projectId}/${dataset}`
+  //     : `https://cdn.sanity.io/files/${projectId}/${dataset}`
+  //   const newUrl =
+  //     isImage && withTransforms
+  //       ? `https://ik.imagekit.io/${imagekit}/__TRANSFORMS__`
+  //       : isImage
+  //       ? `https://ik.imagekit.io/${imagekit}`
+  //       : `https://ik.imagekit.io/${imagekit}/files`
+  //   return new URL(src.replace(sourceURL, newUrl))
 }
 
 export const imageKitLoader = ({src, width, quality}: IImageKitLoader) => {
