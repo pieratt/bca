@@ -24,18 +24,19 @@ export const cdnUrl = (src: string, withTransforms: boolean = false): URL => {
 export const imageKitLoader = ({src, width, quality}: IImageKitLoader) => {
   let fixedFilename = cdnUrl(src, true) || src
 
-  const seoFilename = fixedFilename.searchParams.get('dl')
-  if (!!seoFilename) {
-    fixedFilename.searchParams.delete('dl')
-    const [filename, _] = seoFilename.split('.')
-    fixedFilename = new URL(`${fixedFilename}/${filename}.webp`)
+  // const seoFilename = fixedFilename.searchParams.get('dl')
+  //   if (!!seoFilename) {
+  //     fixedFilename.searchParams.delete('dl')
+  //     const [filename, _] = seoFilename.split('.')
+  //     fixedFilename = new URL(`${fixedFilename}/${filename}.webp`)
+  //   }
+
+  const transforms = [`w=${width}`, 'f=webp']
+  if (quality) {
+    transforms.push(`q=${quality}`)
   }
 
-  const transforms = [`w-${width}`, 'f-webp']
-  if (quality) {
-    transforms.push(`q-${quality}`)
-  }
-  return fixedFilename.toString().replace('__TRANSFORMS__', `tr:${transforms.join(',')}`)
+  return fixedFilename.toString() + `?${transforms.join('&')}`
 }
 
 export default imageKitLoader
