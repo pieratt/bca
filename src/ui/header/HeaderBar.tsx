@@ -1,6 +1,6 @@
 'use client'
 
-import {useLayoutEffect, useMemo, useRef, useState} from 'react'
+import {useLayoutEffect, useRef, useState} from 'react'
 import localFont from 'next/font/local'
 import {styled} from '@linaria/react'
 import {isHeaderLetter, LetterGlyph} from './letters'
@@ -68,7 +68,6 @@ export const HeaderBar = ({books, designers}: {books: number; designers: number}
   const frameRef = useRef<HTMLHeadingElement>(null)
   const markRef = useRef<HTMLSpanElement>(null)
   const [tracking, setTracking] = useState<Tracking>(defaultTracking)
-  const [open, setOpen] = useState(true)
 
   useLayoutEffect(() => {
     setTracking(loadTracking())
@@ -92,40 +91,6 @@ export const HeaderBar = ({books, designers}: {books: number; designers: number}
     observer.observe(frame)
     return () => observer.disconnect()
   }, [tracking])
-
-  const updateLetter = (key: string, value: number) => {
-    setTracking((current) => {
-      const next = {...current, letters: {...current.letters, [key]: value}}
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-      return next
-    })
-  }
-
-  const updateWord = (key: string, value: number) => {
-    setTracking((current) => {
-      const next = {...current, words: {...current.words, [key]: value}}
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-      return next
-    })
-  }
-
-  const reset = () => {
-    const next = defaultTracking()
-    setTracking(next)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-  }
-
-  const letterControls = useMemo(
-    () =>
-      WORDS.flatMap((word) =>
-        [...word].slice(0, -1).map((letter, index) => ({
-          key: letterKey(word, index),
-          label: `${letter}–${word[index + 1]}`,
-          group: word,
-        }))
-      ),
-    []
-  )
 
   const tagline = (
     <>
@@ -175,74 +140,6 @@ export const HeaderBar = ({books, designers}: {books: number; designers: number}
           </Inner>
         </Banner>
       </Shell>
-
-      <Panel
-        onClick={(event) => event.stopPropagation()}
-        onMouseDown={(event) => event.stopPropagation()}
-      >
-        <header>
-          <strong>Header tracking</strong>
-          <span>temporary</span>
-          <button type="button" onClick={() => setOpen((value) => !value)}>
-            {open ? 'hide' : 'show'}
-          </button>
-          <button type="button" onClick={reset}>
-            reset
-          </button>
-        </header>
-        {open ? (
-          <div className="groups">
-            {WORDS.map((word) => (
-              <section key={word}>
-                <h4>{word}</h4>
-                {letterControls
-                  .filter((control) => control.group === word)
-                  .map((control) => (
-                    <label key={control.key}>
-                      <span>{control.label}</span>
-                      <input
-                        type="range"
-                        min={-0.15}
-                        max={0.8}
-                        step={0.01}
-                        value={tracking.letters[control.key] ?? DEFAULT_LETTERS[control.key]}
-                        onChange={(event) => updateLetter(control.key, Number(event.target.value))}
-                      />
-                      <em>{(tracking.letters[control.key] ?? DEFAULT_LETTERS[control.key]).toFixed(2)}em</em>
-                    </label>
-                  ))}
-              </section>
-            ))}
-            <section>
-              <h4>Words</h4>
-              <label>
-                <span>BOOK — COVER</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={1.4}
-                  step={0.01}
-                  value={tracking.words[wordKey('BOOK', 'COVER')] ?? DEFAULT_WORDS['BOOK-COVER']}
-                  onChange={(event) => updateWord(wordKey('BOOK', 'COVER'), Number(event.target.value))}
-                />
-                <em>{(tracking.words[wordKey('BOOK', 'COVER')] ?? DEFAULT_WORDS['BOOK-COVER']).toFixed(2)}em</em>
-              </label>
-              <label>
-                <span>COVER — ARCHIVE</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={1.4}
-                  step={0.01}
-                  value={tracking.words[wordKey('COVER', 'ARCHIVE')] ?? DEFAULT_WORDS['COVER-ARCHIVE']}
-                  onChange={(event) => updateWord(wordKey('COVER', 'ARCHIVE'), Number(event.target.value))}
-                />
-                <em>{(tracking.words[wordKey('COVER', 'ARCHIVE')] ?? DEFAULT_WORDS['COVER-ARCHIVE']).toFixed(2)}em</em>
-              </label>
-            </section>
-          </div>
-        ) : null}
-      </Panel>
     </>
   )
 }
@@ -376,71 +273,5 @@ const Stats = styled.p`
 
   @media only screen and (min-width: 744px) {
     display: block;
-  }
-`
-
-const Panel = styled.aside`
-  position: fixed;
-  z-index: 40;
-  right: 16px;
-  bottom: 16px;
-  width: min(360px, calc(100vw - 32px));
-  max-height: calc(100vh - 32px);
-  overflow: auto;
-  box-sizing: border-box;
-  padding: 12px;
-  background: #111;
-  color: #fff;
-  border: 1px solid #444;
-  font: 12px/1.3 ui-sans-serif, system-ui, sans-serif;
-
-  header {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
-
-  header span {
-    opacity: 0.55;
-    margin-right: auto;
-  }
-
-  header button {
-    background: #222;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 3px 8px;
-    cursor: pointer;
-  }
-
-  .groups {
-    display: grid;
-    gap: 12px;
-  }
-
-  h4 {
-    margin: 0 0 6px;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  label {
-    display: grid;
-    grid-template-columns: 72px 1fr 52px;
-    gap: 8px;
-    align-items: center;
-    margin: 4px 0;
-  }
-
-  label span,
-  label em {
-    font-variant-numeric: tabular-nums;
-  }
-
-  input[type='range'] {
-    width: 100%;
   }
 `

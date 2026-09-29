@@ -1,64 +1,50 @@
-import NextLink from 'next/link'
 import {styled} from '@linaria/react'
 import {getArchiveIndex} from '@/data/catalog'
-
-const PersonList = ({people}: {people: {slug: string; name: string}[]}) => (
-  <ul>
-    {people.map((person) => (
-      <li key={person.slug}>
-        <NextLink href={`/person/${person.slug}`}>{person.name}</NextLink>
-      </li>
-    ))}
-  </ul>
-)
+import {CountedList} from './CountedList'
 
 export const ArchiveIndex = async () => {
-  const {designers, illustrators, photographers, genres, years, splitColumns} = await getArchiveIndex()
-  const designerCols = splitColumns(designers, 3)
-  const yearCols = splitColumns(years, 2)
+  const {designers, illustrators, photographers, genres} = await getArchiveIndex()
 
   return (
     <Bar>
       <Index>
         <Group>
           <h2>Designer</h2>
-          <Cols className="three">
-            {designerCols.map((col, i) => (
-              <PersonList key={`designer-${i}`} people={col} />
-            ))}
-          </Cols>
-        </Group>
-
-        <Group>
-          <h2>Year</h2>
-          <Cols className="two">
-            {yearCols.map((col, i) => (
-              <ul key={`year-${i}`}>
-                {col.map((year) => (
-                  <li key={year}>{year}</li>
-                ))}
-              </ul>
-            ))}
-          </Cols>
+          <CountedList
+            columns={3}
+            items={designers.map((person) => ({
+              name: person.name,
+              count: person.count,
+              href: `/person/${person.slug}`,
+            }))}
+          />
         </Group>
 
         <Group>
           <h2>Illustrator</h2>
-          <PersonList people={illustrators} />
+          <CountedList
+            items={illustrators.map((person) => ({
+              name: person.name,
+              count: person.count,
+              href: `/person/${person.slug}`,
+            }))}
+          />
         </Group>
 
         <Group>
           <h2>Photographers</h2>
-          <PersonList people={photographers} />
+          <CountedList
+            items={photographers.map((person) => ({
+              name: person.name,
+              count: person.count,
+              href: `/person/${person.slug}`,
+            }))}
+          />
         </Group>
 
         <Group>
           <h2>Genre</h2>
-          <ul>
-            {genres.map((genre) => (
-              <li key={genre}>{genre}</li>
-            ))}
-          </ul>
+          <CountedList items={genres} />
         </Group>
       </Index>
     </Bar>
@@ -109,10 +95,7 @@ const Index = styled.div`
   gap: 36px;
 
   @media only screen and (min-width: 900px) {
-    grid-template-columns: minmax(0, 2.6fr) minmax(0, 0.9fr) minmax(0, 0.8fr) minmax(0, 0.95fr) minmax(
-        0,
-        0.9fr
-      );
+    grid-template-columns: minmax(0, 2.6fr) minmax(0, 0.8fr) minmax(0, 0.95fr) minmax(0, 0.9fr);
     gap: 32px 36px;
     align-items: start;
   }
@@ -120,17 +103,4 @@ const Index = styled.div`
 
 const Group = styled.div`
   min-width: 0;
-`
-
-const Cols = styled.div`
-  display: grid;
-  gap: 0 20px;
-
-  &.two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  &.three {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 `

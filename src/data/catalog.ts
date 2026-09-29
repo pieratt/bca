@@ -1,7 +1,6 @@
 import {CreditRole} from '@prisma/client'
 import {prisma} from '@/lib/prisma'
 import {localBooks, toBookPageData, type LocalBook, type LocalPerson} from './archive'
-import {splitColumns} from './archive'
 
 const bookInclude = {
   genre: true,
@@ -168,58 +167,66 @@ export async function getHeaderStats() {
   return {books: localBooks.length, designers: uniquePeople(localBooks.flatMap((book) => book.designers)).length}
 }
 
+export type IndexPerson = LocalPerson & {count: number}
+export type IndexGenre = {name: string; count: number}
+
+const countPeople = (people: LocalPerson[]): IndexPerson[] => {
+  const map = new Map<string, IndexPerson>()
+  people.forEach((person) => {
+    if (!person.slug) return
+    const current = map.get(person.slug)
+    if (current) current.count += 1
+    else map.set(person.slug, {...person, count: 1})
+  })
+  return [...map.values()].sort((a, b) => a.name.localeCompare(b.name, 'en'))
+}
+
+const countGenres = (names: string[]): IndexGenre[] => {
+  const map = new Map<string, number>()
+  names.forEach((name) => {
+    if (!name) return
+    map.set(name, (map.get(name) || 0) + 1)
+  })
+  return [...map.entries()]
+    .map(([name, count]) => ({name, count}))
+    .sort((a, b) => a.name.localeCompare(b.name, 'en'))
+}
+
 export async function getArchiveIndex() {
   try {
-    const [designerRows, illustratorRows, photographerRows, genreRows, yearRows] = await Promise.all([
+    const [designerRows, illustratorRows, photographerRows, genreRows] = await Promise.all([
       prisma.bookCredit.findMany({
         where: {role: CreditRole.DESIGNER},
-        distinct: ['personId'],
         include: {person: true},
       }),
       prisma.bookCredit.findMany({
         where: {role: CreditRole.ILLUSTRATOR},
-        distinct: ['personId'],
         include: {person: true},
       }),
       prisma.bookCredit.findMany({
         where: {role: CreditRole.PHOTOGRAPHER},
-        distinct: ['personId'],
         include: {person: true},
       }),
-      prisma.genre.findMany({orderBy: {name: 'asc'}}),
-      prisma.book.findMany({
-        where: {year: {not: null}},
-        distinct: ['year'],
-        select: {year: true},
+      prisma.genre.findMany({
+        orderBy: {name: 'asc'},
+        include: {_count: {select: {books: true}}},
       }),
     ])
 
-    const asPeople = (rows: typeof designerRows) =>
-      uniquePeople(rows.map((row) => ({slug: row.person.slug, name: row.person.name})))
-
     return {
-      designers: asPeople(designerRows),
-      illustrators: asPeople(illustratorRows),
-      photographers: asPeople(photographerRows),
-      genres: genreRows.map((genre) => genre.name),
-      years: yearRows
-        .map((row) => row.year)
-        .filter((year): year is number => !!year)
-        .sort((a, b) => a - b),
-      splitColumns,
+      designers: countPeople(designerRows.map((row) => ({slug: row.person.slug, name: row.person.name}))),
+      illustrators: countPeople(illustratorRows.map((row) => ({slug: row.person.slug, name: row.person.name}))),
+      photographers: countPeople(photographerRows.map((row) => ({slug: row.person.slug, name: row.person.name}))),
+      genres: genreRows.map((genre) => ({name: genre.name, count: genre._count.books})),
     }
   } catch (error) {
     console.warn('Prisma unavailable, using archive.json', error)
     const books = localBooks
     return {
-      designers: uniquePeople(books.flatMap((book) => book.designers)),
-      illustrators: uniquePeople(books.flatMap((book) => book.illustrators)),
-      photographers: uniquePeople(books.flatMap((book) => book.photographers)),
-      genres: [...new Set(books.map((book) => book.genre.replace(/-/g, ' ')).filter(Boolean))].sort((a, b) =>
-        a.localeCompare(b, 'en')
-      ),
-      years: [...new Set(books.map((book) => book.year).filter((year): year is number => !!year))].sort((a, b) => a - b),
-      splitColumns,
+      designers: countPeople(books.flatMap((book) => book.designers)),
+      illustrators: countPeople(books.flatMap((book) => book.illustrators)),
+      photographers: countPeople(books.flatMap((book) => book.photographers)),
+      genres: countGenres(books.map((book) => book.genre.replace(/-/g, ' '))),
     }
   }
 }
