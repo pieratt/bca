@@ -2,6 +2,8 @@ import {getPersonBySlug, listPersonSlugs} from '@/data/catalog'
 import {notFound} from 'next/navigation'
 import {PersonPage} from '@/ui'
 
+export const dynamic = 'force-dynamic'
+
 type PersonPageContextBundle = {
   params: Promise<{
     slug?: string

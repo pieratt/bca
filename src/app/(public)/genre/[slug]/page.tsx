@@ -2,6 +2,8 @@ import {getGenreBySlug, listGenreSlugs} from '@/data/catalog'
 import {notFound, redirect} from 'next/navigation'
 import {GenrePage} from '@/ui'
 
+export const dynamic = 'force-dynamic'
+
 type GenrePageContextBundle = {
   params: Promise<{
     slug?: string

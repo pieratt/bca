@@ -2,11 +2,22 @@ import NextLink from 'next/link'
 import {styled} from '@linaria/react'
 import type {LocalBook} from '@/data/archive'
 
+const shuffle = <T,>(items: T[]): T[] => {
+  const next = [...items]
+  for (let i = next.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const current = next[i]
+    next[i] = next[j]
+    next[j] = current
+  }
+  return next
+}
+
 export const CoverGrid = ({books, heading}: {books: LocalBook[]; heading?: string}) => (
   <Main role="main" className={heading ? 'interior' : undefined}>
+    {heading ? <Heading>{heading}</Heading> : null}
     <Grid className={heading ? 'plain' : 'featured'}>
-      {heading ? <Heading>{heading}</Heading> : null}
-      {books.map((book, index) => (
+      {shuffle(books).map((book, index) => (
         <Cover key={`${book.slug}-${index}`}>
           <NextLink href={`/book/${book.slug}`} title={book.title}>
             <img src={`${book.cover}?w=640&f=webp`} alt={`cover of ${book.title}`} />
@@ -48,10 +59,8 @@ const Grid = styled.section`
 `
 
 const Heading = styled.h1`
-  grid-column: 1 / -1;
-  justify-self: start;
   max-width: 18ch;
-  margin: 4px 0 28px;
+  margin: 0 0 8px;
   color: #111;
   font-family: var(--title), 'DM Sans', sans-serif;
   font-size: clamp(1.8rem, 4.8vw, 3.75rem);

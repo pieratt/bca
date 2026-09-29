@@ -3,6 +3,8 @@ import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
 import {CoverGrid, Pagination} from '@/ui'
 
+export const dynamic = 'force-dynamic'
+
 type PageContextBundle = {
   params: Promise<{
     page?: string
