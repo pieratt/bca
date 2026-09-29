@@ -1,12 +1,5 @@
-import {client} from '@/sanity/lib/client'
-import {defineEnableDraftMode} from 'next-sanity/draft-mode'
+import {NextResponse} from 'next/server'
 
-const token = process.env.SANITY_SECRET_TOKEN
-
-if (!token) {
-  throw new Error('Missing SANITY_SECRET_TOKEN')
+export async function GET() {
+  return NextResponse.json({error: 'Draft mode is not enabled'}, {status: 404})
 }
-
-export const {GET} = defineEnableDraftMode({
-  client: client.withConfig({token}),
-})

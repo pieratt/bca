@@ -1,6 +1,9 @@
-import {digitalOceanToken, digitalOceanAppId} from '@/lib'
-import {initializeDeployment, checkDeployment} from 'sanity-plugin-nextjs-do-deploy/next'
+import {NextResponse} from 'next/server'
 
-export const POST = initializeDeployment(digitalOceanToken, digitalOceanAppId)
+export async function GET() {
+  return NextResponse.json({error: 'Unused'}, {status: 404})
+}
 
-export const GET = checkDeployment(digitalOceanToken, digitalOceanAppId)
+export async function POST() {
+  return NextResponse.json({error: 'Unused'}, {status: 404})
+}
