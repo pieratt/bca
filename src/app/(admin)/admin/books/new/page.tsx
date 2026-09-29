@@ -4,7 +4,10 @@ export default function NewBookPage() {
   return (
     <div className="admin-wrap">
       <h1>New cover</h1>
-      <p className="admin-note">Upload a cover file, or paste a URL. Files stay local here and go to Vercel Blob in production.</p>
+      <p className="admin-note">
+        Paste an Amazon link, ISBN, or title to fill the form. Check credits, then create. You can still upload a
+        better scan afterward.
+      </p>
       <BookForm />
     </div>
   )

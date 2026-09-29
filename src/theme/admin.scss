@@ -179,3 +179,60 @@ a {
   color: #a10000;
   margin: 0;
 }
+
+.admin-lookup {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
+  margin-bottom: 28px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e4e4e4;
+}
+
+.admin-lookup-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.admin-lookup-form label {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-lookup-form input {
+  width: 100%;
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid #cfcfcf;
+  background: #fff;
+}
+
+.admin-lookup-form button {
+  appearance: none;
+  background: #000;
+  color: #fff;
+  border: 0;
+  padding: 10px 14px;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admin-lookup-form button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.admin-lookup-preview {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+.admin-lookup-status {
+  margin: 0;
+  color: #333;
+}

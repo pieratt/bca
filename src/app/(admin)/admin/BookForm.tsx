@@ -1,5 +1,6 @@
 import {BOOK_GENRES} from '@/data/genres'
 import {hideBook, saveBook} from './actions'
+import {LookupBar} from './LookupBar'
 
 type BookFormValues = {
   id?: string
@@ -21,8 +22,10 @@ type BookFormValues = {
 }
 
 export const BookForm = ({book}: {book?: BookFormValues}) => (
-  <form className="admin-form" action={saveBook}>
-    {book?.id ? <input type="hidden" name="id" value={book.id} /> : null}
+  <>
+    <LookupBar />
+    <form id="book-form" className="admin-form" action={saveBook}>
+      {book?.id ? <input type="hidden" name="id" value={book.id} /> : null}
 
     <label>
       Title
@@ -117,5 +120,6 @@ export const BookForm = ({book}: {book?: BookFormValues}) => (
         </button>
       ) : null}
     </div>
-  </form>
+    </form>
+  </>
 )

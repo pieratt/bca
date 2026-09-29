@@ -9,7 +9,7 @@ export default async function AdminHome() {
       genre: true,
       credits: {include: {person: true}},
     },
-    orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+    orderBy: [{createdAt: 'desc'}, {datePublished: 'desc'}],
   })
 
   return (

@@ -2,6 +2,8 @@ import {CreditRole} from '@prisma/client'
 import {prisma} from '@/lib/prisma'
 import {localBooks, toBookPageData, type LocalBook, type LocalPerson} from './archive'
 
+const newestFirst = [{createdAt: 'desc' as const}, {datePublished: 'desc' as const}]
+
 const bookInclude = {
   genre: true,
   images: {orderBy: {position: 'asc' as const}},
@@ -85,7 +87,7 @@ export async function listBooks(): Promise<LocalBook[]> {
   try {
     const books = await prisma.book.findMany({
       include: bookInclude,
-      orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+      orderBy: newestFirst,
     })
     if (books.length) return books.map(toLocalBook)
   } catch (error) {
@@ -275,7 +277,7 @@ export async function getArchiveIndex() {
           _count: {select: {books: true}},
           books: {
             take: MAX_INDEX_COVERS,
-            orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+            orderBy: newestFirst,
             include: {images: {orderBy: {position: 'asc'}, take: 1}},
           },
         },
@@ -354,7 +356,7 @@ export async function getGenreBySlug(slug?: string) {
       include: {
         books: {
           include: bookInclude,
-          orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+          orderBy: newestFirst,
         },
       },
     })
@@ -384,7 +386,7 @@ export async function listBooksPage(page: number, limit: number) {
     const [rows, total] = await Promise.all([
       prisma.book.findMany({
         include: {images: {orderBy: {position: 'asc'}, take: 1}},
-        orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+        orderBy: newestFirst,
         skip,
         take: limit,
       }),

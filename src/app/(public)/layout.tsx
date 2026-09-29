@@ -36,24 +36,6 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/icon-16.png" type="image/png" sizes="16x16" />
-        <link rel="icon" href="/icon.png" type="image/png" sizes="32x32" />
-        <link
-          rel="icon"
-          href="/icon-light.png"
-          type="image/png"
-          sizes="32x32"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          rel="icon"
-          href="/icon-dark.png"
-          type="image/png"
-          sizes="32x32"
-          media="(prefers-color-scheme: dark)"
-        />
-      </head>
       <body className={`${sans.variable} ${titles.variable}`}>
         <Header />
         <div className="wrapper">

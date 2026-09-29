@@ -7,6 +7,40 @@ import slugify from 'slugify'
 import {CreditRole} from '@prisma/client'
 import {prisma} from '@/lib/prisma'
 import {storeCover} from '@/lib/coverStorage'
+import {lookupBookMetadata} from '@/lib/bookLookup'
+
+export type BookLookupDraft = {
+  title: string
+  slug: string
+  cover: string
+  width?: number
+  height?: number
+  publisher?: string
+  isbn?: string
+  genre?: string
+  year?: number
+  authors: string
+  notes: string
+  sources: string[]
+}
+
+export type BookLookupResponse =
+  | {ok: true; draft: BookLookupDraft}
+  | {ok: false; error: string}
+
+async function requireAdmin() {
+  const password = process.env.ADMIN_PASSWORD
+  if (!password) {
+    if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
+      throw new Error('Unauthorized')
+    }
+    return
+  }
+  const jar = await cookies()
+  if (jar.get('bca_admin')?.value !== password) {
+    throw new Error('Unauthorized')
+  }
+}
 
 const toSlug = (value: string) => slugify(value, {lower: true, strict: true})
 
@@ -53,6 +87,46 @@ async function syncGenre(name: string) {
     update: {name},
     create: {slug, name},
   })
+}
+
+export async function lookupBook(query: string): Promise<BookLookupResponse> {
+  await requireAdmin()
+  const input = query.trim()
+  if (!input) return {ok: false, error: 'Paste an Amazon link, ISBN, or title first.'}
+
+  const found = await lookupBookMetadata(input)
+  if (!found?.title) {
+    return {ok: false, error: 'Nothing found for that link, ISBN, or title.'}
+  }
+
+  let cover = found.cover?.url ?? ''
+  if (found.cover?.bytes) {
+    const extension = found.cover.type.includes('png') ? 'png' : 'jpg'
+    const file = new File(
+      [found.cover.bytes],
+      `${found.slug || 'cover'}.${extension}`,
+      {type: found.cover.type || 'image/jpeg'}
+    )
+    cover = await storeCover(file)
+  }
+
+  return {
+    ok: true,
+    draft: {
+      title: found.title,
+      slug: found.slug,
+      cover,
+      width: found.cover?.width,
+      height: found.cover?.height,
+      publisher: found.publisher,
+      isbn: found.isbn,
+      genre: found.genre,
+      year: found.year,
+      authors: found.authors.join('\n'),
+      notes: found.notes,
+      sources: found.sources,
+    },
+  }
 }
 
 export async function loginAdmin(formData: FormData) {
