@@ -46,4 +46,5 @@ generated
 /prisma/dev.db
 /prisma/dev.db-journal
 /prisma/sanity-export.ndjson
+/prisma/catalog-dump.json
 /public/covers

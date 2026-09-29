@@ -18,7 +18,9 @@
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
     "db:import-sanity": "tsx scripts/import-sanity.ts",
-    "db:download-covers": "tsx scripts/download-covers.ts"
+    "db:import-dump": "tsx scripts/import-dump.ts",
+    "db:download-covers": "tsx scripts/download-covers.ts",
+    "db:upload-covers": "tsx scripts/upload-covers.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -65,7 +67,8 @@
     "groq": "^4.10.3",
     "prisma": "6.19.3",
     "tsx": "^4.23.15",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vercel": "^61.0.0"
   },
   "packageManager": "pnpm@9.0.4",
   "pnpm": {
