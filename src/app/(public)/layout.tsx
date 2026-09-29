@@ -1,11 +1,17 @@
 import type {Metadata} from 'next'
-import {Work_Sans} from 'next/font/google'
+import {DM_Sans, Work_Sans} from 'next/font/google'
 import {ArchiveIndex, Footer, Header} from '@/ui'
 import '@/theme/legacy.scss'
 
 const sans = Work_Sans({
   variable: '--sans',
   subsets: ['latin'],
+})
+
+const titles = DM_Sans({
+  variable: '--title',
+  subsets: ['latin'],
+  weight: ['700'],
 })
 
 export const metadata: Metadata = {
@@ -38,7 +44,7 @@ export default async function RootLayout({
           media="(prefers-color-scheme: dark)"
         />
       </head>
-      <body className={sans.variable}>
+      <body className={`${sans.variable} ${titles.variable}`}>
         <Header />
         <div className="wrapper">
           {children}

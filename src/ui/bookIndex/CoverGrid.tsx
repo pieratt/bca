@@ -53,11 +53,11 @@ const Heading = styled.h1`
   max-width: 18ch;
   margin: 4px 0 28px;
   color: #111;
-  font-family: var(--sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: clamp(2.4rem, 6.4vw, 5rem);
-  font-weight: 500;
+  font-family: var(--title), 'DM Sans', sans-serif;
+  font-size: clamp(1.8rem, 4.8vw, 3.75rem);
+  font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 `
 
