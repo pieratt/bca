@@ -49,13 +49,6 @@ const Grid = styled.section`
     grid-column: span 2;
     grid-row: span 2;
   }
-
-  @media only screen and (min-width: 744px) {
-    &.featured > article:first-child {
-      grid-column: span 3;
-      grid-row: span 2;
-    }
-  }
 `
 
 const Heading = styled.h1`
