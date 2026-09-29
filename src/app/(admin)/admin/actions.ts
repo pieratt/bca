@@ -6,7 +6,7 @@ import {redirect} from 'next/navigation'
 import slugify from 'slugify'
 import {CreditRole} from '@prisma/client'
 import {prisma} from '@/lib/prisma'
-import {storeCover} from '@/lib/coverStorage'
+import {storeCover, storeCoverBytes} from '@/lib/coverStorage'
 import {lookupBookMetadata} from '@/lib/bookLookup'
 
 export type BookLookupDraft = {
@@ -102,12 +102,11 @@ export async function lookupBook(query: string): Promise<BookLookupResponse> {
   let cover = found.cover?.url ?? ''
   if (found.cover?.bytes) {
     const extension = found.cover.type.includes('png') ? 'png' : 'jpg'
-    const file = new File(
-      [found.cover.bytes],
+    cover = await storeCoverBytes(
       `${found.slug || 'cover'}.${extension}`,
-      {type: found.cover.type || 'image/jpeg'}
+      found.cover.bytes,
+      found.cover.type || 'image/jpeg'
     )
-    cover = await storeCover(file)
   }
 
   return {
