@@ -13,7 +13,8 @@ const helveticaNow = localFont({
 
 const WORDS = ['BOOK', 'COVER', 'ARCHIVE'] as const
 const BASE_SIZE = 80
-const STORAGE_KEY = 'bca-header-tracking'
+const STORAGE_KEY = 'bca-header-tracking-v2'
+const LEGACY_KEY = 'bca-header-tracking'
 
 const DEFAULT_LETTERS: Record<string, number> = {
   'BOOK-0': 0.21,
@@ -41,36 +42,64 @@ type Tracking = {
   words: Record<string, number>
 }
 
+type TrackingPair = {
+  initial: Tracking
+  expanded: Tracking
+}
+
 const letterKey = (word: string, index: number) => `${word}-${index}`
 const wordKey = (left: string, right: string) => `${left}-${right}`
 
-const defaultTracking = (): Tracking => ({
-  letters: {...DEFAULT_LETTERS},
-  words: {...DEFAULT_WORDS},
+const scaleTracking = (tracking: Tracking, factor: number): Tracking => ({
+  letters: Object.fromEntries(Object.entries(tracking.letters).map(([key, value]) => [key, Number((value * factor).toFixed(2))])),
+  words: Object.fromEntries(Object.entries(tracking.words).map(([key, value]) => [key, Number((value * factor).toFixed(2))])),
 })
 
-const loadTracking = (): Tracking => {
-  const fallback = defaultTracking()
+const defaultPair = (): TrackingPair => {
+  const initial: Tracking = {
+    letters: {...DEFAULT_LETTERS},
+    words: {...DEFAULT_WORDS},
+  }
+  return {
+    initial,
+    expanded: scaleTracking(initial, 2.4),
+  }
+}
+
+const asTracking = (value: Partial<Tracking> | undefined, fallback: Tracking): Tracking => ({
+  letters: {...fallback.letters, ...value?.letters},
+  words: {...fallback.words, ...value?.words},
+})
+
+const loadPair = (): TrackingPair => {
+  const fallback = defaultPair()
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY)
     if (!raw) return fallback
-    const parsed = JSON.parse(raw) as Tracking
-    return {
-      letters: {...fallback.letters, ...parsed.letters},
-      words: {...fallback.words, ...parsed.words},
+    const parsed = JSON.parse(raw) as TrackingPair | Tracking
+    if ('initial' in parsed && 'expanded' in parsed) {
+      return {
+        initial: asTracking(parsed.initial, fallback.initial),
+        expanded: asTracking(parsed.expanded, fallback.expanded),
+      }
     }
+    if ('letters' in parsed && 'words' in parsed) {
+      const initial = asTracking(parsed, fallback.initial)
+      return {initial, expanded: scaleTracking(initial, 2.4)}
+    }
+    return fallback
   } catch {
     return fallback
   }
 }
 
-export const HeaderBar = ({books, designers}: {books: number; designers: number}) => {
+export const HeaderBar = () => {
   const frameRef = useRef<HTMLHeadingElement>(null)
   const markRef = useRef<HTMLSpanElement>(null)
-  const [tracking, setTracking] = useState<Tracking>(defaultTracking)
+  const [pair, setPair] = useState<TrackingPair>(defaultPair)
 
   useLayoutEffect(() => {
-    setTracking(loadTracking())
+    setPair(loadPair())
   }, [])
 
   useLayoutEffect(() => {
@@ -80,65 +109,74 @@ export const HeaderBar = ({books, designers}: {books: number; designers: number}
 
     const fit = () => {
       mark.style.fontSize = `${BASE_SIZE}px`
-      const natural = mark.scrollWidth
+      mark.style.setProperty('--track-t', '0')
+      const widthInitial = mark.scrollWidth
+      mark.style.setProperty('--track-t', '1')
+      const widthExpanded = mark.scrollWidth
       const available = frame.clientWidth
-      const next = natural > 0 ? Math.max(22, BASE_SIZE * Math.min(1, available / natural)) : BASE_SIZE
-      mark.style.fontSize = `${next}px`
+
+      if (widthInitial <= 0) return
+
+      if (available <= widthInitial) {
+        mark.style.setProperty('--track-t', '0')
+        mark.style.fontSize = `${Math.max(12, BASE_SIZE * (available / widthInitial))}px`
+        return
+      }
+
+      const span = widthExpanded - widthInitial
+      const nextT = span <= 0 ? 1 : Math.min(1, (available - widthInitial) / span)
+      mark.style.setProperty('--track-t', String(nextT))
     }
 
     fit()
     const observer = new ResizeObserver(fit)
     observer.observe(frame)
     return () => observer.disconnect()
-  }, [tracking])
+  }, [pair])
 
-  const tagline = (
-    <>
-      {books.toLocaleString('en-US')} beautiful book
-      <br />
-      covers by {designers.toLocaleString('en-US')} designers.
-    </>
-  )
-
-  const taglineLine = `${books.toLocaleString('en-US')} beautiful book covers by ${designers.toLocaleString('en-US')} designers.`
+  const gapStyle = (initial: number, expanded: number) =>
+    ({
+      '--gap-initial': `${initial}em`,
+      '--gap-expanded': `${expanded}em`,
+    }) as React.CSSProperties
 
   return (
-    <>
-      <Shell className={`header-frame ${helveticaNow.className}`}>
-        <Banner className="header" role="banner" href="/">
-          <Inner>
-            <Title ref={frameRef}>
-              <span className="sr-only">Book Cover Archive</span>
-              <span className="wordmark" aria-hidden="true" ref={markRef}>
-                {WORDS.map((word, wordIndex) => (
-                  <span className="word" key={word}>
-                    {[...word].map((letter, index) => (
-                      <span
-                        className="letter"
-                        key={`${word}-${index}`}
-                        style={
-                          index < word.length - 1
-                            ? {marginInlineEnd: `${tracking.letters[letterKey(word, index)] ?? DEFAULT_LETTERS[letterKey(word, index)]}em`}
-                            : wordIndex < WORDS.length - 1
-                              ? {
-                                  marginInlineEnd: `${tracking.words[wordKey(word, WORDS[wordIndex + 1])] ?? DEFAULT_WORDS[wordKey(word, WORDS[wordIndex + 1])]}em`,
-                                }
-                              : undefined
-                        }
-                      >
-                        {isHeaderLetter(letter) ? <LetterGlyph letter={letter} /> : letter}
-                      </span>
-                    ))}
-                  </span>
-                ))}
-              </span>
-            </Title>
-            <Stats>{tagline}</Stats>
-          </Inner>
-        </Banner>
-      </Shell>
-      <Lead>{taglineLine}</Lead>
-    </>
+    <Shell className={`header-frame ${helveticaNow.className}`}>
+      <Banner className="header" role="banner" href="/">
+        <Inner>
+          <Title ref={frameRef}>
+            <span className="sr-only">Book Cover Archive</span>
+            <span className="wordmark" aria-hidden="true" ref={markRef}>
+              {WORDS.map((word, wordIndex) => (
+                <span className="word" key={word}>
+                  {[...word].map((letter, index) => (
+                    <span
+                      className="letter"
+                      key={`${word}-${index}`}
+                      style={
+                        index < word.length - 1
+                          ? gapStyle(
+                              pair.initial.letters[letterKey(word, index)] ?? DEFAULT_LETTERS[letterKey(word, index)],
+                              pair.expanded.letters[letterKey(word, index)] ?? DEFAULT_LETTERS[letterKey(word, index)],
+                            )
+                          : wordIndex < WORDS.length - 1
+                            ? gapStyle(
+                                pair.initial.words[wordKey(word, WORDS[wordIndex + 1])] ?? DEFAULT_WORDS[wordKey(word, WORDS[wordIndex + 1])],
+                                pair.expanded.words[wordKey(word, WORDS[wordIndex + 1])] ?? DEFAULT_WORDS[wordKey(word, WORDS[wordIndex + 1])],
+                              )
+                            : undefined
+                      }
+                    >
+                      {isHeaderLetter(letter) ? <LetterGlyph letter={letter} /> : letter}
+                    </span>
+                  ))}
+                </span>
+              ))}
+            </span>
+          </Title>
+        </Inner>
+      </Banner>
+    </Shell>
   )
 }
 
@@ -193,10 +231,7 @@ const Banner = styled.a`
 `
 
 const Inner = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: clamp(16px, 2.4cqi, 40px);
+  display: block;
   box-sizing: border-box;
   margin: 8px;
   padding: clamp(12px, 1.2cqi + 8px, 24px) clamp(14px, 2cqi, 28px);
@@ -206,7 +241,6 @@ const Inner = styled.div`
 const Title = styled.h1`
   display: block;
   min-width: 0;
-  flex: 1 1 auto;
   margin: 0;
   padding: 0;
   color: inherit;
@@ -214,21 +248,27 @@ const Title = styled.h1`
   font-weight: 400;
   line-height: 0.82;
   letter-spacing: 0;
+  text-align: center;
   text-indent: 0;
   background: none;
-  overflow: visible;
+  overflow: hidden;
 
   .wordmark,
   .word {
-    display: flex;
+    display: inline-flex;
     align-items: flex-end;
     white-space: nowrap;
+  }
+
+  .wordmark {
+    --track-t: 0;
   }
 
   .letter {
     display: block;
     flex: 0 0 auto;
     line-height: 0;
+    margin-inline-end: calc(var(--gap-initial, 0em) + (var(--gap-expanded, 0em) - var(--gap-initial, 0em)) * var(--track-t, 0));
   }
 
   .letter svg {
@@ -236,44 +276,5 @@ const Title = styled.h1`
     height: 1em;
     width: auto;
     fill: currentColor;
-  }
-`
-
-const Lead = styled.p`
-  display: block;
-  box-sizing: border-box;
-  width: calc(100vw - 40px);
-  margin: 0 auto;
-  padding: 14px 0 0;
-  color: #2b2b2b;
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.35;
-  letter-spacing: 0.01em;
-
-  @media only screen and (min-width: 744px) {
-    display: none;
-  }
-
-  @media only screen and (min-width: 900px) {
-    width: calc(100vw - 50px);
-  }
-`
-
-const Stats = styled.p`
-  display: none;
-  flex: 0 0 auto;
-  margin: 0;
-  max-width: 14em;
-  color: inherit;
-  font-family: inherit;
-  font-size: clamp(9px, 0.55cqi + 7.5px, 12px);
-  font-weight: 400;
-  line-height: 1.28;
-  letter-spacing: 0.01em;
-  text-align: right;
-
-  @media only screen and (min-width: 744px) {
-    display: block;
   }
 `

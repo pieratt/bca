@@ -192,8 +192,15 @@ export async function getHeaderStats() {
   return {books: localBooks.length, designers: uniquePeople(localBooks.flatMap((book) => book.designers)).length}
 }
 
-export type IndexPerson = LocalPerson & {count: number; cover?: string}
-export type IndexGenre = {name: string; slug: string; count: number; cover?: string}
+export type IndexPerson = LocalPerson & {count: number; cover?: string; covers: string[]}
+export type IndexGenre = {name: string; slug: string; count: number; cover?: string; covers: string[]}
+
+const MAX_INDEX_COVERS = 5
+
+const pushCover = (covers: string[], cover?: string | null) => {
+  if (!cover || covers.includes(cover) || covers.length >= MAX_INDEX_COVERS) return
+  covers.push(cover)
+}
 
 const GENRE_ALIASES: Record<string, string> = {
   'biographies-and-memoires': 'memoir',
@@ -216,9 +223,10 @@ const tallyPeople = (
     const cover = row.cover || undefined
     if (current) {
       current.count += 1
+      pushCover(current.covers, cover)
       if (!current.cover && cover) current.cover = cover
     } else {
-      map.set(row.person.slug, {...row.person, count: 1, cover})
+      map.set(row.person.slug, {...row.person, count: 1, cover, covers: cover ? [cover] : []})
     }
   })
   return byCount([...map.values()])
@@ -233,9 +241,10 @@ const tallyGenres = (books: LocalBook[]): IndexGenre[] => {
     const current = map.get(slug)
     if (current) {
       current.count += 1
+      pushCover(current.covers, book.cover)
       if (!current.cover && book.cover) current.cover = book.cover
     } else {
-      map.set(slug, {name, slug, count: 1, cover: book.cover || undefined})
+      map.set(slug, {name, slug, count: 1, cover: book.cover || undefined, covers: book.cover ? [book.cover] : []})
     }
   })
   return byCount([...map.values()])
@@ -265,7 +274,7 @@ export async function getArchiveIndex() {
         include: {
           _count: {select: {books: true}},
           books: {
-            take: 1,
+            take: MAX_INDEX_COVERS,
             orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
             include: {images: {orderBy: {position: 'asc'}, take: 1}},
           },
@@ -295,12 +304,19 @@ export async function getArchiveIndex() {
       genres: byCount(
         genreRows
           .filter((genre) => genre._count.books > 0)
-          .map((genre) => ({
-            name: genre.name,
-            slug: genre.slug,
-            count: genre._count.books,
-            cover: creditCover(genre.books[0]?.images),
-          }))
+          .map((genre) => {
+            const covers = genre.books
+              .map((book) => creditCover(book.images))
+              .filter((url): url is string => Boolean(url))
+              .slice(0, MAX_INDEX_COVERS)
+            return {
+              name: genre.name,
+              slug: genre.slug,
+              count: genre._count.books,
+              cover: covers[0],
+              covers,
+            }
+          })
       ),
     }
   } catch (error) {

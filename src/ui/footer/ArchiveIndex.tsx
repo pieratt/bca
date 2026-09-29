@@ -2,6 +2,14 @@ import {styled} from '@linaria/react'
 import {getArchiveIndex} from '@/data/catalog'
 import {CountedList} from './CountedList'
 
+const Spread = ({children}: {children: string}) => (
+  <h2>
+    {[...children].map((letter, index) => (
+      <span key={`${letter}-${index}`}>{letter === ' ' ? '\u00a0' : letter}</span>
+    ))}
+  </h2>
+)
+
 export const ArchiveIndex = async () => {
   const {designers, illustrators, photographers, genres} = await getArchiveIndex()
 
@@ -9,50 +17,53 @@ export const ArchiveIndex = async () => {
     <Bar>
       <Index>
         <Group>
-          <h2>Designer</h2>
-          <CountedList
-            columns={3}
-            items={designers.map((person) => ({
-              name: person.name,
-              count: person.count,
-              href: `/person/${person.slug}`,
-              cover: person.cover,
-            }))}
-          />
-        </Group>
-
-        <Group>
-          <h2>Illustrator</h2>
-          <CountedList
-            items={illustrators.map((person) => ({
-              name: person.name,
-              count: person.count,
-              href: `/person/${person.slug}`,
-              cover: person.cover,
-            }))}
-          />
-        </Group>
-
-        <Group>
-          <h2>Photographers</h2>
-          <CountedList
-            items={photographers.map((person) => ({
-              name: person.name,
-              count: person.count,
-              href: `/person/${person.slug}`,
-              cover: person.cover,
-            }))}
-          />
-        </Group>
-
-        <Group>
-          <h2>Genre</h2>
+          <Spread>Genre</Spread>
           <CountedList
             items={genres.map((genre) => ({
               name: genre.name,
               count: genre.count,
               href: `/genre/${genre.slug}`,
               cover: genre.cover,
+              covers: genre.covers,
+            }))}
+          />
+        </Group>
+
+        <Group>
+          <Spread>Designer</Spread>
+          <CountedList
+            items={designers.map((person) => ({
+              name: person.name,
+              count: person.count,
+              href: `/person/${person.slug}`,
+              cover: person.cover,
+              covers: person.covers,
+            }))}
+          />
+        </Group>
+
+        <Group>
+          <Spread>Illustrator</Spread>
+          <CountedList
+            items={illustrators.map((person) => ({
+              name: person.name,
+              count: person.count,
+              href: `/person/${person.slug}`,
+              cover: person.cover,
+              covers: person.covers,
+            }))}
+          />
+        </Group>
+
+        <Group>
+          <Spread>Photographers</Spread>
+          <CountedList
+            items={photographers.map((person) => ({
+              name: person.name,
+              count: person.count,
+              href: `/person/${person.slug}`,
+              cover: person.cover,
+              covers: person.covers,
             }))}
           />
         </Group>
@@ -66,16 +77,27 @@ const Bar = styled.div`
   color: #fff;
   width: 100%;
   box-sizing: border-box;
-  padding: 48px 24px 72px;
+  padding: 48px 20px 72px;
+
+  @media only screen and (min-width: 900px) {
+    padding: 56px 25px 80px;
+  }
 
   h2 {
-    margin: 0 0 18px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 16px;
     color: #fff;
     font-size: 12px;
     font-weight: 400;
-    letter-spacing: 0.12em;
+    letter-spacing: 0;
     line-height: 1.2;
     text-transform: uppercase;
+    break-after: avoid;
+  }
+
+  h2 span {
+    flex: 0 0 auto;
   }
 
   ul {
@@ -84,33 +106,55 @@ const Bar = styled.div`
     list-style: none;
   }
 
-  li,
-  a {
-    color: #fff;
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 1.7;
-    text-decoration: none;
-    text-transform: capitalize;
+  li {
+    margin: 0;
+    break-inside: avoid;
   }
 
-  a:hover {
-    text-decoration: underline;
+  li a,
+  li > span {
+    display: block;
+    box-sizing: border-box;
+    padding: 10px 0;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.35;
+    text-decoration: none;
+    text-transform: capitalize;
+    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+  }
+
+  li a:hover,
+  li > span:hover {
+    border-bottom-color: transparent;
   }
 `
 
 const Index = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 36px;
+  column-count: 1;
+  column-gap: 24px;
 
-  @media only screen and (min-width: 900px) {
-    grid-template-columns: minmax(0, 2.6fr) minmax(0, 0.8fr) minmax(0, 0.95fr) minmax(0, 0.9fr);
-    gap: 32px 36px;
-    align-items: start;
+  @media only screen and (min-width: 648px) {
+    column-count: 2;
+    column-gap: 28px;
+  }
+
+  @media only screen and (min-width: 945px) {
+    column-count: 3;
+    column-gap: 32px;
+  }
+
+  @media only screen and (min-width: 1400px) {
+    column-count: 4;
+    column-gap: 36px;
   }
 `
 
 const Group = styled.div`
   min-width: 0;
+
+  & + & {
+    margin-top: 144px;
+  }
 `

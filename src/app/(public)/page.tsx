@@ -8,7 +8,7 @@ export default async function Home() {
   const {books, total} = await listBooksPage(1, BOOK_INDEX_LIMIT)
   return (
     <>
-      <CoverGrid books={books} />
+      <CoverGrid books={books} featured />
       {total > BOOK_INDEX_LIMIT ? <Pagination page={1} total={total} /> : null}
     </>
   )

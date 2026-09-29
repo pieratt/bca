@@ -1,92 +1,99 @@
 'use client'
 
-import {useState, type MouseEvent} from 'react'
+import {useState, type MouseEvent, type ReactNode} from 'react'
 import NextLink from 'next/link'
 import {styled} from '@linaria/react'
-import {splitColumns} from '@/data/archive'
 
 export type CountedEntry = {
   name: string
   count: number
   href?: string
   cover?: string
+  covers?: string[]
 }
 
 const MIN_VISIBLE_COUNT = 2
 
-export const CountedList = ({items, columns = 1}: {items: CountedEntry[]; columns?: number}) => {
+type Preview = {
+  covers: string[]
+  top: number
+  left: number
+  width: number
+}
+
+export const CountedList = ({items}: {items: CountedEntry[]}) => {
   const [showAll, setShowAll] = useState(false)
-  const [preview, setPreview] = useState<{src: string; x: number; y: number} | null>(null)
+  const [preview, setPreview] = useState<Preview | null>(null)
   const featured = items.filter((item) => item.count >= MIN_VISIBLE_COUNT)
   const hidden = items.filter((item) => item.count < MIN_VISIBLE_COUNT)
   const visible = showAll ? items : featured
-  const cols = splitColumns(visible, columns)
 
-  const showPreview = (cover: string | undefined, event: MouseEvent) => {
-    if (!cover) return
-    setPreview({src: cover, x: event.clientX, y: event.clientY})
+  const coversFor = (item: CountedEntry) => {
+    const next = item.covers?.filter(Boolean) ?? []
+    if (!next.length && item.cover) next.push(item.cover)
+    return next.slice(0, 5)
   }
+
+  const showPreview = (item: CountedEntry, event: MouseEvent<HTMLElement>) => {
+    const covers = coversFor(item)
+    if (!covers.length) return
+    const row = event.currentTarget.closest('li')
+    if (!row) return
+    const rect = row.getBoundingClientRect()
+    setPreview({covers, top: rect.bottom, left: rect.left, width: rect.width})
+  }
+
+  const row = (item: CountedEntry, inner: ReactNode) =>
+    item.href ? (
+      <NextLink
+        href={item.href}
+        onMouseEnter={(event) => showPreview(item, event)}
+        onMouseMove={(event) => showPreview(item, event)}
+        onMouseLeave={() => setPreview(null)}
+      >
+        {inner}
+      </NextLink>
+    ) : (
+      <span
+        onMouseEnter={(event) => showPreview(item, event)}
+        onMouseMove={(event) => showPreview(item, event)}
+        onMouseLeave={() => setPreview(null)}
+      >
+        {inner}
+      </span>
+    )
 
   return (
     <>
-      <Cols data-cols={columns}>
-        {cols.map((col, index) => (
-          <ul key={index}>
-            {col.map((item) => (
-              <li key={item.href ?? item.name}>
-                {item.href ? (
-                  <NextLink
-                    href={item.href}
-                    onMouseEnter={(event) => showPreview(item.cover, event)}
-                    onMouseMove={(event) => showPreview(item.cover, event)}
-                    onMouseLeave={() => setPreview(null)}
-                  >
-                    {item.name}
-                    <Count>{item.count}</Count>
-                  </NextLink>
-                ) : (
-                  <span
-                    onMouseEnter={(event) => showPreview(item.cover, event)}
-                    onMouseMove={(event) => showPreview(item.cover, event)}
-                    onMouseLeave={() => setPreview(null)}
-                  >
-                    {item.name}
-                    <Count>{item.count}</Count>
-                  </span>
-                )}
-              </li>
-            ))}
-          </ul>
+      <ul>
+        {visible.map((item) => (
+          <li key={item.href ?? item.name}>{row(item, <>
+            {item.name}
+            <Count>{item.count}</Count>
+          </>)}</li>
         ))}
-      </Cols>
+      </ul>
       {hidden.length && !showAll ? (
         <Reveal type="button" onClick={() => setShowAll(true)}>
           show all
         </Reveal>
       ) : null}
       {preview ? (
-        <Thumb
-          src={`${preview.src}?w=480&f=webp`}
-          alt=""
-          style={{left: preview.x + 16, top: preview.y + 16}}
-        />
+        <Thumbs
+          style={{
+            top: preview.top,
+            left: preview.left,
+            width: preview.width,
+          }}
+        >
+          {preview.covers.map((src) => (
+            <img key={src} src={`${src}?w=320&f=webp`} alt="" />
+          ))}
+        </Thumbs>
       ) : null}
     </>
   )
 }
-
-const Cols = styled.div`
-  display: grid;
-  gap: 0 20px;
-
-  &[data-cols='2'] {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  &[data-cols='3'] {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-`
 
 const Count = styled.span`
   margin-left: 0.4em;
@@ -102,18 +109,27 @@ const Reveal = styled.button`
   background: none;
   color: #fff;
   font: inherit;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.7;
   letter-spacing: 0.02em;
   text-decoration: underline;
   cursor: pointer;
 `
 
-const Thumb = styled.img`
+const Thumbs = styled.div`
   position: fixed;
   z-index: 50;
-  width: 144px;
-  height: auto;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 3px;
+  padding: 4px 0 0;
+  background: #000;
   pointer-events: none;
-  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    vertical-align: bottom;
+  }
 `
