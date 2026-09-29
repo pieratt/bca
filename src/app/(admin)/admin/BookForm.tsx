@@ -1,5 +1,5 @@
 import {BOOK_GENRES} from '@/data/genres'
-import {deleteBook, saveBook} from './actions'
+import {hideBook, saveBook} from './actions'
 
 type BookFormValues = {
   id?: string
@@ -112,8 +112,8 @@ export const BookForm = ({book}: {book?: BookFormValues}) => (
     <div className="admin-actions">
       <button type="submit">{book?.id ? 'Save cover' : 'Create cover'}</button>
       {book?.id ? (
-        <button className="ghost" formAction={deleteBook} type="submit">
-          Delete
+        <button className="ghost" formAction={hideBook} type="submit">
+          Hide cover
         </button>
       ) : null}
     </div>

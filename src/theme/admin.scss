@@ -121,6 +121,22 @@ a {
   display: block;
 }
 
+.admin-table form {
+  display: inline;
+  margin-left: 12px;
+}
+
+.admin-table form button {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #666;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .admin-form {
   display: grid;
   gap: 16px;

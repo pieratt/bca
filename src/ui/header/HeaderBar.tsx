@@ -97,18 +97,15 @@ export const HeaderBar = ({books, designers}: {books: number; designers: number}
       {books.toLocaleString('en-US')} beautiful book
       <br />
       covers by {designers.toLocaleString('en-US')} designers.
-      <br />
-      Updated Daily
     </>
   )
 
-  const taglineLine = `${books.toLocaleString('en-US')} beautiful book covers by ${designers.toLocaleString('en-US')} designers. Updated Daily`
+  const taglineLine = `${books.toLocaleString('en-US')} beautiful book covers by ${designers.toLocaleString('en-US')} designers.`
 
   return (
     <>
       <Shell className={`header-frame ${helveticaNow.className}`}>
         <Banner className="header" role="banner" href="/">
-          <Intro>{taglineLine}</Intro>
           <Inner>
             <Title ref={frameRef}>
               <span className="sr-only">Book Cover Archive</span>
@@ -140,6 +137,7 @@ export const HeaderBar = ({books, designers}: {books: number; designers: number}
           </Inner>
         </Banner>
       </Shell>
+      <Lead>{taglineLine}</Lead>
     </>
   )
 }
@@ -241,20 +239,24 @@ const Title = styled.h1`
   }
 `
 
-const Intro = styled.p`
+const Lead = styled.p`
   display: block;
-  margin: 0;
-  padding: 10px 14px 6px;
-  color: #fff;
-  font-size: 11px;
+  box-sizing: border-box;
+  width: calc(100vw - 40px);
+  margin: 0 auto;
+  padding: 14px 0 0;
+  color: #2b2b2b;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.35;
   letter-spacing: 0.01em;
-  text-align: right;
-  white-space: nowrap;
 
   @media only screen and (min-width: 744px) {
     display: none;
+  }
+
+  @media only screen and (min-width: 900px) {
+    width: calc(100vw - 50px);
   }
 `
 

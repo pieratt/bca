@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import {prisma} from '@/lib/prisma'
+import {hideBook} from './actions'
 
 export default async function AdminHome() {
   const books = await prisma.book.findMany({
@@ -53,6 +54,10 @@ export default async function AdminHome() {
               <td>{book.genre?.name}</td>
               <td>
                 <Link href={`/book/${book.slug}`}>View</Link>
+                <form action={hideBook}>
+                  <input type="hidden" name="id" value={book.id} />
+                  <button type="submit">Hide cover</button>
+                </form>
               </td>
             </tr>
           ))}

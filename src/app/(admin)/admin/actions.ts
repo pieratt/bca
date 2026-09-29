@@ -131,12 +131,19 @@ export async function saveBook(formData: FormData) {
   redirect(`/admin/books/${book.id}`)
 }
 
-export async function deleteBook(formData: FormData) {
+export async function hideBook(formData: FormData) {
   const id = text(formData, 'id')
   if (!id) return
+  const book = await prisma.book.findUnique({
+    where: {id},
+    select: {slug: true, genre: {select: {slug: true}}},
+  })
+  if (!book) return
   await prisma.book.delete({where: {id}})
   revalidatePath('/')
   revalidatePath('/admin')
+  revalidatePath(`/book/${book.slug}`)
+  if (book.genre?.slug) revalidatePath(`/genre/${book.genre.slug}`)
   redirect('/admin')
 }
 
