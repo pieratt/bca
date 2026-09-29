@@ -49,3 +49,10 @@ export const booksQuery = defineQuery(`
 export const bookCount = defineQuery(`
   count(*[_type == 'book'])
 `)
+
+export const headerStatsQuery = defineQuery(`
+  {
+    "books": count(*[_type == 'book']),
+    "designers": count(array::unique(*[_type == 'book'].designers[]._ref))
+  }
+`)

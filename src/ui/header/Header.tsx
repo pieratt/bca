@@ -1,8 +1,7 @@
-export const Header = () => (
-  <a className="header clear" role="banner" href="/">
-    <div id="topline"></div>
-    <div id="botline"></div>
+import {getHeaderStats} from '@/data/catalog'
+import {HeaderBar} from './HeaderBar'
 
-    <h1>An Archive of Book Cover Designs &amp; Designers</h1>
-  </a>
-)
+export const Header = async () => {
+  const {books, designers} = await getHeaderStats()
+  return <HeaderBar books={books} designers={designers} />
+}

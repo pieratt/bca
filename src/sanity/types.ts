@@ -485,6 +485,12 @@ export type BooksQueryResult = {
 // Variable: bookCount
 // Query: count(*[_type == 'book'])
 export type BookCountResult = number
+// Variable: headerStatsQuery
+// Query: {    "books": count(*[_type == 'book']),    "designers": count(array::unique(*[_type == 'book'].designers[]._ref))  }
+export type HeaderStatsQueryResult = {
+  books: number
+  designers: number
+}
 
 // Source: ./src/sanity/queries/persons.ts
 // Variable: personQuery
@@ -534,6 +540,7 @@ declare module '@sanity/client' {
     "\n  *[_type == 'book' && slug.current == $slug][0]{\n    ...,\n    notes[],\n    designers[] -> {\n      name,\n      slug\n    },\n    authors[] -> {\n      name,\n      slug\n    },\n    illustrators[] -> {\n      name,\n      slug\n    },\n    artDirectors[] -> {\n      name,\n      slug\n    },\n    photographers[] -> {\n      name,\n      slug\n    },\n    images[] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n  }\n": BookQueryResult
     '\n  {\n    "books": *[_type == \'book\'] | order(datePublished desc) [$start...$end] {\n      ...,\n      notes[],\n      designers[] -> {\n        name\n      },\n      authors[] -> {\n        name\n      },\n      "cover": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    },\n    "total": count(*[_type == \'book\'])\n  }\n': BooksQueryResult
     "\n  count(*[_type == 'book'])\n": BookCountResult
+    '\n  {\n    "books": count(*[_type == \'book\']),\n    "designers": count(array::unique(*[_type == \'book\'].designers[]._ref))\n  }\n': HeaderStatsQueryResult
     '\n  *[_type == \'person\' && slug.current == $slug][0]{\n    ...,\n    "books": *[_type == "book" && references(^._id)] | order(datePublished desc)  {\n      _id,\n      slug,\n      title,\n      "cover": images[0] \n{\n  ...,\n  asset-> {\n    metadata {\n      lqip,\n      blurHash,\n      dimensions\n    },\n    originalFilename,\n    url\n  }\n}\n\n    }\n  }\n': PersonQueryResult
     "\n  *[_type == 'person'] {\n    slug,\n    _updatedAt\n  }\n": PeopleQueryResult
   }

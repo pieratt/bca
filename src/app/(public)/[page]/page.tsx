@@ -1,10 +1,7 @@
-import {sanityFetch} from '@/sanity/lib/live'
-import {client} from '@/sanity/lib/client'
-import {booksQuery, bookCount} from '@/sanity/queries'
+import {listBooksPage} from '@/data/catalog'
 import {notFound} from 'next/navigation'
 import {BOOK_INDEX_LIMIT} from '@/lib'
-import {BookIndex, Pagination} from '@/ui'
-import {range} from 'lodash-es'
+import {CoverGrid, Pagination} from '@/ui'
 
 type PageContextBundle = {
   params: Promise<{
@@ -14,47 +11,24 @@ type PageContextBundle = {
 
 export default async function Page(props: PageContextBundle) {
   const {page} = await props.params
-  try {
-    const {data} = await sanityFetch({
-      query: booksQuery,
-      params: {start: (Number(page) - 1) * BOOK_INDEX_LIMIT, end: Number(page) * BOOK_INDEX_LIMIT},
-    })
-    return (
-      <>
-        <BookIndex books={data.books} />
-        <Pagination page={Number(page)} total={data.total} />
-      </>
-    )
-  } catch {
-    console.error('unable to retrieve books')
-    notFound()
-  }
+  const pageNumber = Number(page)
+  if (!pageNumber || pageNumber < 2) notFound()
+
+  const {books, total} = await listBooksPage(pageNumber, BOOK_INDEX_LIMIT)
+  if (!books.length) notFound()
+
+  return (
+    <>
+      <CoverGrid books={books} />
+      <Pagination page={pageNumber} total={total} />
+    </>
+  )
 }
 
-// export async function generateMetadata() {
-// const {data} = await sanityFetch({
-//   query: pageQuery,
-//   params: {slug: 'home'},
-// })
-// if (!data?.metadata) throw new Error('page metadata not found')
-// const metadata = processMetadata(data.metadata, 'page')
-// return {
-//   ...metadata,
-//   // title: DEFAULT_SITE_TITLE,
-//   openGraph: {
-//     ...metadata.openGraph,
-//     // title: DEFAULT_SITE_TITLE,
-//   },
-//   alternates: {
-//     // canonical: BASE_URL,
-//   },
-// }
-// }
-
 export async function generateStaticParams() {
-  const total = await client.fetch(bookCount)
-  if (!total) {
-    throw new Error('unable to retrieve book count')
-  }
-  return range(2, Math.ceil(total / BOOK_INDEX_LIMIT)).map((n) => ({page: n.toString()}))
+  const {total} = await listBooksPage(1, BOOK_INDEX_LIMIT)
+  const pages = Math.ceil(total / BOOK_INDEX_LIMIT)
+  return Array.from({length: Math.max(pages - 1, 0)}, (_, index) => ({
+    page: String(index + 2),
+  }))
 }

@@ -1,43 +1,13 @@
-import {sanityFetch} from '@/sanity/lib/live'
-import {booksQuery} from '@/sanity/queries'
-import {notFound} from 'next/navigation'
+import {listBooksPage} from '@/data/catalog'
 import {BOOK_INDEX_LIMIT} from '@/lib'
-import {BookIndex, Pagination} from '@/ui'
+import {CoverGrid, Pagination} from '@/ui'
 
 export default async function Home() {
-  const {data} = await sanityFetch({
-    query: booksQuery,
-    params: {start: 0, end: BOOK_INDEX_LIMIT},
-  })
-  if (!data) {
-    console.error('unable to retrieve books')
-    notFound()
-  }
-
+  const {books, total} = await listBooksPage(1, BOOK_INDEX_LIMIT)
   return (
     <>
-      <BookIndex books={data.books} />
-      <Pagination page={1} total={data.total} />
+      <CoverGrid books={books} />
+      {total > BOOK_INDEX_LIMIT ? <Pagination page={1} total={total} /> : null}
     </>
   )
 }
-
-// export async function generateMetadata() {
-// const {data} = await sanityFetch({
-//   query: pageQuery,
-//   params: {slug: 'home'},
-// })
-// if (!data?.metadata) throw new Error('page metadata not found')
-// const metadata = processMetadata(data.metadata, 'page')
-// return {
-//   ...metadata,
-//   // title: DEFAULT_SITE_TITLE,
-//   openGraph: {
-//     ...metadata.openGraph,
-//     // title: DEFAULT_SITE_TITLE,
-//   },
-//   alternates: {
-//     // canonical: BASE_URL,
-//   },
-// }
-// }

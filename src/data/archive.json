@@ -1,0 +1,1565 @@
+{
+  "books": [
+    {
+      "slug": "absolution",
+      "title": "Absolution",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/558d2018ff1f0bc8b83652fa1f9ee2d564e2cc09-1000x1534.jpg",
+      "width": 1000,
+      "height": 1534,
+      "authors": [
+        {
+          "slug": "jeff-vandermeer",
+          "name": "Jeff VanderMeer"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "pablo-delcan",
+          "name": "Pablo Delcan"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Picador",
+      "isbn": "",
+      "genre": "science fiction",
+      "year": 2025
+    },
+    {
+      "slug": "tripping-on-utopia",
+      "title": "Tripping On Utopia",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/35259e6a780c90996aebe106dd622cfd34b036e7-994x1500.webp",
+      "width": 994,
+      "height": 1500,
+      "authors": [
+        {
+          "slug": "benjamin-breen",
+          "name": "Benjamin Breen"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "tyler-comrie",
+          "name": "Tyler Comrie"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "nonfiction",
+      "year": 2025
+    },
+    {
+      "slug": "the-culture",
+      "title": "The Culture",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/808ff34f24280ce5889a4c8546cf7c8d1ce748a6-950x1500.jpg",
+      "width": 950,
+      "height": 1500,
+      "authors": [],
+      "designers": [
+        {
+          "slug": "ben-prior",
+          "name": "Ben Prior"
+        },
+        {
+          "slug": "nico-taylor",
+          "name": "Nico Taylor"
+        }
+      ],
+      "illustrators": [
+        {
+          "slug": "julian-fischer",
+          "name": "Julian Fischer"
+        }
+      ],
+      "photographers": [],
+      "publisher": "Orbit Books",
+      "isbn": "",
+      "genre": "science fiction",
+      "year": 2025
+    },
+    {
+      "slug": "laserwriter-ii",
+      "title": "LaserWriter II",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/662a3e4a13cb6eea1862a0560698ae63cbdc29e0-667x1000.jpg",
+      "width": 667,
+      "height": 1000,
+      "authors": [
+        {
+          "slug": "tamara-shopsin",
+          "name": "Tamara Shopsin"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "tamara-shopsin",
+          "name": "Tamara Shopsin"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Farrar,Straus and Giroux",
+      "isbn": "9780374602574",
+      "genre": "fiction",
+      "year": 2021
+    },
+    {
+      "slug": "the-ghost-sequences",
+      "title": "The Ghost Sequences",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/52e46d6218b203675edf1beb94070f6bcf938edc-1650x2550.jpg",
+      "width": 1650,
+      "height": 2550,
+      "authors": [
+        {
+          "slug": "a-c-wise",
+          "name": "A. C. Wise"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "vince-haig",
+          "name": "Vince Haig"
+        }
+      ],
+      "illustrators": [
+        {
+          "slug": "olga-beliaeva",
+          "name": "Olga Beliaeva"
+        }
+      ],
+      "photographers": [],
+      "publisher": "Undertow Publications",
+      "isbn": "",
+      "genre": "",
+      "year": 2020
+    },
+    {
+      "slug": "tyll-ebook",
+      "title": "Tyll-ebook",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/541147c8d848aa53650892c31f1436450cd3097c-1200x1940.jpg",
+      "width": 1200,
+      "height": 1940,
+      "authors": [
+        {
+          "slug": "daniel-kehlmann",
+          "name": "Daniel Kehlmann"
+        }
+      ],
+      "designers": [],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "",
+      "year": 2009
+    },
+    {
+      "slug": "tyll",
+      "title": "Tyll",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/6ba04307f774a6e9862adf116d0dd5cdcf926438-1688x2550.jpg",
+      "width": 1688,
+      "height": 2550,
+      "authors": [
+        {
+          "slug": "daniel-kehlmann",
+          "name": "Daniel Kehlmann"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "tyler-comrie",
+          "name": "Tyler Comrie"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "nature-and-value",
+      "title": "Nature and Value",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/f98ea737eee1ea28e19c0d588946b258b49c437a-1622x2449.jpg",
+      "width": 1622,
+      "height": 2449,
+      "authors": [
+        {
+          "slug": "akeel-bilgrami",
+          "name": "Akeel Bilgrami"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "juliakushnirsky",
+          "name": "JuliaKushnirsky"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [
+        {
+          "slug": "andreas-feininger",
+          "name": "Andreas Feininger"
+        }
+      ],
+      "publisher": "",
+      "isbn": "",
+      "genre": "nonfiction",
+      "year": 2009
+    },
+    {
+      "slug": "the-everlasting",
+      "title": "The Everlasting",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/ddcf4928dcef9cf6df519137300d27354d07788a-2796x4228.jpg",
+      "width": 2796,
+      "height": 4228,
+      "authors": [
+        {
+          "slug": "katy-simpson-smith",
+          "name": "Katy Simpson Smith"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "robin-bilardello",
+          "name": "Robin Bilardello"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "9780062873644",
+      "genre": "",
+      "year": 2009
+    },
+    {
+      "slug": "dead-astronauts",
+      "title": "Dead Astronauts",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/265585cbedd88a33c83c203ef7633157fb50a495-1500x2250.jpg",
+      "width": 1500,
+      "height": 2250,
+      "authors": [
+        {
+          "slug": "jeff-vandermeer",
+          "name": "Jeff VanderMeer"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "rodrigo-corral",
+          "name": "Rodrigo Corral"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "978-0374276805",
+      "genre": "fiction",
+      "year": 2020
+    },
+    {
+      "slug": "the-psychopath-test",
+      "title": "The Psychopath Test",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/f0f72c244c6579d43c7e9eb76d5e0760d346af19-745x1122.jpg",
+      "width": 745,
+      "height": 1122,
+      "authors": [],
+      "designers": [
+        {
+          "slug": "matt-dorfman",
+          "name": "Matt Dorfman"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Riverhead Books",
+      "isbn": "978-1594485756",
+      "genre": "nonfiction",
+      "year": 2017
+    },
+    {
+      "slug": "the-book-of-strange-new-things",
+      "title": "The Book of Strange New Things",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/f3f1c3b575a09e58f8e3381642f5c1840b150c90-900x1362.jpg",
+      "width": 900,
+      "height": 1362,
+      "authors": [
+        {
+          "slug": "michel-faber",
+          "name": "Michel Faber"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "rafi-romaya",
+          "name": "Rafi Romaya"
+        }
+      ],
+      "illustrators": [
+        {
+          "slug": "yehrin-tong",
+          "name": "Yehrin Tong"
+        }
+      ],
+      "photographers": [],
+      "publisher": "Hogarth",
+      "isbn": "553418866",
+      "genre": "science fiction",
+      "year": 2016
+    },
+    {
+      "slug": "1000-black-umbrellas",
+      "title": "1000 Black Umbrellas",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/e1d128c7984c983270e24299c926ecf34b96d92d-384x595.jpg",
+      "width": 384,
+      "height": 595,
+      "authors": [
+        {
+          "slug": "daniel-mcginn",
+          "name": "Daniel McGinn"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "jennifer-heuer",
+          "name": "Jennifer Heuer"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Columbia University Press",
+      "isbn": "231158564",
+      "genre": "poetry",
+      "year": 2016
+    },
+    {
+      "slug": "time-travel-a-history",
+      "title": "Time Travel: A History",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/897bfd0e810e8c921d3d68b26fc68d2f40bd966a-1045x1291.jpg",
+      "width": 1045,
+      "height": 1291,
+      "authors": [
+        {
+          "slug": "james-gleick",
+          "name": "James Gleick"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "peter-mendelsund",
+          "name": "Peter Mendelsund"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "the-essential-goethe",
+      "title": "The Essential Goethe",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/7362be2df9956cf893c49886152cd9d541540b40-1718x2560.jpg",
+      "width": 1718,
+      "height": 2560,
+      "authors": [
+        {
+          "slug": "johann-wolfgang-von-goethe",
+          "name": "Johann Wolfgang von Goethe"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "chris-ferrante",
+          "name": "Chris Ferrante"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Princeton University Press",
+      "isbn": "",
+      "genre": "",
+      "year": 2016
+    },
+    {
+      "slug": "all-things-cease-to-appear",
+      "title": "All Things Cease to Appear",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/2d7e6910c09e54e137be9024ed04966e058fb9ce-739x1135.png",
+      "width": 739,
+      "height": 1135,
+      "authors": [
+        {
+          "slug": "elizabeth-brundage",
+          "name": "Elizabeth Brundage"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "mario-hugo",
+          "name": "Mario Hugo"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Knopf",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2016
+    },
+    {
+      "slug": "version-control",
+      "title": "Version Control",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/426a01e8fc60674705271f04faba388292cab55e-1682x2560.jpg",
+      "width": 1682,
+      "height": 2560,
+      "authors": [
+        {
+          "slug": "dexter-palmer",
+          "name": "Dexter Palmer"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "janet-hansen",
+          "name": "Janet Hansen"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Pantheon",
+      "isbn": "307907597",
+      "genre": "science fiction",
+      "year": 2010
+    },
+    {
+      "slug": "alena-a-novel",
+      "title": "Alena: A Novel",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/e29643dd00fc9375a7b1a0d296549fe4e99d1f15-657x1030.jpg",
+      "width": 657,
+      "height": 1030,
+      "authors": [
+        {
+          "slug": "rachel-pastan",
+          "name": "Rachel Pastan"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "abby-weintraub",
+          "name": "Abby Weintraub"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Riverhead Books",
+      "isbn": "1594632928",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "birds-of-america-stories",
+      "title": "Birds of America: Stories",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/b2466edab57d1f688dfc38eaa8c870181cc2173e-350x521.jpg",
+      "width": 350,
+      "height": 521,
+      "authors": [
+        {
+          "slug": "lorrie-moore",
+          "name": "Lorrie Moore"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "barbara-dewilde",
+          "name": "Barbara deWilde"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Knopf",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "witches-of-america",
+      "title": "Witches of America",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/9f78b3d912c524908174b189acdedf605e13bd1e-1314x1944.jpg",
+      "width": 1314,
+      "height": 1944,
+      "authors": [
+        {
+          "slug": "alex-mar",
+          "name": "Alex Mar"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "rachel-willey",
+          "name": "Rachel Willey"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Farrar, Straus and Giroux",
+      "isbn": "374291373",
+      "genre": "nonfiction",
+      "year": 2009
+    },
+    {
+      "slug": "the-visible-man-a-novel",
+      "title": "The Visible Man: A Novel",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/d80583c48da3d899f358a3b8e5608d05e2f84ecf-657x1010.jpg",
+      "width": 657,
+      "height": 1010,
+      "authors": [
+        {
+          "slug": "chuck-klosterman",
+          "name": "Chuck Klosterman"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "paul-sahre",
+          "name": "Paul Sahre"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [
+        {
+          "slug": "paul-sahre",
+          "name": "Paul Sahre"
+        }
+      ],
+      "publisher": "Scribner",
+      "isbn": "143918447X",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "a-midsummer-nights-dream",
+      "title": "A Midsummer Night’s Dream",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/ada49404c7db88d0ffc44c173c2f1d2ef4399ac3-566x862.jpg",
+      "width": 566,
+      "height": 862,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "king-lear",
+      "title": "King Lear",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/3103910f299b753237a821ce311414c0ce550945-862x1320.jpg",
+      "width": 862,
+      "height": 1320,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "romeo-and-juliet",
+      "title": "Romeo and Juliet",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/c6a44e3915533e43572928f2bef800d7efe762a5-566x866.jpg",
+      "width": 566,
+      "height": 866,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "hamlet",
+      "title": "Hamlet",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/803d1cc1faab8068c6db6cbedbc24778d21d9f7c-862x1318.jpg",
+      "width": 862,
+      "height": 1318,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "the-twelfth-night",
+      "title": "The Twelfth Night",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/62748dc329ac4d4c3f3933d7bed954afabf2422d-566x862.jpg",
+      "width": 566,
+      "height": 862,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "othello",
+      "title": "Othello",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/5b213b43f3c662828f0cb21f560b367b6b454446-862x1308.jpg",
+      "width": 862,
+      "height": 1308,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "macbeth",
+      "title": "Macbeth",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/80894d2aaf5f019b061977d9b6407dc154714032-1000x1531.jpg",
+      "width": 1000,
+      "height": 1531,
+      "authors": [
+        {
+          "slug": "william-shakespeare",
+          "name": "William Shakespeare"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "manuja-waldia",
+          "name": "Manuja Waldia"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Penguin Classics",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "thats-when-the-knives-come-down",
+      "title": "That&#x27;s When the Knives Come Down",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/e5933168ce6f853845bd8501709155751002bbb0-640x1024.jpg",
+      "width": 640,
+      "height": 1024,
+      "authors": [
+        {
+          "slug": "dolan-morgan",
+          "name": "Dolan Morgan"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "alban-fischer",
+          "name": "Alban Fischer"
+        }
+      ],
+      "illustrators": [
+        {
+          "slug": "eric-amling",
+          "name": "Eric Amling"
+        }
+      ],
+      "photographers": [],
+      "publisher": "Aforementioned Productions",
+      "isbn": "1941143008",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "black-transparency-the-right-to-know-in-the-age-of-mass-surveillance",
+      "title": "Black Transparency: The Right to Know in the Age of Mass Surveillance",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/5519c1e9502151dd081b4141e548a38517120a97-364x569.jpg",
+      "width": 364,
+      "height": 569,
+      "authors": [
+        {
+          "slug": "metahaven",
+          "name": "Metahaven"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "metahaven",
+          "name": "Metahaven"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Sternberg Press",
+      "isbn": "",
+      "genre": "nonfiction",
+      "year": 2009
+    },
+    {
+      "slug": "the-sellout",
+      "title": "The Sellout",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/e873cde69b52a09682426c7db4235837caf04bed-499x750.png",
+      "width": 499,
+      "height": 750,
+      "authors": [
+        {
+          "slug": "paul-beatty",
+          "name": "Paul Beatty"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "rodrigo-corral",
+          "name": "Rodrigo Corral"
+        }
+      ],
+      "illustrators": [
+        {
+          "slug": "matt-buck",
+          "name": "Matt Buck"
+        }
+      ],
+      "photographers": [],
+      "publisher": "Farrar",
+      "isbn": "374260508",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "the-reason-for-flowers",
+      "title": "The Reason for Flowers",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/3e70141d4f8154dda1cc9f70cbd2f91829941e49-655x992.jpg",
+      "width": 655,
+      "height": 992,
+      "authors": [
+        {
+          "slug": "stephen-buchmann",
+          "name": "Stephen Buchmann"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "tal-goretsky",
+          "name": "Tal Goretsky"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "",
+      "isbn": "",
+      "genre": "nonfiction",
+      "year": 2009
+    },
+    {
+      "slug": "mr-penumbras-24-hour-bookstore-a-novel",
+      "title": "Mr. Penumbra&#x27;s 24-Hour Bookstore: A Novel",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/8dd705ab1c0b859852fe23da520458ecad0d4af4-1400x2100.jpg",
+      "width": 1400,
+      "height": 2100,
+      "authors": [
+        {
+          "slug": "robin-sloan",
+          "name": "Robin Sloan"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "rodrigo-corral",
+          "name": "Rodrigo Corral"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "826DC",
+      "isbn": "1250037751",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "cancer-ward",
+      "title": "Cancer Ward",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/786939f62c07652386fd2f4b26ffcedb7b9cb024-667x1000.jpg",
+      "width": 667,
+      "height": 1000,
+      "authors": [
+        {
+          "slug": "aleksandr-i-solzhenitsyn",
+          "name": "Aleksandr I. Solzhenitsyn"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "oliver-munday",
+          "name": "Oliver Munday"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Farrar, Straus and Giroux",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2009
+    },
+    {
+      "slug": "hippias-minor",
+      "title": "Hippias Minor",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/3ee8665238da1a06e741672549b4f0d2d1057a28-1500x2250.jpg",
+      "width": 1500,
+      "height": 2250,
+      "authors": [
+        {
+          "slug": "plato",
+          "name": "Plato"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "courtney-andujar",
+          "name": "Courtney Andujar"
+        }
+      ],
+      "illustrators": [
+        {
+          "slug": "paul-chan",
+          "name": "Paul Chan"
+        }
+      ],
+      "photographers": [],
+      "publisher": "Badlands Unlimited",
+      "isbn": "",
+      "genre": "nonfiction",
+      "year": 2015
+    },
+    {
+      "slug": "blood-splatters-quickly",
+      "title": "Blood Splatters Quickly",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/6c3d7d92db834855c1a10572f52e075823fcea4d-750x1050.png",
+      "width": 750,
+      "height": 1050,
+      "authors": [
+        {
+          "slug": "edward-d-wood-jr",
+          "name": "Edward D. Wood, Jr."
+        }
+      ],
+      "designers": [
+        {
+          "slug": "courtney-andujar",
+          "name": "Courtney Andujar"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "OR Books",
+      "isbn": "",
+      "genre": "fiction",
+      "year": 2015
+    },
+    {
+      "slug": "cunning-plans",
+      "title": "Cunning Plans",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/519e029f77f4f6267893a7042eca6b6251b79354-600x900.jpg",
+      "width": 600,
+      "height": 900,
+      "authors": [
+        {
+          "slug": "warren-ellis",
+          "name": "Warren Ellis"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "roger-strunk",
+          "name": "Roger Strunk"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "826DC",
+      "isbn": "",
+      "genre": "nonfiction",
+      "year": 2009
+    },
+    {
+      "slug": "area-x",
+      "title": "Area X",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/61e347594e6ee2ed613027b213a0d2be9eace3e3-1400x1862.jpg",
+      "width": 1400,
+      "height": 1862,
+      "authors": [
+        {
+          "slug": "jeff-vandermeer",
+          "name": "Jeff VanderMeer"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "rodrigo-corral",
+          "name": "Rodrigo Corral"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Farrar, Straus and Giroux",
+      "isbn": "374261172",
+      "genre": "science fiction",
+      "year": 2009
+    },
+    {
+      "slug": "fullblood-arabian",
+      "title": "Fullblood Arabian",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/d6add086077ccc46ff6464b54a47719a34e16897-800x1200.jpg",
+      "width": 800,
+      "height": 1200,
+      "authors": [],
+      "designers": [
+        {
+          "slug": "paul-sahre",
+          "name": "Paul Sahre"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "New Directions",
+      "isbn": "811221768",
+      "genre": "poetry",
+      "year": 2015
+    },
+    {
+      "slug": "the-utopia-of-rules",
+      "title": "The Utopia of Rules",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/b0ad5d4c36f84757cfbe4073e595534d8563ab3e-986x1500.jpg",
+      "width": 986,
+      "height": 1500,
+      "authors": [
+        {
+          "slug": "david-graeber",
+          "name": "David Graeber"
+        }
+      ],
+      "designers": [],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Melville House",
+      "isbn": "1612193749",
+      "genre": "nonfiction",
+      "year": 2015
+    },
+    {
+      "slug": "milk",
+      "title": "Milk",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/8a53003f5e0fd90de62e507cab490bcd3e7d535c-780x1051.jpg",
+      "width": 780,
+      "height": 1051,
+      "authors": [
+        {
+          "slug": "anne-mendelson",
+          "name": "Anne Mendelson"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "barbara-dewilde",
+          "name": "Barbara deWilde"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Knopf",
+      "isbn": "1400044103",
+      "genre": "nonfiction",
+      "year": 2011
+    },
+    {
+      "slug": "winchell",
+      "title": "Winchell",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/6f43d29f38f03403810b2acf1ef15aa914015887-325x500.jpg",
+      "width": 325,
+      "height": 500,
+      "authors": [
+        {
+          "slug": "neal-gabler",
+          "name": "Neal Gabler"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "barbara-dewilde",
+          "name": "Barbara deWilde"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Vintage",
+      "isbn": "679764399",
+      "genre": "biographies-and-memoires",
+      "year": 2011
+    },
+    {
+      "slug": "adland",
+      "title": "Adland",
+      "cover": "https://cdn.sanity.io/images/ps8jihhe/production/06ecf467dec5c66fa5855c619e16436c7595381b-324x500.jpg",
+      "width": 324,
+      "height": 500,
+      "authors": [
+        {
+          "slug": "james-p-othmer",
+          "name": "James P. Othmer"
+        }
+      ],
+      "designers": [
+        {
+          "slug": "matt-dorfman",
+          "name": "Matt Dorfman"
+        }
+      ],
+      "illustrators": [],
+      "photographers": [],
+      "publisher": "Anchor",
+      "isbn": "767928970",
+      "genre": "nonfiction",
+      "year": 2009
+    }
+  ],
+  "people": [
+    {
+      "slug": "jeff-vandermeer",
+      "name": "Jeff VanderMeer",
+      "bookSlugs": [
+        "absolution",
+        "dead-astronauts",
+        "area-x"
+      ]
+    },
+    {
+      "slug": "pablo-delcan",
+      "name": "Pablo Delcan",
+      "bookSlugs": [
+        "absolution"
+      ]
+    },
+    {
+      "slug": "benjamin-breen",
+      "name": "Benjamin Breen",
+      "bookSlugs": [
+        "tripping-on-utopia"
+      ]
+    },
+    {
+      "slug": "tyler-comrie",
+      "name": "Tyler Comrie",
+      "bookSlugs": [
+        "tripping-on-utopia",
+        "tyll"
+      ]
+    },
+    {
+      "slug": "ben-prior",
+      "name": "Ben Prior",
+      "bookSlugs": [
+        "the-culture"
+      ]
+    },
+    {
+      "slug": "nico-taylor",
+      "name": "Nico Taylor",
+      "bookSlugs": [
+        "the-culture"
+      ]
+    },
+    {
+      "slug": "julian-fischer",
+      "name": "Julian Fischer",
+      "bookSlugs": [
+        "the-culture"
+      ]
+    },
+    {
+      "slug": "tamara-shopsin",
+      "name": "Tamara Shopsin",
+      "bookSlugs": [
+        "laserwriter-ii"
+      ]
+    },
+    {
+      "slug": "a-c-wise",
+      "name": "A. C. Wise",
+      "bookSlugs": [
+        "the-ghost-sequences"
+      ]
+    },
+    {
+      "slug": "vince-haig",
+      "name": "Vince Haig",
+      "bookSlugs": [
+        "the-ghost-sequences"
+      ]
+    },
+    {
+      "slug": "olga-beliaeva",
+      "name": "Olga Beliaeva",
+      "bookSlugs": [
+        "the-ghost-sequences"
+      ]
+    },
+    {
+      "slug": "daniel-kehlmann",
+      "name": "Daniel Kehlmann",
+      "bookSlugs": [
+        "tyll-ebook",
+        "tyll"
+      ]
+    },
+    {
+      "slug": "akeel-bilgrami",
+      "name": "Akeel Bilgrami",
+      "bookSlugs": [
+        "nature-and-value"
+      ]
+    },
+    {
+      "slug": "juliakushnirsky",
+      "name": "JuliaKushnirsky",
+      "bookSlugs": [
+        "nature-and-value"
+      ]
+    },
+    {
+      "slug": "andreas-feininger",
+      "name": "Andreas Feininger",
+      "bookSlugs": [
+        "nature-and-value"
+      ]
+    },
+    {
+      "slug": "katy-simpson-smith",
+      "name": "Katy Simpson Smith",
+      "bookSlugs": [
+        "the-everlasting"
+      ]
+    },
+    {
+      "slug": "robin-bilardello",
+      "name": "Robin Bilardello",
+      "bookSlugs": [
+        "the-everlasting"
+      ]
+    },
+    {
+      "slug": "rodrigo-corral",
+      "name": "Rodrigo Corral",
+      "bookSlugs": [
+        "dead-astronauts",
+        "the-sellout",
+        "mr-penumbras-24-hour-bookstore-a-novel",
+        "area-x"
+      ]
+    },
+    {
+      "slug": "matt-dorfman",
+      "name": "Matt Dorfman",
+      "bookSlugs": [
+        "the-psychopath-test",
+        "adland"
+      ]
+    },
+    {
+      "slug": "michel-faber",
+      "name": "Michel Faber",
+      "bookSlugs": [
+        "the-book-of-strange-new-things"
+      ]
+    },
+    {
+      "slug": "rafi-romaya",
+      "name": "Rafi Romaya",
+      "bookSlugs": [
+        "the-book-of-strange-new-things"
+      ]
+    },
+    {
+      "slug": "yehrin-tong",
+      "name": "Yehrin Tong",
+      "bookSlugs": [
+        "the-book-of-strange-new-things"
+      ]
+    },
+    {
+      "slug": "daniel-mcginn",
+      "name": "Daniel McGinn",
+      "bookSlugs": [
+        "1000-black-umbrellas"
+      ]
+    },
+    {
+      "slug": "jennifer-heuer",
+      "name": "Jennifer Heuer",
+      "bookSlugs": [
+        "1000-black-umbrellas"
+      ]
+    },
+    {
+      "slug": "james-gleick",
+      "name": "James Gleick",
+      "bookSlugs": [
+        "time-travel-a-history"
+      ]
+    },
+    {
+      "slug": "peter-mendelsund",
+      "name": "Peter Mendelsund",
+      "bookSlugs": [
+        "time-travel-a-history"
+      ]
+    },
+    {
+      "slug": "johann-wolfgang-von-goethe",
+      "name": "Johann Wolfgang von Goethe",
+      "bookSlugs": [
+        "the-essential-goethe"
+      ]
+    },
+    {
+      "slug": "chris-ferrante",
+      "name": "Chris Ferrante",
+      "bookSlugs": [
+        "the-essential-goethe"
+      ]
+    },
+    {
+      "slug": "elizabeth-brundage",
+      "name": "Elizabeth Brundage",
+      "bookSlugs": [
+        "all-things-cease-to-appear"
+      ]
+    },
+    {
+      "slug": "mario-hugo",
+      "name": "Mario Hugo",
+      "bookSlugs": [
+        "all-things-cease-to-appear"
+      ]
+    },
+    {
+      "slug": "dexter-palmer",
+      "name": "Dexter Palmer",
+      "bookSlugs": [
+        "version-control"
+      ]
+    },
+    {
+      "slug": "janet-hansen",
+      "name": "Janet Hansen",
+      "bookSlugs": [
+        "version-control"
+      ]
+    },
+    {
+      "slug": "rachel-pastan",
+      "name": "Rachel Pastan",
+      "bookSlugs": [
+        "alena-a-novel"
+      ]
+    },
+    {
+      "slug": "abby-weintraub",
+      "name": "Abby Weintraub",
+      "bookSlugs": [
+        "alena-a-novel"
+      ]
+    },
+    {
+      "slug": "lorrie-moore",
+      "name": "Lorrie Moore",
+      "bookSlugs": [
+        "birds-of-america-stories"
+      ]
+    },
+    {
+      "slug": "barbara-dewilde",
+      "name": "Barbara deWilde",
+      "bookSlugs": [
+        "birds-of-america-stories",
+        "milk",
+        "winchell"
+      ]
+    },
+    {
+      "slug": "alex-mar",
+      "name": "Alex Mar",
+      "bookSlugs": [
+        "witches-of-america"
+      ]
+    },
+    {
+      "slug": "rachel-willey",
+      "name": "Rachel Willey",
+      "bookSlugs": [
+        "witches-of-america"
+      ]
+    },
+    {
+      "slug": "chuck-klosterman",
+      "name": "Chuck Klosterman",
+      "bookSlugs": [
+        "the-visible-man-a-novel"
+      ]
+    },
+    {
+      "slug": "paul-sahre",
+      "name": "Paul Sahre",
+      "bookSlugs": [
+        "the-visible-man-a-novel",
+        "fullblood-arabian"
+      ]
+    },
+    {
+      "slug": "william-shakespeare",
+      "name": "William Shakespeare",
+      "bookSlugs": [
+        "a-midsummer-nights-dream",
+        "king-lear",
+        "romeo-and-juliet",
+        "hamlet",
+        "the-twelfth-night",
+        "othello",
+        "macbeth"
+      ]
+    },
+    {
+      "slug": "manuja-waldia",
+      "name": "Manuja Waldia",
+      "bookSlugs": [
+        "a-midsummer-nights-dream",
+        "king-lear",
+        "romeo-and-juliet",
+        "hamlet",
+        "the-twelfth-night",
+        "othello",
+        "macbeth"
+      ]
+    },
+    {
+      "slug": "dolan-morgan",
+      "name": "Dolan Morgan",
+      "bookSlugs": [
+        "thats-when-the-knives-come-down"
+      ]
+    },
+    {
+      "slug": "alban-fischer",
+      "name": "Alban Fischer",
+      "bookSlugs": [
+        "thats-when-the-knives-come-down"
+      ]
+    },
+    {
+      "slug": "eric-amling",
+      "name": "Eric Amling",
+      "bookSlugs": [
+        "thats-when-the-knives-come-down"
+      ]
+    },
+    {
+      "slug": "metahaven",
+      "name": "Metahaven",
+      "bookSlugs": [
+        "black-transparency-the-right-to-know-in-the-age-of-mass-surveillance"
+      ]
+    },
+    {
+      "slug": "paul-beatty",
+      "name": "Paul Beatty",
+      "bookSlugs": [
+        "the-sellout"
+      ]
+    },
+    {
+      "slug": "matt-buck",
+      "name": "Matt Buck",
+      "bookSlugs": [
+        "the-sellout"
+      ]
+    },
+    {
+      "slug": "stephen-buchmann",
+      "name": "Stephen Buchmann",
+      "bookSlugs": [
+        "the-reason-for-flowers"
+      ]
+    },
+    {
+      "slug": "tal-goretsky",
+      "name": "Tal Goretsky",
+      "bookSlugs": [
+        "the-reason-for-flowers"
+      ]
+    },
+    {
+      "slug": "robin-sloan",
+      "name": "Robin Sloan",
+      "bookSlugs": [
+        "mr-penumbras-24-hour-bookstore-a-novel"
+      ]
+    },
+    {
+      "slug": "aleksandr-i-solzhenitsyn",
+      "name": "Aleksandr I. Solzhenitsyn",
+      "bookSlugs": [
+        "cancer-ward"
+      ]
+    },
+    {
+      "slug": "oliver-munday",
+      "name": "Oliver Munday",
+      "bookSlugs": [
+        "cancer-ward"
+      ]
+    },
+    {
+      "slug": "plato",
+      "name": "Plato",
+      "bookSlugs": [
+        "hippias-minor"
+      ]
+    },
+    {
+      "slug": "courtney-andujar",
+      "name": "Courtney Andujar",
+      "bookSlugs": [
+        "hippias-minor",
+        "blood-splatters-quickly"
+      ]
+    },
+    {
+      "slug": "paul-chan",
+      "name": "Paul Chan",
+      "bookSlugs": [
+        "hippias-minor"
+      ]
+    },
+    {
+      "slug": "edward-d-wood-jr",
+      "name": "Edward D. Wood, Jr.",
+      "bookSlugs": [
+        "blood-splatters-quickly"
+      ]
+    },
+    {
+      "slug": "warren-ellis",
+      "name": "Warren Ellis",
+      "bookSlugs": [
+        "cunning-plans"
+      ]
+    },
+    {
+      "slug": "roger-strunk",
+      "name": "Roger Strunk",
+      "bookSlugs": [
+        "cunning-plans"
+      ]
+    },
+    {
+      "slug": "david-graeber",
+      "name": "David Graeber",
+      "bookSlugs": [
+        "the-utopia-of-rules"
+      ]
+    },
+    {
+      "slug": "anne-mendelson",
+      "name": "Anne Mendelson",
+      "bookSlugs": [
+        "milk"
+      ]
+    },
+    {
+      "slug": "neal-gabler",
+      "name": "Neal Gabler",
+      "bookSlugs": [
+        "winchell"
+      ]
+    },
+    {
+      "slug": "james-p-othmer",
+      "name": "James P. Othmer",
+      "bookSlugs": [
+        "adland"
+      ]
+    }
+  ]
+}

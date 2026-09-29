@@ -9,7 +9,7 @@ export const Pagination = ({page, total}: {page: number; total: number}) => (
       books {(page - 1) * BOOK_INDEX_LIMIT} through {page * BOOK_INDEX_LIMIT - 1}
     </p>
     <Pages>
-      {range(1, Math.ceil(total / BOOK_INDEX_LIMIT)).map((i) => (
+      {range(1, Math.ceil(total / BOOK_INDEX_LIMIT) + 1).map((i) => (
         <li key={`page-${i}`} className={page === i ? 'active' : ''}>
           <NextLink href={`/${i === 1 ? '' : i}`}>{i}</NextLink>
         </li>

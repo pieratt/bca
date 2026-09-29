@@ -1,9 +1,6 @@
 import type {Metadata} from 'next'
 import {Work_Sans} from 'next/font/google'
-import {SanityLive, sanityFetch} from '@/sanity/lib/live'
-// import {navigationQuery} from '@/sanity/queries'
-import {draftMode} from 'next/headers'
-import {DisableDraftMode, Header, Footer} from '@/ui'
+import {ArchiveIndex, Footer, Header} from '@/ui'
 import '@/theme/legacy.scss'
 
 const sans = Work_Sans({
@@ -21,22 +18,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const drafts = await draftMode()
-
-  // const {data: header} = await sanityFetch({
-  //   query: navigationQuery,
-  //   params: {slug: 'header'},
-  // })
-  //
-  // const {data: footer} = await sanityFetch({
-  //   query: navigationQuery,
-  //   params: {slug: 'footer'},
-  // })
-  //
-  // if (!header || !footer) {
-  //   throw new Error('unable to retrieve navigation data')
-  // }
-
   return (
     <html lang="en">
       <head>
@@ -63,13 +44,7 @@ export default async function RootLayout({
           {children}
           <Footer />
         </div>
-        <div id="ur_footer"></div>
-        <SanityLive />
-        {drafts.isEnabled && (
-          <>
-            <DisableDraftMode />
-          </>
-        )}
+        <ArchiveIndex />
       </body>
     </html>
   )

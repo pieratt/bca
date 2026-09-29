@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum CreditRole {
+  AUTHOR
+  DESIGNER
+  ILLUSTRATOR
+  ART_DIRECTOR
+  PHOTOGRAPHER
+}
+
+model Person {
+  id        String       @id @default(cuid())
+  name      String
+  slug      String       @unique
+  homepage  String?
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  credits   BookCredit[]
+}
+
+model Genre {
+  id    String @id @default(cuid())
+  name  String
+  slug  String @unique
+  books Book[]
+}
+
+model Typeface {
+  id    String         @id @default(cuid())
+  name  String
+  slug  String         @unique
+  url   String?
+  books BookTypeface[]
+}
+
+model Book {
+  id            String         @id @default(cuid())
+  title         String
+  slug          String         @unique
+  datePublished DateTime?
+  isbn          String?
+  publisher     String?
+  year          Int?
+  notes         String?
+  legacyId      String?        @unique
+  genreId       String?
+  genre         Genre?         @relation(fields: [genreId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  images        BookImage[]
+  credits       BookCredit[]
+  typefaces     BookTypeface[]
+}
+
+model BookImage {
+  id       String @id @default(cuid())
+  bookId   String
+  book     Book   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  url      String
+  width    Int?
+  height   Int?
+  position Int    @default(0)
+}
+
+model BookCredit {
+  id       String     @id @default(cuid())
+  bookId   String
+  personId String
+  role     CreditRole
+  position Int        @default(0)
+  book     Book       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  person   Person     @relation(fields: [personId], references: [id], onDelete: Cascade)
+
+  @@unique([bookId, personId, role])
+}
+
+model BookTypeface {
+  bookId     String
+  typefaceId String
+  book       Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  typeface   Typeface @relation(fields: [typefaceId], references: [id], onDelete: Cascade)
+
+  @@id([bookId, typefaceId])
+}

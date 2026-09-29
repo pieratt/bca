@@ -35,6 +35,9 @@
       "@/lib": [
         "./src/lib"
       ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
       "@/theme/*": [
         "./src/theme/*"
       ],
@@ -43,6 +46,9 @@
       ],
       "@/sanity/*": [
         "./src/sanity/*"
+      ],
+      "@/data/*": [
+        "./src/data/*"
       ]
     }
   },

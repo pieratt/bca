@@ -1,19 +1,15 @@
-import {sanityFetch} from '@/sanity/lib/live'
-import books from '@/generated/books.json'
-import {sample} from 'lodash-es'
-import {bookQuery} from '@/sanity/queries'
+import {listBooksPage, getBookPageData} from '@/data/catalog'
 import {BookPage} from '@/ui'
 
 export default async function NotFoundPage() {
-  const randomBook = sample(books)
-  const {data: book} = await sanityFetch({
-    query: bookQuery,
-    params: {slug: randomBook?.slug},
-  })
+  const {books} = await listBooksPage(1, 20)
+  const pick = books[Math.floor(Math.random() * Math.max(books.length, 1))]
+  const book = pick ? await getBookPageData(pick.slug) : null
+
   return (
     <>
       <h1 className="not-found">Not found. Here’s a random book.</h1>
-      <BookPage book={book} />
+      {book ? <BookPage book={book} /> : null}
     </>
   )
 }

@@ -1,2 +1,2 @@
-export {bookQuery, booksQuery, bookCount} from './books'
+export {bookQuery, booksQuery, bookCount, headerStatsQuery} from './books'
 export {personQuery, peopleQuery} from './persons'
