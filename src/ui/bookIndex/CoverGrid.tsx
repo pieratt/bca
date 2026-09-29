@@ -2,25 +2,6 @@ import {styled} from '@linaria/react'
 import type {LocalBook} from '@/data/archive'
 import {FluidThumbGrid, HomeCoverGrid} from './HomeCoverGrid'
 
-const shuffle = <T,>(items: T[]): T[] => {
-  const next = [...items]
-  for (let i = next.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    const current = next[i]
-    next[i] = next[j]
-    next[j] = current
-  }
-  return next
-}
-
-const FEATURED_POOL = 16
-
-const featuredPoolFor = (books: LocalBook[]) => {
-  const latest = books[0]
-  if (!latest) return []
-  return [latest, ...shuffle(books.slice(1)).slice(0, FEATURED_POOL - 1)]
-}
-
 export const CoverGrid = ({
   books,
   heading,
@@ -32,11 +13,7 @@ export const CoverGrid = ({
 }) => (
   <Main role="main" className={heading ? 'interior' : undefined}>
     {heading ? <Heading>{heading}</Heading> : null}
-    {featured ? (
-      <HomeCoverGrid books={books.slice(1)} featuredPool={featuredPoolFor(books)} />
-    ) : (
-      <FluidThumbGrid books={books} />
-    )}
+    {featured ? <HomeCoverGrid books={books} /> : <FluidThumbGrid books={books} />}
   </Main>
 )
 

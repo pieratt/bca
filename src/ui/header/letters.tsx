@@ -41,6 +41,8 @@ const GLYPHS = {
   },
 } as const
 
+export {GLYPHS}
+
 export type HeaderLetter = keyof typeof GLYPHS
 
 export const LetterGlyph = ({letter}: {letter: HeaderLetter}) => {

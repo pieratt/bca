@@ -195,7 +195,7 @@ export async function getHeaderStats() {
 export type IndexPerson = LocalPerson & {count: number; cover?: string; covers: string[]}
 export type IndexGenre = {name: string; slug: string; count: number; cover?: string; covers: string[]}
 
-const MAX_INDEX_COVERS = 5
+const MAX_INDEX_COVERS = 1
 
 const pushCover = (covers: string[], cover?: string | null) => {
   if (!cover || covers.includes(cover) || covers.length >= MAX_INDEX_COVERS) return

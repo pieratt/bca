@@ -17,7 +17,7 @@ export const ArchiveIndex = async () => {
     <Bar>
       <Index>
         <Group>
-          <Spread>Genre</Spread>
+          <Spread>Genres</Spread>
           <CountedList
             items={genres.map((genre) => ({
               name: genre.name,
@@ -30,7 +30,7 @@ export const ArchiveIndex = async () => {
         </Group>
 
         <Group>
-          <Spread>Designer</Spread>
+          <Spread>Designers</Spread>
           <CountedList
             items={designers.map((person) => ({
               name: person.name,
@@ -43,7 +43,7 @@ export const ArchiveIndex = async () => {
         </Group>
 
         <Group>
-          <Spread>Illustrator</Spread>
+          <Spread>Illustrators</Spread>
           <CountedList
             items={illustrators.map((person) => ({
               name: person.name,
@@ -73,6 +73,7 @@ export const ArchiveIndex = async () => {
 }
 
 const Bar = styled.div`
+  --row: 24px;
   background: #000;
   color: #fff;
   width: 100%;
@@ -85,14 +86,19 @@ const Bar = styled.div`
 
   h2 {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin: 0 0 16px;
+    box-sizing: border-box;
+    height: var(--row);
+    margin: 0;
+    padding: 0;
     color: #fff;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
     letter-spacing: 0;
-    line-height: 1.2;
+    line-height: var(--row);
     text-transform: uppercase;
+    break-inside: avoid;
     break-after: avoid;
   }
 
@@ -113,48 +119,46 @@ const Bar = styled.div`
 
   li a,
   li > span {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
-    padding: 10px 0;
+    height: var(--row);
+    padding: 0;
     color: #fff;
     font-size: 11px;
     font-weight: 400;
-    line-height: 1.35;
+    line-height: var(--row);
     text-decoration: none;
-    text-transform: capitalize;
-    border-bottom: 1px solid rgb(255 255 255 / 0.14);
+    text-transform: none;
   }
 
+  li.is-open a,
+  li.is-open > span,
   li a:hover,
   li > span:hover {
-    border-bottom-color: transparent;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+
+  li.is-open .name,
+  li a:hover .name,
+  li > span:hover .name {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-between;
   }
 `
 
 const Index = styled.div`
-  column-count: 1;
+  column-width: 160px;
   column-gap: 24px;
-
-  @media only screen and (min-width: 648px) {
-    column-count: 2;
-    column-gap: 28px;
-  }
-
-  @media only screen and (min-width: 945px) {
-    column-count: 3;
-    column-gap: 32px;
-  }
-
-  @media only screen and (min-width: 1400px) {
-    column-count: 4;
-    column-gap: 36px;
-  }
 `
 
 const Group = styled.div`
   min-width: 0;
 
   & + & {
-    margin-top: 144px;
+    margin-top: calc(var(--row) * 2);
   }
 `

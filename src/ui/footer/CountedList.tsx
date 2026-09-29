@@ -12,8 +12,6 @@ export type CountedEntry = {
   covers?: string[]
 }
 
-const MIN_VISIBLE_COUNT = 2
-
 type Preview = {
   covers: string[]
   top: number
@@ -22,19 +20,17 @@ type Preview = {
 }
 
 export const CountedList = ({items}: {items: CountedEntry[]}) => {
-  const [showAll, setShowAll] = useState(false)
   const [preview, setPreview] = useState<Preview | null>(null)
-  const featured = items.filter((item) => item.count >= MIN_VISIBLE_COUNT)
-  const hidden = items.filter((item) => item.count < MIN_VISIBLE_COUNT)
-  const visible = showAll ? items : featured
+  const [hoverKey, setHoverKey] = useState<string | null>(null)
 
   const coversFor = (item: CountedEntry) => {
     const next = item.covers?.filter(Boolean) ?? []
     if (!next.length && item.cover) next.push(item.cover)
-    return next.slice(0, 5)
+    return next.slice(0, 1)
   }
 
   const showPreview = (item: CountedEntry, event: MouseEvent<HTMLElement>) => {
+    setHoverKey(item.href ?? item.name)
     const covers = coversFor(item)
     if (!covers.length) return
     const row = event.currentTarget.closest('li')
@@ -43,21 +39,35 @@ export const CountedList = ({items}: {items: CountedEntry[]}) => {
     setPreview({covers, top: rect.bottom, left: rect.left, width: rect.width})
   }
 
+  const leaveRow = () => {
+    setPreview(null)
+    setHoverKey(null)
+  }
+
+  const displayName = (name: string) =>
+    name.replace(/(^|\s)(\S)/g, (chunk) => chunk.toUpperCase())
+
   const row = (item: CountedEntry, inner: ReactNode) =>
     item.href ? (
       <NextLink
         href={item.href}
-        onMouseEnter={(event) => showPreview(item, event)}
+        onMouseEnter={(event) => {
+          setHoverKey(item.href ?? item.name)
+          showPreview(item, event)
+        }}
         onMouseMove={(event) => showPreview(item, event)}
-        onMouseLeave={() => setPreview(null)}
+        onMouseLeave={leaveRow}
       >
         {inner}
       </NextLink>
     ) : (
       <span
-        onMouseEnter={(event) => showPreview(item, event)}
+        onMouseEnter={(event) => {
+          setHoverKey(item.name)
+          showPreview(item, event)
+        }}
         onMouseMove={(event) => showPreview(item, event)}
-        onMouseLeave={() => setPreview(null)}
+        onMouseLeave={leaveRow}
       >
         {inner}
       </span>
@@ -66,18 +76,17 @@ export const CountedList = ({items}: {items: CountedEntry[]}) => {
   return (
     <>
       <ul>
-        {visible.map((item) => (
-          <li key={item.href ?? item.name}>{row(item, <>
-            {item.name}
+        {items.map((item) => (
+          <li key={item.href ?? item.name} className={hoverKey === (item.href ?? item.name) ? 'is-open' : undefined}>{row(item, <>
+            <Mark className="name">
+              {[...displayName(item.name)].map((letter, index) => (
+                <span key={`${letter}-${index}`}>{letter === ' ' ? '\u00a0' : letter}</span>
+              ))}
+            </Mark>
             <Count>{item.count}</Count>
           </>)}</li>
         ))}
       </ul>
-      {hidden.length && !showAll ? (
-        <Reveal type="button" onClick={() => setShowAll(true)}>
-          show all
-        </Reveal>
-      ) : null}
       {preview ? (
         <Thumbs
           style={{
@@ -95,33 +104,23 @@ export const CountedList = ({items}: {items: CountedEntry[]}) => {
   )
 }
 
-const Count = styled.span`
-  margin-left: 0.4em;
-  opacity: 0.35;
-  font-variant-numeric: tabular-nums;
+const Mark = styled.span`
+  flex: 0 1 auto;
+  min-width: 0;
 `
 
-const Reveal = styled.button`
-  display: inline-block;
-  margin-top: 14px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #fff;
-  font: inherit;
-  font-size: 11px;
-  line-height: 1.7;
-  letter-spacing: 0.02em;
-  text-decoration: underline;
-  cursor: pointer;
+const Count = styled.span`
+  flex: 0 0 auto;
+  margin-left: 0.55em;
+  opacity: 0.35;
+  font-variant-numeric: tabular-nums;
 `
 
 const Thumbs = styled.div`
   position: fixed;
   z-index: 50;
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 3px;
+  display: flex;
+  justify-content: center;
   padding: 4px 0 0;
   background: #000;
   pointer-events: none;
