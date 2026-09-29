@@ -3,12 +3,16 @@ import {BASE_URL} from '@/lib'
 import {prisma} from '@/lib/prisma'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [books, people] = await Promise.all([
+  const [books, people, genres] = await Promise.all([
     prisma.book.findMany({
       select: {slug: true, updatedAt: true, datePublished: true},
       orderBy: {datePublished: 'desc'},
     }),
     prisma.person.findMany({select: {slug: true, updatedAt: true}}),
+    prisma.genre.findMany({
+      where: {books: {some: {}}},
+      select: {slug: true},
+    }),
   ])
 
   return [
@@ -26,6 +30,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${BASE_URL}/person/${person.slug}`,
       lastModified: person.updatedAt,
       priority: 0.3,
+    })),
+    ...genres.map((genre) => ({
+      url: `${BASE_URL}/genre/${genre.slug}`,
+      priority: 0.4,
     })),
   ]
 }

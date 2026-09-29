@@ -1,6 +1,6 @@
 export const BOOK_GENRES = [
   'art and design',
-  'biographies and memoires',
+  'memoir',
   'comics',
   'fiction',
   'humor',

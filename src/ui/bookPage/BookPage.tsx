@@ -2,6 +2,7 @@
 
 import {styled} from '@linaria/react'
 import {People} from './People'
+import NextLink from 'next/link'
 import NextImage from 'next/image'
 import {PortableText} from 'next-sanity'
 import {Blur} from '@/ui'
@@ -40,7 +41,14 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
 
               {book.isbn && <h2>ISBN: {book.isbn}</h2>}
 
-              {!!book.genre && <Genre>Genre: {book.genre}</Genre>}
+              {!!book.genre && (
+                <Genre>
+                  Genre:{' '}
+                  <NextLink href={`/genre/${book.genre.toLowerCase().replace(/[_\s]+/g, '-')}`}>
+                    {book.genre}
+                  </NextLink>
+                </Genre>
+              )}
 
               {book.publisher && <h2>Publisher: {book.publisher}</h2>}
             </div>

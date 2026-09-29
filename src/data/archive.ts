@@ -19,6 +19,7 @@ export type LocalBook = {
   publisher: string
   isbn: string
   genre: string
+  genreSlug?: string
   year: number | null
   notes?: unknown
 }

@@ -46,6 +46,7 @@ export const toLocalBook = (book: NonNullable<BookRecord>): LocalBook => {
     publisher: book.publisher ?? '',
     isbn: book.isbn ?? '',
     genre: book.genre?.name ?? '',
+    genreSlug: book.genre?.slug ?? '',
     year: book.year,
     notes: parseNotes(book.notes),
   }
@@ -167,68 +168,174 @@ export async function getHeaderStats() {
   return {books: localBooks.length, designers: uniquePeople(localBooks.flatMap((book) => book.designers)).length}
 }
 
-export type IndexPerson = LocalPerson & {count: number}
-export type IndexGenre = {name: string; count: number}
+export type IndexPerson = LocalPerson & {count: number; cover?: string}
+export type IndexGenre = {name: string; slug: string; count: number; cover?: string}
 
-const countPeople = (people: LocalPerson[]): IndexPerson[] => {
-  const map = new Map<string, IndexPerson>()
-  people.forEach((person) => {
-    if (!person.slug) return
-    const current = map.get(person.slug)
-    if (current) current.count += 1
-    else map.set(person.slug, {...person, count: 1})
-  })
-  return [...map.values()].sort((a, b) => a.name.localeCompare(b.name, 'en'))
+const GENRE_ALIASES: Record<string, string> = {
+  'biographies-and-memoires': 'memoir',
+  'biographies-and-memoirs': 'memoir',
+  'biographies and memoires': 'memoir',
 }
 
-const countGenres = (names: string[]): IndexGenre[] => {
-  const map = new Map<string, number>()
-  names.forEach((name) => {
-    if (!name) return
-    map.set(name, (map.get(name) || 0) + 1)
+const byCount = <T extends {name: string; count: number}>(items: T[]) =>
+  [...items].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'en'))
+
+const creditCover = (images?: Array<{url: string}>) => images?.[0]?.url
+
+const tallyPeople = (
+  rows: Array<{person: LocalPerson; cover?: string | null}>
+): IndexPerson[] => {
+  const map = new Map<string, IndexPerson>()
+  rows.forEach((row) => {
+    if (!row.person.slug) return
+    const current = map.get(row.person.slug)
+    const cover = row.cover || undefined
+    if (current) {
+      current.count += 1
+      if (!current.cover && cover) current.cover = cover
+    } else {
+      map.set(row.person.slug, {...row.person, count: 1, cover})
+    }
   })
-  return [...map.entries()]
-    .map(([name, count]) => ({name, count}))
-    .sort((a, b) => a.name.localeCompare(b.name, 'en'))
+  return byCount([...map.values()])
+}
+
+const tallyGenres = (books: LocalBook[]): IndexGenre[] => {
+  const map = new Map<string, IndexGenre>()
+  books.forEach((book) => {
+    const name = book.genre.replace(/-/g, ' ').trim()
+    if (!name) return
+    const slug = book.genreSlug || name.toLowerCase().replace(/\s+/g, '-')
+    const current = map.get(slug)
+    if (current) {
+      current.count += 1
+      if (!current.cover && book.cover) current.cover = book.cover
+    } else {
+      map.set(slug, {name, slug, count: 1, cover: book.cover || undefined})
+    }
+  })
+  return byCount([...map.values()])
 }
 
 export async function getArchiveIndex() {
+  const creditInclude = {
+    person: true,
+    book: {include: {images: {orderBy: {position: 'asc' as const}, take: 1}}},
+  }
+
   try {
     const [designerRows, illustratorRows, photographerRows, genreRows] = await Promise.all([
       prisma.bookCredit.findMany({
         where: {role: CreditRole.DESIGNER},
-        include: {person: true},
+        include: creditInclude,
       }),
       prisma.bookCredit.findMany({
         where: {role: CreditRole.ILLUSTRATOR},
-        include: {person: true},
+        include: creditInclude,
       }),
       prisma.bookCredit.findMany({
         where: {role: CreditRole.PHOTOGRAPHER},
-        include: {person: true},
+        include: creditInclude,
       }),
       prisma.genre.findMany({
-        orderBy: {name: 'asc'},
-        include: {_count: {select: {books: true}}},
+        include: {
+          _count: {select: {books: true}},
+          books: {
+            take: 1,
+            orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+            include: {images: {orderBy: {position: 'asc'}, take: 1}},
+          },
+        },
       }),
     ])
 
     return {
-      designers: countPeople(designerRows.map((row) => ({slug: row.person.slug, name: row.person.name}))),
-      illustrators: countPeople(illustratorRows.map((row) => ({slug: row.person.slug, name: row.person.name}))),
-      photographers: countPeople(photographerRows.map((row) => ({slug: row.person.slug, name: row.person.name}))),
-      genres: genreRows.map((genre) => ({name: genre.name, count: genre._count.books})),
+      designers: tallyPeople(
+        designerRows.map((row) => ({
+          person: {slug: row.person.slug, name: row.person.name},
+          cover: creditCover(row.book.images),
+        }))
+      ),
+      illustrators: tallyPeople(
+        illustratorRows.map((row) => ({
+          person: {slug: row.person.slug, name: row.person.name},
+          cover: creditCover(row.book.images),
+        }))
+      ),
+      photographers: tallyPeople(
+        photographerRows.map((row) => ({
+          person: {slug: row.person.slug, name: row.person.name},
+          cover: creditCover(row.book.images),
+        }))
+      ),
+      genres: byCount(
+        genreRows
+          .filter((genre) => genre._count.books > 0)
+          .map((genre) => ({
+            name: genre.name,
+            slug: genre.slug,
+            count: genre._count.books,
+            cover: creditCover(genre.books[0]?.images),
+          }))
+      ),
     }
   } catch (error) {
     console.warn('Prisma unavailable, using archive.json', error)
     const books = localBooks
     return {
-      designers: countPeople(books.flatMap((book) => book.designers)),
-      illustrators: countPeople(books.flatMap((book) => book.illustrators)),
-      photographers: countPeople(books.flatMap((book) => book.photographers)),
-      genres: countGenres(books.map((book) => book.genre.replace(/-/g, ' '))),
+      designers: tallyPeople(books.flatMap((book) => book.designers.map((person) => ({person, cover: book.cover})))),
+      illustrators: tallyPeople(
+        books.flatMap((book) => book.illustrators.map((person) => ({person, cover: book.cover})))
+      ),
+      photographers: tallyPeople(
+        books.flatMap((book) => book.photographers.map((person) => ({person, cover: book.cover})))
+      ),
+      genres: tallyGenres(books),
     }
   }
+}
+
+export async function listGenreSlugs() {
+  try {
+    return (await prisma.genre.findMany({where: {books: {some: {}}}, select: {slug: true}})).map(
+      (genre) => genre.slug
+    )
+  } catch {
+    return [...new Set(localBooks.map((book) => book.genreSlug || book.genre.toLowerCase().replace(/\s+/g, '-')))]
+  }
+}
+
+export async function getGenreBySlug(slug?: string) {
+  if (!slug) return null
+  const resolved = GENRE_ALIASES[slug] || slug
+  try {
+    const genre = await prisma.genre.findUnique({
+      where: {slug: resolved},
+      include: {
+        books: {
+          include: bookInclude,
+          orderBy: [{datePublished: 'desc'}, {createdAt: 'desc'}],
+        },
+      },
+    })
+    if (genre) {
+      return {
+        slug: genre.slug,
+        name: genre.name,
+        books: genre.books.map(toLocalBook),
+        alias: slug !== genre.slug,
+      }
+    }
+  } catch (error) {
+    console.warn('Prisma unavailable, using archive.json', error)
+  }
+
+  const books = localBooks.filter((book) => {
+    const bookSlug = book.genreSlug || book.genre.toLowerCase().replace(/[_\s]+/g, '-')
+    return bookSlug === resolved || book.genre.toLowerCase() === resolved
+  })
+  if (!books.length) return null
+  return {slug: resolved, name: books[0].genre || resolved, books, alias: slug !== resolved}
 }
 
 export async function listBooksPage(page: number, limit: number) {

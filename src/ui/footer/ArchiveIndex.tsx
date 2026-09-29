@@ -16,6 +16,7 @@ export const ArchiveIndex = async () => {
               name: person.name,
               count: person.count,
               href: `/person/${person.slug}`,
+              cover: person.cover,
             }))}
           />
         </Group>
@@ -27,6 +28,7 @@ export const ArchiveIndex = async () => {
               name: person.name,
               count: person.count,
               href: `/person/${person.slug}`,
+              cover: person.cover,
             }))}
           />
         </Group>
@@ -38,13 +40,21 @@ export const ArchiveIndex = async () => {
               name: person.name,
               count: person.count,
               href: `/person/${person.slug}`,
+              cover: person.cover,
             }))}
           />
         </Group>
 
         <Group>
           <h2>Genre</h2>
-          <CountedList items={genres} />
+          <CountedList
+            items={genres.map((genre) => ({
+              name: genre.name,
+              count: genre.count,
+              href: `/genre/${genre.slug}`,
+              cover: genre.cover,
+            }))}
+          />
         </Group>
       </Index>
     </Bar>

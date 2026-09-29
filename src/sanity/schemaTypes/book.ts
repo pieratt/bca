@@ -80,7 +80,7 @@ export default defineType({
       options: {
         list: [
           'art and design',
-          'biographies and memoires',
+          'memoir',
           'comics',
           'fiction',
           'humor',

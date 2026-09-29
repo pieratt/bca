@@ -3,7 +3,7 @@ import {styled} from '@linaria/react'
 import type {LocalBook} from '@/data/archive'
 
 export const CoverGrid = ({books, heading}: {books: LocalBook[]; heading?: string}) => (
-  <main role="main">
+  <Main role="main" className={heading ? 'interior' : undefined}>
     <Grid className={heading ? 'plain' : 'featured'}>
       {heading ? <Heading>{heading}</Heading> : null}
       {books.map((book, index) => (
@@ -14,8 +14,14 @@ export const CoverGrid = ({books, heading}: {books: LocalBook[]; heading?: strin
         </Cover>
       ))}
     </Grid>
-  </main>
+  </Main>
 )
+
+const Main = styled.main`
+  &.interior {
+    padding-bottom: 56px;
+  }
+`
 
 const Grid = styled.section`
   display: grid;
