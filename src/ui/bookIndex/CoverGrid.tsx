@@ -53,7 +53,7 @@ const Grid = styled.section`
   @media only screen and (min-width: 744px) {
     &.featured > article:first-child {
       grid-column: span 3;
-      grid-row: span 3;
+      grid-row: span 2;
     }
   }
 `
