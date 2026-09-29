@@ -49,9 +49,16 @@ const Grid = styled.section`
 
 const Heading = styled.h1`
   grid-column: 1 / -1;
-  font-size: 1.4rem;
-  line-height: 1.4;
-  margin: 0 0 8px;
+  justify-self: start;
+  max-width: 18ch;
+  margin: 4px 0 28px;
+  color: #111;
+  font-family: var(--sans), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(2.4rem, 6.4vw, 5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
 `
 
 const Cover = styled.article`

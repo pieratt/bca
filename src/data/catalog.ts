@@ -52,6 +52,27 @@ export const toLocalBook = (book: NonNullable<BookRecord>): LocalBook => {
   }
 }
 
+const ROLE_PRIORITY: CreditRole[] = [
+  CreditRole.DESIGNER,
+  CreditRole.PHOTOGRAPHER,
+  CreditRole.ILLUSTRATOR,
+  CreditRole.ART_DIRECTOR,
+  CreditRole.AUTHOR,
+]
+
+const primaryRole = (counts: Map<CreditRole, number>): CreditRole => {
+  let best: CreditRole = CreditRole.DESIGNER
+  let bestCount = -1
+  for (const role of ROLE_PRIORITY) {
+    const count = counts.get(role) || 0
+    if (count > bestCount) {
+      best = role
+      bestCount = count
+    }
+  }
+  return best
+}
+
 const uniquePeople = (people: LocalPerson[]) => {
   const map = new Map<string, LocalPerson>()
   people.forEach((person) => {
@@ -133,14 +154,17 @@ export async function getPersonBySlug(slug?: string) {
     })
     if (person) {
       const books = new Map<string, LocalBook>()
+      const roleCounts = new Map<CreditRole, number>()
       for (const credit of person.credits) {
         books.set(credit.book.slug, toLocalBook(credit.book))
+        roleCounts.set(credit.role, (roleCounts.get(credit.role) || 0) + 1)
       }
       return {
         slug: person.slug,
         name: person.name,
         homepage: person.homepage,
         books: [...books.values()],
+        role: primaryRole(roleCounts),
       }
     }
   } catch (error) {

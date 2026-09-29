@@ -12,7 +12,7 @@ export default async function Person(props: PersonPageContextBundle) {
   const {slug} = await props.params
   const person = await getPersonBySlug(slug)
   if (!person) notFound()
-  return <PersonPage name={person.name} books={person.books} />
+  return <PersonPage name={person.name} books={person.books} role={person.role} />
 }
 
 export async function generateStaticParams() {
