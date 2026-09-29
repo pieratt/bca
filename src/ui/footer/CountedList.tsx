@@ -66,7 +66,7 @@ export const CountedList = ({items, columns = 1}: {items: CountedEntry[]; column
       ) : null}
       {preview ? (
         <Thumb
-          src={`${preview.src}?w=240&f=webp`}
+          src={`${preview.src}?w=480&f=webp`}
           alt=""
           style={{left: preview.x + 16, top: preview.y + 16}}
         />
@@ -112,7 +112,7 @@ const Reveal = styled.button`
 const Thumb = styled.img`
   position: fixed;
   z-index: 50;
-  width: 72px;
+  width: 144px;
   height: auto;
   pointer-events: none;
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);

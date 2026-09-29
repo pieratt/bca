@@ -57,7 +57,7 @@ const Heading = styled.h1`
   font-size: clamp(1.8rem, 4.8vw, 3.75rem);
   font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
   text-wrap: balance;
 `
 
