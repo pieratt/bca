@@ -6,7 +6,7 @@ const CoverThumb = ({book, size, lazy}: {book: LocalBook; size: 'featured' | 'th
   <Cover>
     <NextLink href={`/book/${book.slug}`} title={book.title}>
       <img
-        src={`${book.cover}?w=${size === 'featured' ? 960 : 640}&f=webp`}
+        src={`${book.cover}?w=${size === 'featured' ? 1200 : 640}&f=webp`}
         alt={`cover of ${book.title}`}
         width={book.width}
         height={book.height}
@@ -43,14 +43,19 @@ const Grid = styled.section`
   gap: 16px;
   align-items: end;
 
-  @media only screen and (min-width: 744px) {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 20px;
-  }
-
   &.featured > article:first-child {
     grid-column: span 2;
     grid-row: span 2;
+  }
+
+  @media only screen and (min-width: 744px) {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+
+    &.featured > article:first-child {
+      grid-column: span 3;
+      grid-row: span 3;
+    }
   }
 `
 
