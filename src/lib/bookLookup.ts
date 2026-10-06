@@ -29,6 +29,14 @@ type ParsedQuery = {
   isbn10?: string
   isbn13?: string
   title?: string
+  coverUrl?: string
+}
+
+type AmazonListing = {
+  title?: string
+  isbn10?: string
+  isbn13?: string
+  coverUrl?: string
 }
 
 type OpenLibraryEdition = {
@@ -109,11 +117,12 @@ export function parseBookQuery(input: string): ParsedQuery {
   }
   if (parsed.isbn10 && !parsed.asin) parsed.asin = parsed.isbn10
 
-  if (!parsed.isbn10 && !parsed.isbn13 && !parsed.asin) {
+  parsed.title = titleFromAmazonUrl(parsed.url) || undefined
+  if (!parsed.title && !parsed.isbn10 && !parsed.isbn13 && !parsed.asin) {
     parsed.title = raw
       .replace(/https?:\/\/[^\s]+/gi, '')
       .replace(/\bISBN[-:\s]*/gi, '')
-      .trim()
+      .trim() || undefined
   }
 
   return parsed
@@ -131,14 +140,33 @@ export async function lookupBookMetadata(input: string): Promise<LookedUpBook | 
       parsed.asin = parsed.asin ?? next.asin
       parsed.isbn10 = parsed.isbn10 ?? next.isbn10
       parsed.isbn13 = parsed.isbn13 ?? next.isbn13
+      parsed.title = parsed.title ?? next.title
       if (parsed.isbn10 && !parsed.isbn13) parsed.isbn13 = isbn10to13(parsed.isbn10)
       if (parsed.isbn10 && !parsed.asin) parsed.asin = parsed.isbn10
     }
   }
 
+  if (parsed.asin && isAmazonUrl(parsed.url)) {
+    const listing = await fetchAmazonListing(parsed.asin)
+    if (listing) {
+      parsed.title = listing.title || parsed.title
+      if (listing.isbn10) {
+        parsed.isbn10 = listing.isbn10
+        parsed.isbn13 = isbn10to13(listing.isbn10)
+      } else if (listing.isbn13) {
+        parsed.isbn13 = listing.isbn13
+        parsed.isbn10 = isbn13to10(listing.isbn13) ?? parsed.isbn10
+      }
+      parsed.coverUrl = listing.coverUrl
+    }
+  }
+
   const sources: string[] = []
-  const edition = await fetchOpenLibraryEdition(parsed.isbn13 ?? parsed.isbn10)
+  let edition = await fetchOpenLibraryEdition(parsed.isbn13 ?? parsed.isbn10)
   const search = await fetchOpenLibrarySearch(parsed)
+  if (!edition && search?.cover_edition_key) {
+    edition = await fetchJson<OpenLibraryEdition>(`https://openlibrary.org/books/${search.cover_edition_key}.json`)
+  }
   const workKey = edition?.works?.[0]?.key ?? search?.key
   const work = workKey ? await fetchJson<OpenLibraryWork>(`https://openlibrary.org${workKey}.json`) : null
 
@@ -147,8 +175,8 @@ export async function lookupBookMetadata(input: string): Promise<LookedUpBook | 
   if (search && !edition) sources.push('Open Library search')
 
   const title = buildTitle(
-    work?.title || search?.title || edition?.title,
-    work?.subtitle || search?.subtitle || edition?.subtitle
+    edition?.title || parsed.title || search?.title || work?.title,
+    edition?.subtitle || search?.subtitle || work?.subtitle
   )
   const authors = unique(
     search?.author_name ?? (await resolveAuthorNames(work?.authors, edition?.authors))
@@ -175,6 +203,7 @@ export async function lookupBookMetadata(input: string): Promise<LookedUpBook | 
     asin,
     isbn: isbn ?? parsed.isbn13 ?? parsed.isbn10,
     coverId: edition?.covers?.[0] ?? search?.cover_i,
+    extra: parsed.coverUrl,
   })
   if (cover?.url.includes('amazon')) sources.push('Amazon catalog image')
   if (cover?.url.includes('openlibrary')) sources.push('Open Library cover')
@@ -271,6 +300,7 @@ async function fetchGoogleBooks(parsed: ParsedQuery): Promise<LookedUpBook | nul
   const cover = await fetchBestCover({
     asin: parsed.asin || (foundIsbn && isIsbn10(foundIsbn) ? foundIsbn : foundIsbn ? isbn13to10(foundIsbn) : undefined),
     isbn: foundIsbn,
+    extra: parsed.coverUrl,
   })
 
   return {
@@ -294,11 +324,17 @@ async function fetchGoogleBooks(parsed: ParsedQuery): Promise<LookedUpBook | nul
   }
 }
 
-async function fetchBestCover(opts: {asin?: string; isbn?: string; coverId?: number}) {
+async function fetchBestCover(opts: {asin?: string; isbn?: string; coverId?: number; extra?: string}) {
   const urls: string[] = []
-  if (opts.asin) {
-    urls.push(`https://images-na.ssl-images-amazon.com/images/P/${opts.asin}.01.MAIN._SCRMZZZZZZ_.jpg`)
-    urls.push(`https://images-na.ssl-images-amazon.com/images/P/${opts.asin}.01.LZZZZZZZ.jpg`)
+  if (opts.extra && !isCompositeAmazonImage(opts.extra)) {
+    urls.push(upgradeAmazonImage(opts.extra), opts.extra)
+  }
+  const printAsin = opts.isbn && isIsbn10(opts.isbn) ? opts.isbn : opts.isbn ? isbn13to10(opts.isbn) : undefined
+  for (const id of unique([printAsin, opts.asin])) {
+    if (!id || !/^[A-Z0-9]{10}$/i.test(id)) continue
+    urls.push(`https://images-na.ssl-images-amazon.com/images/P/${id}.01.MAIN._SCRMZZZZZZ_.jpg`)
+    urls.push(`https://images-na.ssl-images-amazon.com/images/P/${id}.01.LZZZZZZZ.jpg`)
+    urls.push(`https://m.media-amazon.com/images/P/${id}.01.MAIN._SCRMZZZZZZ_.jpg`)
   }
   if (opts.coverId) urls.push(`https://covers.openlibrary.org/b/id/${opts.coverId}-L.jpg`)
   if (opts.isbn) urls.push(`https://covers.openlibrary.org/b/isbn/${opts.isbn}-L.jpg`)
@@ -392,6 +428,120 @@ function isShortAmazon(url: string) {
     return host === 'amzn.to' || host === 'a.co' || host === 'amzn.com'
   } catch {
     return false
+  }
+}
+
+function isAmazonUrl(url?: string) {
+  if (!url) return false
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '')
+    return host === 'amazon.com' || host.endsWith('.amazon.com') || isShortAmazon(url)
+  } catch {
+    return false
+  }
+}
+
+function titleFromAmazonUrl(url?: string) {
+  if (!url) return undefined
+  try {
+    const slug = decodeURIComponent(new URL(url).pathname).match(/\/([^/]+)\/dp\//i)?.[1]
+    if (!slug || /^(gp|dp|product)$/i.test(slug)) return undefined
+    return slug.replace(/-ebook$/i, '').replace(/-/g, ' ').replace(/\s+/g, ' ').trim()
+  } catch {
+    return undefined
+  }
+}
+
+function cleanAmazonTitle(value?: string) {
+  return decodeHtml(value)
+    .replace(/\s*[:\-–—]\s*(Kindle Edition|Shortlisted for.*)$/i, '')
+    .replace(/\s+Amazon\.com.*$/i, '')
+    .trim()
+}
+
+function decodeHtml(value?: string) {
+  return (value ?? '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function upgradeAmazonImage(url: string) {
+  return url
+    .replace(/\._(?:AC_)?[A-Z]{2}\d+(?:,\d+)?_/g, '')
+    .replace(/\._S[XY]\d+_/g, '')
+    .replace(/\._SL\d+_/g, '')
+}
+
+function isCompositeAmazonImage(url: string) {
+  return /_CLa/i.test(url) || url.includes('%7C') || url.includes('|')
+}
+
+async function fetchAmazonListing(asin: string): Promise<AmazonListing | null> {
+  const html = await fetchText(`https://www.amazon.com/dp/${asin}`, {
+    Accept: 'text/html,application/xhtml+xml',
+    'Accept-Language': 'en-US,en;q=0.9',
+    'User-Agent':
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+  })
+  if (!html || html.length < 400) return null
+
+  const title = cleanAmazonTitle(
+    html.match(/id="productTitle"[^>]*>([\s\S]*?)<\/span>/i)?.[1] ||
+      html.match(/property="og:title"\s+content="([^"]+)"/i)?.[1] ||
+      html.match(/<title>([^<]+)<\/title>/i)?.[1]
+  )
+
+  const isbn10 = unique(
+    [...html.matchAll(/\/dp\/(\d{9}[\dX])\b/gi)].map((match) => match[1].toUpperCase())
+  ).find((value) => isIsbn10(value))
+
+  const isbn13raw =
+    html.match(/ISBN-13[\s\S]{0,160}?(97[89][\d-]{10,17})/i)?.[1] ||
+    html.match(/\b(97[89]-\d{10})\b/)?.[1]
+  const isbn13 = isbn13raw?.replace(/-/g, '')
+
+  let coverUrl: string | undefined
+  const dynamic = html.match(/data-a-dynamic-image="([^"]+)"/i)?.[1]
+  if (dynamic) {
+    try {
+      const parsed = JSON.parse(dynamic.replace(/&quot;/g, '"')) as Record<string, number[]>
+      coverUrl = Object.keys(parsed).find((url) => !isCompositeAmazonImage(url))
+    } catch {
+      coverUrl = undefined
+    }
+  }
+  coverUrl =
+    coverUrl ||
+    html.match(/data-old-hires="([^"]+)"/i)?.[1] ||
+    html.match(/property="og:image"\s+content="(https:\/\/m\.media-amazon\.com\/images\/I\/[^"]+)"/i)?.[1]
+  if (coverUrl && isCompositeAmazonImage(coverUrl)) coverUrl = undefined
+
+  if (!title && !isbn10 && !isbn13 && !coverUrl) return null
+  return {
+    title: title || undefined,
+    isbn10,
+    isbn13: isbn13 && /^97[89]\d{10}$/.test(isbn13) ? isbn13 : undefined,
+    coverUrl: coverUrl ? decodeHtml(coverUrl) : undefined,
+  }
+}
+
+async function fetchText(url: string, headers?: Record<string, string>) {
+  try {
+    const res = await fetch(url, {
+      redirect: 'follow',
+      headers: {Accept: 'text/html', 'User-Agent': USER_AGENT, ...headers},
+      signal: AbortSignal.timeout(12000),
+      cache: 'no-store',
+    })
+    if (!res.ok) return null
+    return await res.text()
+  } catch {
+    return null
   }
 }
 
