@@ -3,6 +3,7 @@
 import {useState, type MouseEvent, type ReactNode} from 'react'
 import NextLink from 'next/link'
 import {styled} from '@linaria/react'
+import {CoverImage} from '../bookIndex/CoverImage'
 
 export type CountedEntry = {
   name: string
@@ -19,9 +20,19 @@ type Preview = {
   width: number
 }
 
-export const CountedList = ({items}: {items: CountedEntry[]}) => {
+export const CountedList = ({
+  items,
+  collapseBelow = 0,
+}: {
+  items: CountedEntry[]
+  collapseBelow?: number
+}) => {
   const [preview, setPreview] = useState<Preview | null>(null)
   const [hoverKey, setHoverKey] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState(false)
+
+  const hidden = collapseBelow > 1 ? items.filter((item) => item.count < collapseBelow) : []
+  const visible = expanded || hidden.length === 0 ? items : items.filter((item) => item.count >= collapseBelow)
 
   const coversFor = (item: CountedEntry) => {
     const next = item.covers?.filter(Boolean) ?? []
@@ -76,17 +87,18 @@ export const CountedList = ({items}: {items: CountedEntry[]}) => {
   return (
     <>
       <ul>
-        {items.map((item) => (
+        {visible.map((item) => (
           <li key={item.href ?? item.name} className={hoverKey === (item.href ?? item.name) ? 'is-open' : undefined}>{row(item, <>
-            <Mark className="name">
-              {[...displayName(item.name)].map((letter, index) => (
-                <span key={`${letter}-${index}`}>{letter === ' ' ? '\u00a0' : letter}</span>
-              ))}
-            </Mark>
+            <Mark className="name">{displayName(item.name)}</Mark>
             <Count>{item.count}</Count>
           </>)}</li>
         ))}
       </ul>
+      {hidden.length > 0 && !expanded ? (
+        <button className="show-all" type="button" onClick={() => setExpanded(true)}>
+          Show all
+        </button>
+      ) : null}
       {preview ? (
         <Thumbs
           style={{
@@ -96,7 +108,7 @@ export const CountedList = ({items}: {items: CountedEntry[]}) => {
           }}
         >
           {preview.covers.map((src) => (
-            <img key={src} src={`${src}?w=320&f=webp`} alt="" />
+            <CoverImage key={src} src={src} alt="" width={400} height={600} size="hover" />
           ))}
         </Thumbs>
       ) : null}
@@ -120,7 +132,7 @@ const Thumbs = styled.div`
   position: fixed;
   z-index: 50;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 4px 0 0;
   background: #000;
   pointer-events: none;

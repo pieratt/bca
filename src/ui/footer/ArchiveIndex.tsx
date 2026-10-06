@@ -2,13 +2,17 @@ import {styled} from '@linaria/react'
 import {getArchiveIndex} from '@/data/catalog'
 import {CountedList} from './CountedList'
 
-const Spread = ({children}: {children: string}) => (
-  <h2>
-    {[...children].map((letter, index) => (
-      <span key={`${letter}-${index}`}>{letter === ' ' ? '\u00a0' : letter}</span>
-    ))}
-  </h2>
-)
+const toItems = (
+  rows: {name: string; slug: string; count: number; cover?: string; covers?: string[]}[],
+  kind: 'genre' | 'person'
+) =>
+  rows.map((row) => ({
+    name: row.name,
+    count: row.count,
+    href: kind === 'genre' ? `/genre/${row.slug}` : `/person/${row.slug}`,
+    cover: row.cover,
+    covers: row.covers,
+  }))
 
 export const ArchiveIndex = async () => {
   const {designers, illustrators, photographers, genres} = await getArchiveIndex()
@@ -17,55 +21,23 @@ export const ArchiveIndex = async () => {
     <Bar>
       <Index>
         <Group>
-          <Spread>Genres</Spread>
-          <CountedList
-            items={genres.map((genre) => ({
-              name: genre.name,
-              count: genre.count,
-              href: `/genre/${genre.slug}`,
-              cover: genre.cover,
-              covers: genre.covers,
-            }))}
-          />
+          <h2>Genres</h2>
+          <CountedList items={toItems(genres, 'genre')} />
+        </Group>
+
+        <Group data-wide>
+          <h2>Designers</h2>
+          <CountedList items={toItems(designers, 'person')} collapseBelow={2} />
         </Group>
 
         <Group>
-          <Spread>Designers</Spread>
-          <CountedList
-            items={designers.map((person) => ({
-              name: person.name,
-              count: person.count,
-              href: `/person/${person.slug}`,
-              cover: person.cover,
-              covers: person.covers,
-            }))}
-          />
+          <h2>Illustrators</h2>
+          <CountedList items={toItems(illustrators, 'person')} collapseBelow={2} />
         </Group>
 
         <Group>
-          <Spread>Illustrators</Spread>
-          <CountedList
-            items={illustrators.map((person) => ({
-              name: person.name,
-              count: person.count,
-              href: `/person/${person.slug}`,
-              cover: person.cover,
-              covers: person.covers,
-            }))}
-          />
-        </Group>
-
-        <Group>
-          <Spread>Photographers</Spread>
-          <CountedList
-            items={photographers.map((person) => ({
-              name: person.name,
-              count: person.count,
-              href: `/person/${person.slug}`,
-              cover: person.cover,
-              covers: person.covers,
-            }))}
-          />
+          <h2>Photographers</h2>
+          <CountedList items={toItems(photographers, 'person')} collapseBelow={2} />
         </Group>
       </Index>
     </Bar>
@@ -85,25 +57,18 @@ const Bar = styled.div`
   }
 
   h2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     box-sizing: border-box;
     height: var(--row);
-    margin: 0;
+    margin: 0 0 4px;
     padding: 0;
     color: #fff;
     font-size: 11px;
     font-weight: 400;
-    letter-spacing: 0;
+    letter-spacing: 0.45em;
     line-height: var(--row);
     text-transform: uppercase;
-    break-inside: avoid;
-    break-after: avoid;
-  }
-
-  h2 span {
-    flex: 0 0 auto;
+    white-space: nowrap;
+    column-span: all;
   }
 
   ul {
@@ -121,7 +86,7 @@ const Bar = styled.div`
   li > span {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     box-sizing: border-box;
     height: var(--row);
     padding: 0;
@@ -137,28 +102,59 @@ const Bar = styled.div`
   li.is-open > span,
   li a:hover,
   li > span:hover {
-    justify-content: space-between;
     text-transform: uppercase;
   }
 
   li.is-open .name,
   li a:hover .name,
   li > span:hover .name {
-    display: flex;
-    flex: 1 1 auto;
-    justify-content: space-between;
+    letter-spacing: 0.45em;
+  }
+
+  .show-all {
+    appearance: none;
+    display: block;
+    width: 100%;
+    margin: 4px 0 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #fff;
+    font: inherit;
+    font-size: 11px;
+    line-height: var(--row);
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+    opacity: 0.55;
+    column-span: all;
+    break-inside: avoid;
+  }
+
+  .show-all:hover {
+    opacity: 1;
   }
 `
 
 const Index = styled.div`
-  column-width: 160px;
-  column-gap: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 32px 24px;
+
+  @media only screen and (min-width: 900px) {
+    flex-wrap: nowrap;
+  }
 `
 
 const Group = styled.div`
-  min-width: 0;
+  min-width: 160px;
+  flex: 0 1 160px;
+  column-width: 160px;
+  column-gap: 24px;
 
-  & + & {
-    margin-top: calc(var(--row) * 2);
+  &[data-wide] {
+    flex: 1 1 320px;
   }
 `

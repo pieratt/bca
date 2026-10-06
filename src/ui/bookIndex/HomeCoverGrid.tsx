@@ -1,16 +1,18 @@
 import NextLink from 'next/link'
 import {styled} from '@linaria/react'
 import type {LocalBook} from '@/data/archive'
+import {CoverImage} from './CoverImage'
 
-const CoverThumb = ({book, size, lazy}: {book: LocalBook; size: 'featured' | 'thumb'; lazy?: boolean}) => (
+const CoverThumb = ({book, size, priority}: {book: LocalBook; size: 'featured' | 'thumb'; priority?: boolean}) => (
   <Cover>
     <NextLink href={`/book/${book.slug}`} title={book.title}>
-      <img
-        src={`${book.cover}?w=${size === 'featured' ? 1200 : 640}&f=webp`}
+      <CoverImage
+        src={book.cover}
         alt={`cover of ${book.title}`}
         width={book.width}
         height={book.height}
-        loading={lazy ? 'lazy' : 'eager'}
+        size={size}
+        priority={priority}
       />
     </NextLink>
   </Cover>
@@ -23,7 +25,7 @@ export const HomeCoverGrid = ({books}: {books: LocalBook[]}) => (
         key={`${book.slug}-${index}`}
         book={book}
         size={index === 0 ? 'featured' : 'thumb'}
-        lazy={index > 11}
+        priority={index === 0}
       />
     ))}
   </Grid>
@@ -32,7 +34,7 @@ export const HomeCoverGrid = ({books}: {books: LocalBook[]}) => (
 export const FluidThumbGrid = ({books}: {books: LocalBook[]}) => (
   <Grid>
     {books.map((book, index) => (
-      <CoverThumb key={`${book.slug}-${index}`} book={book} size="thumb" lazy={index > 11} />
+      <CoverThumb key={`${book.slug}-${index}`} book={book} size="thumb" />
     ))}
   </Grid>
 )
@@ -46,6 +48,7 @@ const Grid = styled.section`
   &.featured > article:first-child {
     grid-column: span 2;
     grid-row: span 2;
+    align-self: start;
   }
 
   @media only screen and (min-width: 744px) {
@@ -55,6 +58,7 @@ const Grid = styled.section`
     &.featured > article:first-child {
       grid-column: span 3;
       grid-row: span 3;
+      align-self: start;
     }
   }
 `

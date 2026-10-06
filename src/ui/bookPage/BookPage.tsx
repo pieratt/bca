@@ -6,6 +6,7 @@ import NextLink from 'next/link'
 import NextImage from 'next/image'
 import {PortableText} from 'next-sanity'
 import {Blur} from '@/ui'
+import {coverSrc} from '@/lib/coverSrc'
 import {useState} from 'react'
 
 export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
@@ -20,11 +21,11 @@ export const BookPage = ({book}: {book: Sanity.BookQueryResult}) => {
             )}
             {book.images[0].asset?.url && (
               <Image
-                src={book.images[0].asset.url}
+                src={coverSrc(book.images[0].asset.url)}
                 alt={`cover of ${book.title}`}
                 width={book.images[0].asset?.metadata?.dimensions?.width}
                 height={book.images[0].asset?.metadata?.dimensions?.height}
-                sizes="(min-width:744px) 50vw, 100vw"
+                sizes="(min-width:744px) 640px, 100vw"
                 className={loaded ? 'loaded' : ''}
                 onLoad={() => setLoaded(true)}
               />
