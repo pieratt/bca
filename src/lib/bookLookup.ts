@@ -29,14 +29,14 @@ type ParsedQuery = {
   isbn10?: string
   isbn13?: string
   title?: string
-  coverUrl?: string
+  coverUrls?: string[]
 }
 
 type AmazonListing = {
   title?: string
   isbn10?: string
   isbn13?: string
-  coverUrl?: string
+  coverUrls: string[]
 }
 
 type OpenLibraryEdition = {
@@ -157,7 +157,7 @@ export async function lookupBookMetadata(input: string): Promise<LookedUpBook | 
         parsed.isbn13 = listing.isbn13
         parsed.isbn10 = isbn13to10(listing.isbn13) ?? parsed.isbn10
       }
-      parsed.coverUrl = listing.coverUrl
+      parsed.coverUrls = listing.coverUrls
     }
   }
 
@@ -203,7 +203,7 @@ export async function lookupBookMetadata(input: string): Promise<LookedUpBook | 
     asin,
     isbn: isbn ?? parsed.isbn13 ?? parsed.isbn10,
     coverId: edition?.covers?.[0] ?? search?.cover_i,
-    extra: parsed.coverUrl,
+    extras: parsed.coverUrls,
   })
   if (cover?.url.includes('amazon')) sources.push('Amazon catalog image')
   if (cover?.url.includes('openlibrary')) sources.push('Open Library cover')
@@ -300,7 +300,7 @@ async function fetchGoogleBooks(parsed: ParsedQuery): Promise<LookedUpBook | nul
   const cover = await fetchBestCover({
     asin: parsed.asin || (foundIsbn && isIsbn10(foundIsbn) ? foundIsbn : foundIsbn ? isbn13to10(foundIsbn) : undefined),
     isbn: foundIsbn,
-    extra: parsed.coverUrl,
+    extras: parsed.coverUrls,
   })
 
   return {
@@ -324,10 +324,11 @@ async function fetchGoogleBooks(parsed: ParsedQuery): Promise<LookedUpBook | nul
   }
 }
 
-async function fetchBestCover(opts: {asin?: string; isbn?: string; coverId?: number; extra?: string}) {
+async function fetchBestCover(opts: {asin?: string; isbn?: string; coverId?: number; extras?: string[]}) {
   const urls: string[] = []
-  if (opts.extra && !isCompositeAmazonImage(opts.extra)) {
-    urls.push(upgradeAmazonImage(opts.extra), opts.extra)
+  for (const extra of opts.extras ?? []) {
+    if (!extra || isCompositeAmazonImage(extra)) continue
+    urls.push(upgradeAmazonImage(extra), extra)
   }
   const printAsin = opts.isbn && isIsbn10(opts.isbn) ? opts.isbn : opts.isbn ? isbn13to10(opts.isbn) : undefined
   for (const id of unique([printAsin, opts.asin])) {
@@ -339,11 +340,19 @@ async function fetchBestCover(opts: {asin?: string; isbn?: string; coverId?: num
   if (opts.coverId) urls.push(`https://covers.openlibrary.org/b/id/${opts.coverId}-L.jpg`)
   if (opts.isbn) urls.push(`https://covers.openlibrary.org/b/isbn/${opts.isbn}-L.jpg`)
 
-  for (const url of urls) {
+  let best: LookedUpCover | undefined
+  let bestScore = 0
+  for (const url of unique(urls)) {
     const cover = await downloadCover(url)
-    if (cover) return cover
+    if (!cover) continue
+    const score = (cover.width ?? 0) * (cover.height ?? 0) || cover.bytes.byteLength
+    if (score > bestScore) {
+      best = cover
+      bestScore = score
+    }
+    if ((cover.width ?? 0) >= 1400) break
   }
-  return undefined
+  return best
 }
 
 async function downloadCover(url: string): Promise<LookedUpCover | undefined> {
@@ -505,29 +514,45 @@ async function fetchAmazonListing(asin: string): Promise<AmazonListing | null> {
     html.match(/\b(97[89]-\d{10})\b/)?.[1]
   const isbn13 = isbn13raw?.replace(/-/g, '')
 
-  let coverUrl: string | undefined
-  const dynamic = html.match(/data-a-dynamic-image="([^"]+)"/i)?.[1]
-  if (dynamic) {
-    try {
-      const parsed = JSON.parse(dynamic.replace(/&quot;/g, '"')) as Record<string, number[]>
-      coverUrl = Object.keys(parsed).find((url) => !isCompositeAmazonImage(url))
-    } catch {
-      coverUrl = undefined
-    }
-  }
-  coverUrl =
-    coverUrl ||
-    html.match(/data-old-hires="([^"]+)"/i)?.[1] ||
-    html.match(/property="og:image"\s+content="(https:\/\/m\.media-amazon\.com\/images\/I\/[^"]+)"/i)?.[1]
-  if (coverUrl && isCompositeAmazonImage(coverUrl)) coverUrl = undefined
+  const coverUrls = amazonCoverUrls(html)
 
-  if (!title && !isbn10 && !isbn13 && !coverUrl) return null
+  if (!title && !isbn10 && !isbn13 && !coverUrls.length) return null
   return {
     title: title || undefined,
     isbn10,
     isbn13: isbn13 && /^97[89]\d{10}$/.test(isbn13) ? isbn13 : undefined,
-    coverUrl: coverUrl ? decodeHtml(coverUrl) : undefined,
+    coverUrls,
   }
+}
+
+function amazonCoverUrls(html: string) {
+  const found: string[] = []
+  const push = (value?: string) => {
+    const url = decodeHtml(value).replace(/\\u002F/g, '/').replace(/\\\//g, '/')
+    if (!url || isCompositeAmazonImage(url) || !/^https:\/\/[^\s]+amazon\.com\/images\//i.test(url)) return
+    found.push(upgradeAmazonImage(url), url)
+  }
+
+  for (const match of html.matchAll(/"hiRes"\s*:\s*"(https:[^"]+)"/g)) push(match[1])
+  for (const match of html.matchAll(/data-old-hires="([^"]+)"/gi)) push(match[1])
+  for (const match of html.matchAll(/"physicalIdForMedia"\s*:\s*"([^"]+)"/g)) {
+    push(`https://m.media-amazon.com/images/I/${match[1]}.jpg`)
+  }
+
+  const dynamic = html.match(/data-a-dynamic-image="([^"]+)"/i)?.[1]
+  if (dynamic) {
+    try {
+      const parsed = JSON.parse(dynamic.replace(/&quot;/g, '"')) as Record<string, number[]>
+      for (const url of Object.keys(parsed)) push(url)
+    } catch {
+      /* ignore */
+    }
+  }
+
+  const og = html.match(/property="og:image"\s+content="(https:\/\/m\.media-amazon\.com\/images\/I\/[^"]+)"/i)?.[1]
+  push(og)
+
+  return unique(found)
 }
 
 async function fetchText(url: string, headers?: Record<string, string>) {

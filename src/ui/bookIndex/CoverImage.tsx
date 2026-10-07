@@ -26,7 +26,7 @@ export const CoverImage = ({
       width={width && width > 0 ? width : 1000}
       height={height && height > 0 ? height : 1500}
       sizes={COVER_SIZES[size]}
-      quality={size === 'page' ? 80 : 70}
+      quality={size === 'page' || size === 'featured' ? 88 : 70}
       priority={priority}
       className={className}
     />
