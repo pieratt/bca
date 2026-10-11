@@ -13,7 +13,7 @@ export const Footer = () => (
       <div>
         <h3>Who runs this thing?</h3>
         <p>
-          © 2025 <a href="http://pieratt.com">Ben Pieratt</a> &amp;{' '}
+          © 2026 <a href="http://pieratt.com">Ben Pieratt</a> &amp;{' '}
           <a href="http://whiskyvangoghgo.com">Eric Jacobsen</a>. All covers are the copyright of
           their respective owners. We work hard to credit well.
         </p>

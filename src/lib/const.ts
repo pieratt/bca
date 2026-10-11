@@ -1,1 +1,1 @@
-export const BOOK_INDEX_LIMIT = 90
+export const BOOK_INDEX_LIMIT = 55

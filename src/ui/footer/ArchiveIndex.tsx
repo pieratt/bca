@@ -1,6 +1,7 @@
 import {styled} from '@linaria/react'
-import {getArchiveIndex} from '@/data/catalog'
+import {getArchiveIndex, getFeaturedCreatives} from '@/data/catalog'
 import {CountedList} from './CountedList'
+import {FeaturedCreative} from './FeaturedDesigner'
 
 const toItems = (
   rows: {name: string; slug: string; count: number; cover?: string; covers?: string[]}[],
@@ -16,16 +17,26 @@ const toItems = (
 
 export const ArchiveIndex = async () => {
   const {designers, illustrators, photographers, genres} = await getArchiveIndex()
+  const featured = await getFeaturedCreatives({designers, illustrators, photographers})
 
   return (
     <Bar>
+      {featured.designer ? (
+        <FeaturedCreative label="Designer" name={featured.designer.name} slug={featured.designer.slug} books={featured.designer.books} />
+      ) : null}
+      {featured.illustrator ? (
+        <FeaturedCreative label="Illustrator" name={featured.illustrator.name} slug={featured.illustrator.slug} books={featured.illustrator.books} />
+      ) : null}
+      {featured.photographer ? (
+        <FeaturedCreative label="Photographer" name={featured.photographer.name} slug={featured.photographer.slug} books={featured.photographer.books} />
+      ) : null}
       <Index>
         <Group>
           <h2>Genres</h2>
           <CountedList items={toItems(genres, 'genre')} />
         </Group>
 
-        <Group data-wide>
+        <Group>
           <h2>Designers</h2>
           <CountedList items={toItems(designers, 'person')} collapseBelow={2} />
         </Group>
@@ -137,24 +148,22 @@ const Bar = styled.div`
 `
 
 const Index = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: flex-start;
+  display: grid;
+  align-items: start;
   gap: 32px 24px;
+  grid-template-columns: 1fr;
 
-  @media only screen and (min-width: 900px) {
-    flex-wrap: nowrap;
+  @media only screen and (min-width: 640px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media only screen and (min-width: 1100px) {
+    grid-template-columns: minmax(160px, 1fr) minmax(280px, 2.2fr) minmax(160px, 1fr) minmax(160px, 1fr);
   }
 `
 
 const Group = styled.div`
-  min-width: 160px;
-  flex: 0 1 160px;
+  min-width: 0;
   column-width: 160px;
   column-gap: 24px;
-
-  &[data-wide] {
-    flex: 1 1 320px;
-  }
 `

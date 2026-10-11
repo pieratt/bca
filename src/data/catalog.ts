@@ -1,3 +1,4 @@
+import {unstable_noStore as noStore} from 'next/cache'
 import {CreditRole} from '@prisma/client'
 import {prisma} from '@/lib/prisma'
 import {localBooks, toBookPageData, type LocalBook, type LocalPerson} from './archive'
@@ -141,7 +142,7 @@ export async function listPersonSlugs() {
   }
 }
 
-export async function getPersonBySlug(slug?: string) {
+export async function getPersonBySlug(slug?: string, role?: CreditRole) {
   if (!slug) return null
   try {
     const person = await prisma.person.findUnique({
@@ -158,8 +159,9 @@ export async function getPersonBySlug(slug?: string) {
       const books = new Map<string, LocalBook>()
       const roleCounts = new Map<CreditRole, number>()
       for (const credit of person.credits) {
-        books.set(credit.book.slug, toLocalBook(credit.book))
         roleCounts.set(credit.role, (roleCounts.get(credit.role) || 0) + 1)
+        if (role && credit.role !== role) continue
+        books.set(credit.book.slug, toLocalBook(credit.book))
       }
       return {
         slug: person.slug,
@@ -335,6 +337,32 @@ export async function getArchiveIndex() {
       genres: tallyGenres(books),
     }
   }
+}
+
+const MIN_FEATURED_COVERS = 2
+
+async function pickFeaturedPerson(people: IndexPerson[], role: CreditRole, used: Set<string>) {
+  const pool = people.filter((person) => person.slug && person.count >= MIN_FEATURED_COVERS && !used.has(person.slug))
+  if (!pool.length) return null
+  const pick = pool[Math.floor(Math.random() * pool.length)]
+  used.add(pick.slug)
+  const person = await getPersonBySlug(pick.slug, role)
+  if (!person?.books.length) return null
+  return person
+}
+
+export async function getFeaturedCreatives(index?: {
+  designers: IndexPerson[]
+  illustrators: IndexPerson[]
+  photographers: IndexPerson[]
+}) {
+  noStore()
+  const people = index ?? (await getArchiveIndex())
+  const used = new Set<string>()
+  const designer = await pickFeaturedPerson(people.designers, CreditRole.DESIGNER, used)
+  const illustrator = await pickFeaturedPerson(people.illustrators, CreditRole.ILLUSTRATOR, used)
+  const photographer = await pickFeaturedPerson(people.photographers, CreditRole.PHOTOGRAPHER, used)
+  return {designer, illustrator, photographer}
 }
 
 export async function listGenreSlugs() {
